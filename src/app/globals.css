@@ -1,26 +1,81 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-sans: var(--font-sans), system-ui, -apple-system, sans-serif;
+  --font-serif: var(--font-serif), Georgia, serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Monochrome Ambient Atmosphere Themes */
+html[data-theme="noir"],
+html[data-theme="dusk"] body {
+  background: radial-gradient(circle at 50% 0%, #17171a 0%, #0c0c0e 55%, #050506 100%);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html[data-theme="obsidian"],
+html[data-theme="candlelight"] body {
+  background: radial-gradient(circle at 50% 0%, #1c1c1c 0%, #0d0d0d 55%, #040404 100%);
+}
+
+html[data-theme="midnight"] body {
+  background: radial-gradient(circle at 50% 0%, #12131a 0%, #090a0f 60%, #030406 100%);
+}
+
+html[data-theme="graphite"],
+html[data-theme="dawn"] body {
+  background: radial-gradient(circle at 50% 0%, #202024 0%, #111114 60%, #08080a 100%);
+}
+
+/* Base Body */
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: #f4f4f5;
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  background-color: #09090b;
+}
+
+/* Monochrome Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #09090b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #52525b;
+}
+
+/* Clean Hairline Utilities */
+.hairline-border {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.hairline-border-hover:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.mono-panel {
+  background: rgba(15, 15, 18, 0.7);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mono-card {
+  background: rgba(20, 20, 24, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }

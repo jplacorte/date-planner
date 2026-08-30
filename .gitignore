@@ -23,6 +23,9 @@
 # misc
 .DS_Store
 *.pem
+date-planner.json
+*service-account*.json
+*credentials*.json
 
 # debug
 npm-debug.log*
