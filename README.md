@@ -170,9 +170,3 @@ The repository includes automated GitHub Actions workflows:
 
 - **Private & Client-First**: All checklist progress, memories, and couple profile settings are stored client-side in `localStorage` using React 19's `useSyncExternalStore`.
 - **Full JSON Backup & Restore**: Click **Profile & Settings $\rightarrow$ Export Backup (JSON)** to download a complete backup of all dates and memories, or restore it on any device.
-
----
-
-<div align="center">
-Made with ❤️ for Lyca & Phillip
-</div>
