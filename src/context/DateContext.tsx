@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, useSyncExternalStore, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef, useCallback, useMemo, useSyncExternalStore, ReactNode } from 'react';
 import confetti from 'canvas-confetti';
 import { 
   DateIdea, 
@@ -137,6 +137,20 @@ export const DateProvider = ({ children }: { children: ReactNode }) => {
       unsubscribe();
     };
   }, []);
+
+  // Debounced auto-save to Google Drive on dates or profile changes
+  const isInitialMount = useRef(true);
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    const timer = setTimeout(() => {
+      pushToGoogleDrive(dates, coupleProfile);
+    }, 2500);
+
+    return () => clearTimeout(timer);
+  }, [dates, coupleProfile]);
 
   const syncToDrive = useCallback(async () => {
     return await pushToGoogleDrive(dates, coupleProfile);
