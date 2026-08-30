@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useCallback, useMemo, useSyncExternalStore, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, useSyncExternalStore, ReactNode } from 'react';
 import confetti from 'canvas-confetti';
 import { 
   DateIdea, 
@@ -16,6 +16,12 @@ import { initialAchievementBadges } from '../data/initialDates';
 import { soundEngine } from '../utils/audio';
 import { dateStore } from '../utils/dateStore';
 import { formatTimeString } from '../utils/date';
+import { 
+  SyncStatus, 
+  subscribeToSyncStatus, 
+  pullFromGoogleDrive, 
+  pushToGoogleDrive 
+} from '../utils/driveSyncClient';
 
 interface DateContextType {
   dates: DateIdea[];
@@ -30,6 +36,13 @@ interface DateContextType {
   isStatsModalOpen: boolean;
   isProfileModalOpen: boolean;
   badges: AchievementBadge[];
+
+  // Cloud Sync
+  syncStatus: SyncStatus;
+  lastSyncedAt?: Date;
+  syncError?: string;
+  syncToDrive: () => Promise<boolean>;
+  syncFromDrive: () => Promise<boolean>;
 
   // Actions
   setActiveTab: (tab: 'checklist' | 'map' | 'scrapbook') => void;
@@ -104,6 +117,39 @@ export const DateProvider = ({ children }: { children: ReactNode }) => {
     if (!selectedDateId) return null;
     return dates.find((d) => d.id === selectedDateId) || null;
   }, [dates, selectedDateId]);
+
+  // Google Drive Cloud Sync State
+  const [syncStatus, setSyncStatus] = useState<SyncStatus>('idle');
+  const [lastSyncedAt, setLastSyncedAt] = useState<Date | undefined>(undefined);
+  const [syncError, setSyncError] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const unsubscribe = subscribeToSyncStatus((status, time, err) => {
+      setSyncStatus(status);
+      if (time) setLastSyncedAt(time);
+      setSyncError(err);
+    });
+
+    // Initial sync from Google Drive on app load
+    pullFromGoogleDrive().then((hasData) => {
+      if (!hasData) {
+        // Initialize file in Google Drive if it doesn't exist yet
+        pushToGoogleDrive();
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  const syncToDrive = useCallback(async () => {
+    return await pushToGoogleDrive(dates, coupleProfile);
+  }, [dates, coupleProfile]);
+
+  const syncFromDrive = useCallback(async () => {
+    return await pullFromGoogleDrive();
+  }, []);
 
   const setSelectedDate = useCallback((date: DateIdea | null) => {
     setSelectedDateId(date ? date.id : null);
@@ -422,6 +468,11 @@ export const DateProvider = ({ children }: { children: ReactNode }) => {
         isStatsModalOpen,
         isProfileModalOpen,
         badges,
+        syncStatus,
+        lastSyncedAt,
+        syncError,
+        syncToDrive,
+        syncFromDrive,
         setActiveTab,
         setSelectedDate,
         setIsCreateModalOpen,

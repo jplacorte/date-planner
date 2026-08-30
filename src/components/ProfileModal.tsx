@@ -2,11 +2,21 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Heart, Calendar, Sparkles } from 'lucide-react';
+import { X, Heart, Calendar, Sparkles, Cloud, RefreshCw, ExternalLink, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useDateContext } from '../context/DateContext';
 
 export default function ProfileModal() {
-  const { isProfileModalOpen, setIsProfileModalOpen, coupleProfile, updateCoupleProfile } = useDateContext();
+  const { 
+    isProfileModalOpen, 
+    setIsProfileModalOpen, 
+    coupleProfile, 
+    updateCoupleProfile,
+    syncStatus,
+    lastSyncedAt,
+    syncError,
+    syncToDrive,
+    syncFromDrive,
+  } = useDateContext();
 
   const [partner1Name, setPartner1Name] = useState(coupleProfile.partner1Name);
   const [partner2Name, setPartner2Name] = useState(coupleProfile.partner2Name);
@@ -126,6 +136,85 @@ export default function ProfileModal() {
               Save Profile
             </button>
           </form>
+
+          {/* Google Drive Cloud Sync Manager */}
+          <div className="bg-black/70 p-4 rounded-2xl border border-white/[0.08] space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Cloud className="w-4 h-4 text-white" />
+                <span className="text-xs font-bold text-white">Google Drive Cloud Sync</span>
+              </div>
+              
+              <div className="flex items-center gap-1 text-[11px]">
+                {syncStatus === 'syncing' ? (
+                  <span className="flex items-center gap-1 text-zinc-300">
+                    <RefreshCw className="w-3 h-3 animate-spin text-white" />
+                    Syncing...
+                  </span>
+                ) : syncStatus === 'error' ? (
+                  <span className="flex items-center gap-1 text-red-400">
+                    <AlertCircle className="w-3 h-3 text-red-400" />
+                    Sync Error
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-1 text-zinc-400">
+                    <CheckCircle2 className="w-3 h-3 text-white" />
+                    Cloud Active
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <p className="text-[11px] text-zinc-400 font-light leading-relaxed">
+              All your dates, checklists, itineraries, and memories are stored as <code className="text-zinc-200 font-mono bg-zinc-900 px-1 py-0.5 rounded">dates_database.json</code> directly inside your shared Google Drive folder.
+            </p>
+
+            {lastSyncedAt && (
+              <div className="text-[10px] text-zinc-500 font-mono">
+                Last Synced: {lastSyncedAt.toLocaleTimeString()}
+              </div>
+            )}
+
+            {syncError && (
+              <div className="text-[10px] text-red-400 font-mono bg-red-950/40 p-2 rounded-lg border border-red-900/40">
+                {syncError}
+              </div>
+            )}
+
+            <div className="grid grid-cols-2 gap-2 pt-1">
+              <button
+                type="button"
+                onClick={() => syncToDrive()}
+                disabled={syncStatus === 'syncing'}
+                className="py-2 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold border border-white/15 transition-all flex items-center justify-center gap-1.5"
+              >
+                <Cloud className="w-3.5 h-3.5" />
+                <span>Sync to Drive</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => syncFromDrive()}
+                disabled={syncStatus === 'syncing'}
+                className="py-2 px-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 text-xs font-semibold border border-white/10 transition-all flex items-center justify-center gap-1.5"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${syncStatus === 'syncing' ? 'animate-spin' : ''}`} />
+                <span>Pull from Drive</span>
+              </button>
+            </div>
+
+            <div className="pt-1 text-center">
+              <a
+                href="https://drive.google.com/drive/folders/1x_0YasZi3VXMBd3baL74LA6dhyDbiC78"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-[10px] text-zinc-400 hover:text-white transition-colors"
+              >
+                <span>Open Google Drive Database Folder</span>
+                <ExternalLink className="w-2.5 h-2.5" />
+              </a>
+            </div>
+          </div>
 
         </motion.div>
       </div>

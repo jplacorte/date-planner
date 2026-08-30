@@ -17,7 +17,10 @@ import {
   Upload, 
   RotateCcw,
   Music,
-  CircleDot
+  CircleDot,
+  Cloud,
+  CloudOff,
+  RefreshCw
 } from 'lucide-react';
 import { useDateContext } from '../context/DateContext';
 import { MoodTheme, AmbientSound } from '../types/date';
@@ -38,6 +41,9 @@ export default function Header() {
     exportDataJSON,
     importDataJSON,
     resetToDefaults,
+    syncStatus,
+    syncToDrive,
+    syncFromDrive,
   } = useDateContext();
 
   const [isThemeMenuOpen, setIsThemeMenuOpen] = useState(false);
@@ -296,6 +302,36 @@ export default function Header() {
               </AnimatePresence>
             </div>
 
+            {/* Google Drive Cloud Sync Button */}
+            <button
+              onClick={() => syncToDrive()}
+              className={`flex items-center gap-1.5 px-2.5 py-2 rounded-xl text-xs font-medium border transition-all ${
+                syncStatus === 'syncing'
+                  ? 'bg-white/10 text-white border-white/20'
+                  : syncStatus === 'synced'
+                  ? 'bg-white/[0.04] text-zinc-300 hover:text-white hover:bg-white/[0.08] border-white/[0.08]'
+                  : 'bg-red-500/10 text-red-300 border-red-500/20'
+              }`}
+              title={
+                syncStatus === 'syncing'
+                  ? 'Syncing with Google Drive...'
+                  : syncStatus === 'synced'
+                  ? 'Synced with Google Drive'
+                  : 'Sync with Google Drive'
+              }
+            >
+              {syncStatus === 'syncing' ? (
+                <RefreshCw className="w-3.5 h-3.5 animate-spin text-white" />
+              ) : syncStatus === 'error' ? (
+                <CloudOff className="w-3.5 h-3.5 text-red-400" />
+              ) : (
+                <Cloud className="w-3.5 h-3.5 text-white" />
+              )}
+              <span className="hidden lg:inline text-[11px]">
+                {syncStatus === 'syncing' ? 'Syncing...' : 'Drive Sync'}
+              </span>
+            </button>
+
             {/* Settings Menu */}
             <div className="relative">
               <button
@@ -316,8 +352,33 @@ export default function Header() {
                     initial={{ opacity: 0, y: 8, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                    className="absolute right-0 mt-2 w-52 rounded-2xl bg-zinc-950 border border-white/15 shadow-2xl p-1.5 z-50"
+                    className="absolute right-0 mt-2 w-56 rounded-2xl bg-zinc-950 border border-white/15 shadow-2xl p-1.5 z-50 space-y-0.5"
                   >
+                    <button
+                      onClick={() => {
+                        syncToDrive();
+                        setIsSettingsOpen(false);
+                      }}
+                      className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-zinc-200 hover:bg-white/5 hover:text-white transition-all"
+                    >
+                      <span className="flex items-center gap-2">
+                        <Cloud className="w-3.5 h-3.5 text-white" />
+                        <span>Sync Now (Google Drive)</span>
+                      </span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        syncFromDrive();
+                        setIsSettingsOpen(false);
+                      }}
+                      className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-zinc-200 hover:bg-white/5 hover:text-white transition-all"
+                    >
+                      <span className="flex items-center gap-2">
+                        <RefreshCw className="w-3.5 h-3.5 text-white" />
+                        <span>Pull from Google Drive</span>
+                      </span>
+                    </button>
+                    <div className="h-px bg-white/10 my-1" />
                     <button
                       onClick={() => {
                         exportDataJSON();
