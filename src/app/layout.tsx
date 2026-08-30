@@ -17,8 +17,8 @@ const serifFont = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: 'Lyca and Phillip Date Checklist',
-  description: 'Couples date checklist, bucket list curator, and memory scrapbook for Lyca and Phillip.',
+  title: "Phillip's Date Planner",
+  description: "Romantic date planner, bucket list curator, and memory scrapbook for Phillip.",
   icons: {
     icon: '/favicon.svg',
     shortcut: '/favicon.svg',

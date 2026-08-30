@@ -66,7 +66,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-8 pt-5 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-zinc-500 font-mono">
-          <p>© 2026 Lyca and Phillip Date Checklist.</p>
+          <p>© 2026 Phillip&apos;s Date Planner.</p>
           <p>Curated for {coupleProfile.partner1Name} & {coupleProfile.partner2Name}</p>
         </div>
       </div>
