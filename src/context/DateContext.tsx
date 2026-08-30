@@ -130,13 +130,8 @@ export const DateProvider = ({ children }: { children: ReactNode }) => {
       setSyncError(err);
     });
 
-    // Initial sync from Google Drive on app load
-    pullFromGoogleDrive().then((hasData) => {
-      if (!hasData) {
-        // Initialize file in Google Drive if it doesn't exist yet
-        pushToGoogleDrive();
-      }
-    });
+    // Initial sync check from Google Drive on app load
+    pullFromGoogleDrive();
 
     return () => {
       unsubscribe();

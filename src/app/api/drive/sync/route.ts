@@ -178,8 +178,11 @@ export async function POST(req: Request) {
       });
     }
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : 'Failed to save database to Google Drive';
-    console.error('Google Drive Sync POST error:', error);
+    let message = error instanceof Error ? error.message : 'Failed to save database to Google Drive';
+    if (message.includes('storage quota') || message.includes('Service Accounts do not have storage quota')) {
+      message = 'Please create a blank file named "dates_database.json" inside your Google Drive folder (or link OAuth) so the service account can sync your dates.';
+    }
+    console.warn('Google Drive Sync POST Notice:', message);
     return NextResponse.json(
       { success: false, error: message },
       { status: 500 }
