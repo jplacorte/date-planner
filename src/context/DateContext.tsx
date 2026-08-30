@@ -15,6 +15,7 @@ import {
 import { initialAchievementBadges } from '../data/initialDates';
 import { soundEngine } from '../utils/audio';
 import { dateStore } from '../utils/dateStore';
+import { formatTimeString } from '../utils/date';
 
 interface DateContextType {
   dates: DateIdea[];
@@ -225,7 +226,7 @@ export const DateProvider = ({ children }: { children: ReactNode }) => {
     soundEngine.playPopSound();
     const newStep: ItineraryStep = {
       id: `it-${Date.now()}`,
-      time: step.time.trim() || '18:00',
+      time: formatTimeString(step.time) || '6:00 PM',
       activity: step.activity.trim(),
       location: step.location?.trim() || undefined,
       notes: step.notes?.trim() || undefined,
@@ -254,7 +255,13 @@ export const DateProvider = ({ children }: { children: ReactNode }) => {
         return {
           ...d,
           itinerary: (d.itinerary || []).map((step) =>
-            step.id === stepId ? { ...step, ...updated } : step
+            step.id === stepId
+              ? {
+                  ...step,
+                  ...updated,
+                  time: updated.time !== undefined ? formatTimeString(updated.time) || step.time : step.time,
+                }
+              : step
           ),
         };
       })

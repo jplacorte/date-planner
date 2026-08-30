@@ -6,6 +6,7 @@ import { X, Sparkles, Upload, Clock, Plus, Trash2 } from 'lucide-react';
 import { useDateContext } from '../context/DateContext';
 import { DateIdea, DateCategory, CostLevel, DateSetting, TimeOfDay, ItineraryStep } from '../types/date';
 import { normalizeGoogleDriveImageUrl } from '../utils/image';
+import { formatTimeString } from '../utils/date';
 import { uploadImageFile } from '../utils/upload';
 import GoogleDrivePicker from './GoogleDrivePicker';
 
@@ -47,10 +48,10 @@ export default function CreateDateModal() {
 
   // Itinerary steps builder
   const [itinerarySteps, setItinerarySteps] = useState<Omit<ItineraryStep, 'id' | 'completed'>[]>([
-    { time: '18:00', activity: 'Meet & Welcome', location: '' },
-    { time: '19:00', activity: 'Main Date Experience', location: '' },
+    { time: '6:00 PM', activity: 'Meet & Welcome', location: '' },
+    { time: '7:00 PM', activity: 'Main Date Experience', location: '' },
   ]);
-  const [newStepTime, setNewStepTime] = useState('20:30');
+  const [newStepTime, setNewStepTime] = useState('8:30 PM');
   const [newStepActivity, setNewStepActivity] = useState('');
   const [newStepLocation, setNewStepLocation] = useState('');
 
@@ -84,7 +85,7 @@ export default function CreateDateModal() {
     setItinerarySteps([
       ...itinerarySteps,
       {
-        time: newStepTime.trim() || '19:00',
+        time: formatTimeString(newStepTime) || '7:00 PM',
         activity: newStepActivity.trim(),
         location: newStepLocation.trim() || undefined,
       },
@@ -448,7 +449,7 @@ export default function CreateDateModal() {
                   <div key={idx} className="flex items-center justify-between text-xs text-zinc-300 bg-zinc-900 px-3 py-2 rounded-xl border border-white/[0.04]">
                     <div className="flex items-center gap-2">
                       <span className="font-mono font-bold text-white bg-black/60 px-2 py-0.5 rounded border border-white/[0.08]">
-                        {step.time}
+                        {formatTimeString(step.time)}
                       </span>
                       <span className="text-zinc-200 font-medium">{step.activity}</span>
                       {step.location && (
@@ -468,17 +469,18 @@ export default function CreateDateModal() {
 
               <div className="grid grid-cols-1 sm:grid-cols-12 gap-2 pt-1">
                 <input
-                  type="time"
+                  type="text"
+                  placeholder="Time (e.g. 8:30 PM)"
                   value={newStepTime}
                   onChange={(e) => setNewStepTime(e.target.value)}
-                  className="sm:col-span-3 bg-zinc-900 border border-white/[0.08] rounded-xl px-2.5 py-1.5 text-xs text-white focus:outline-none font-mono"
+                  className="sm:col-span-4 bg-zinc-900 border border-white/[0.08] rounded-xl px-2.5 py-1.5 text-xs text-white focus:outline-none font-mono"
                 />
                 <input
                   type="text"
                   placeholder="Activity (e.g. Candlelight Dinner)"
                   value={newStepActivity}
                   onChange={(e) => setNewStepActivity(e.target.value)}
-                  className="sm:col-span-6 bg-zinc-900 border border-white/[0.08] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none"
+                  className="sm:col-span-5 bg-zinc-900 border border-white/[0.08] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none"
                 />
                 <button
                   type="button"

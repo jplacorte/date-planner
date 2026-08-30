@@ -28,6 +28,7 @@ import {
 import { useDateContext } from '../context/DateContext';
 import { DateStatus, ItineraryStep } from '../types/date';
 import { normalizeGoogleDriveImageUrl } from '../utils/image';
+import { formatTimeString } from '../utils/date';
 import { uploadImageFile } from '../utils/upload';
 import GoogleDrivePicker from './GoogleDrivePicker';
 
@@ -69,7 +70,7 @@ export default function DateDetailModal() {
   const coverFileInputRef = useRef<HTMLInputElement>(null);
 
   // Itinerary state
-  const [newStepTime, setNewStepTime] = useState('18:00');
+  const [newStepTime, setNewStepTime] = useState('6:00 PM');
   const [newStepActivity, setNewStepActivity] = useState('');
   const [newStepLocation, setNewStepLocation] = useState('');
   const [newStepNotes, setNewStepNotes] = useState('');
@@ -166,7 +167,7 @@ export default function DateDetailModal() {
     e.preventDefault();
     if (!newStepActivity.trim()) return;
     addItineraryStep(selectedDate.id, {
-      time: newStepTime.trim() || '18:00',
+      time: formatTimeString(newStepTime) || '6:00 PM',
       activity: newStepActivity.trim(),
       location: newStepLocation.trim() || undefined,
       notes: newStepNotes.trim() || undefined,
@@ -179,7 +180,7 @@ export default function DateDetailModal() {
   const startEditStep = (step: ItineraryStep) => {
     setEditingStepId(step.id);
     setEditStepData({
-      time: step.time,
+      time: formatTimeString(step.time) || step.time,
       activity: step.activity,
       location: step.location || '',
       notes: step.notes || '',
@@ -189,7 +190,7 @@ export default function DateDetailModal() {
   const handleSaveStepEdit = (stepId: string) => {
     if (!editStepData.activity.trim()) return;
     updateItineraryStep(selectedDate.id, stepId, {
-      time: editStepData.time.trim() || '18:00',
+      time: formatTimeString(editStepData.time) || '6:00 PM',
       activity: editStepData.activity.trim(),
       location: editStepData.location.trim() || undefined,
       notes: editStepData.notes.trim() || undefined,
@@ -199,10 +200,10 @@ export default function DateDetailModal() {
 
   const insertStarterTimeline = () => {
     const defaultSteps = [
-      { time: '17:30', activity: 'Meet up & Pick matching outfits', location: 'Home / Meeting Point' },
-      { time: '18:30', activity: `Arrive at ${selectedDate.locationName}`, location: selectedDate.locationName },
-      { time: '19:00', activity: 'Main Experience & Candlelight moments', notes: 'Take romantic Polaroid photos' },
-      { time: '21:00', activity: 'Sweet Dessert & Evening Stroll', notes: 'Play soundtrack & talk' },
+      { time: '5:30 PM', activity: 'Meet up & Pick matching outfits', location: 'Home / Meeting Point' },
+      { time: '6:30 PM', activity: `Arrive at ${selectedDate.locationName}`, location: selectedDate.locationName },
+      { time: '7:00 PM', activity: 'Main Experience & Candlelight moments', notes: 'Take romantic Polaroid photos' },
+      { time: '9:00 PM', activity: 'Sweet Dessert & Evening Stroll', notes: 'Play soundtrack & talk' },
     ];
     defaultSteps.forEach((s) => addItineraryStep(selectedDate.id, s));
   };
@@ -624,7 +625,7 @@ export default function DateDetailModal() {
                       Add Itinerary Step
                     </label>
                     <div className="flex gap-1">
-                      {['17:00', '18:30', '20:00', '21:30'].map((presetTime) => (
+                      {['5:00 PM', '6:30 PM', '8:00 PM', '9:30 PM'].map((presetTime) => (
                         <button
                           key={presetTime}
                           type="button"
@@ -638,9 +639,10 @@ export default function DateDetailModal() {
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-12 gap-2">
-                    <div className="sm:col-span-3">
+                    <div className="sm:col-span-4 sm:col-span-3">
                       <input
-                        type="time"
+                        type="text"
+                        placeholder="Time (e.g. 6:30 PM)"
                         value={newStepTime}
                         onChange={(e) => setNewStepTime(e.target.value)}
                         className="w-full bg-zinc-900 border border-white/[0.1] rounded-xl px-3 py-2 text-xs font-mono text-white focus:outline-none focus:border-white"
@@ -721,7 +723,8 @@ export default function DateDetailModal() {
 
                               <div className="grid grid-cols-1 sm:grid-cols-12 gap-2">
                                 <input
-                                  type="time"
+                                  type="text"
+                                  placeholder="Time (e.g. 6:30 PM)"
                                   value={editStepData.time}
                                   onChange={(e) => setEditStepData({ ...editStepData, time: e.target.value })}
                                   className="sm:col-span-3 bg-black border border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-white font-mono"
@@ -774,7 +777,7 @@ export default function DateDetailModal() {
                               <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-2">
                                   <span className="text-xs font-mono font-bold text-white bg-zinc-900 px-2 py-0.5 rounded border border-white/[0.06]">
-                                    {step.time}
+                                    {formatTimeString(step.time)}
                                   </span>
                                   {step.location && (
                                     <span className="text-xs text-zinc-400 flex items-center gap-1">

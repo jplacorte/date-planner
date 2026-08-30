@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 import { useDateContext } from '../context/DateContext';
 import { DateIdea, DateCategory, DateStatus } from '../types/date';
-import { formatDateString } from '../utils/date';
+import { formatDateString, formatTimeString } from '../utils/date';
 
 const categoryIcons: Record<DateCategory, React.ElementType> = {
   dining: Utensils,
@@ -156,7 +156,7 @@ export default function DateCard({ date }: { date: DateIdea }) {
                 day: 'numeric',
                 weekday: 'short',
               })}
-              {date.scheduledTime && ` • ${date.scheduledTime}`}
+              {date.scheduledTime && ` • ${formatTimeString(date.scheduledTime)}`}
             </span>
           </div>
         )}

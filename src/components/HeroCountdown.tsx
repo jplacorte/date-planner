@@ -5,7 +5,7 @@ import { motion } from 'motion/react';
 import { Calendar, Clock, MapPin, Sparkles, CheckCircle2, ArrowRight, Flame, Plus } from 'lucide-react';
 import { useDateContext } from '../context/DateContext';
 import { DateIdea } from '../types/date';
-import { formatDateString } from '../utils/date';
+import { formatDateString, formatTimeString, parseDateAndTimeToTimestamp } from '../utils/date';
 
 export default function HeroCountdown() {
   const { dates, setSelectedDate, setIsRouletteModalOpen, setIsCreateModalOpen, coupleProfile } = useDateContext();
@@ -14,8 +14,8 @@ export default function HeroCountdown() {
   const upcomingDate: DateIdea | undefined = dates
     .filter((d) => (d.status === 'booked' || d.status === 'planned') && d.scheduledDate)
     .sort((a, b) => {
-      const timeA = new Date(`${a.scheduledDate}T${a.scheduledTime || '00:00'}`).getTime();
-      const timeB = new Date(`${b.scheduledDate}T${b.scheduledTime || '00:00'}`).getTime();
+      const timeA = parseDateAndTimeToTimestamp(a.scheduledDate, a.scheduledTime);
+      const timeB = parseDateAndTimeToTimestamp(b.scheduledDate, b.scheduledTime);
       return timeA - timeB;
     })[0];
 
@@ -31,7 +31,7 @@ export default function HeroCountdown() {
     if (!upcomingDate?.scheduledDate) return;
 
     const calculateTime = () => {
-      const targetTime = new Date(`${upcomingDate.scheduledDate}T${upcomingDate.scheduledTime || '19:00'}`).getTime();
+      const targetTime = parseDateAndTimeToTimestamp(upcomingDate.scheduledDate, upcomingDate.scheduledTime);
       const now = new Date().getTime();
       const difference = targetTime - now;
 
@@ -113,7 +113,7 @@ export default function HeroCountdown() {
                   {upcomingDate.scheduledTime && (
                     <div className="flex items-center gap-1.5 bg-black/60 px-3 py-1.5 rounded-xl border border-white/[0.08]">
                       <Clock className="w-3.5 h-3.5 text-zinc-400" />
-                      <span>{upcomingDate.scheduledTime}</span>
+                      <span>{formatTimeString(upcomingDate.scheduledTime)}</span>
                     </div>
                   )}
 
