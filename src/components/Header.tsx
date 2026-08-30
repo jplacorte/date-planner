@@ -85,18 +85,18 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full backdrop-blur-2xl border-b border-white/[0.08] bg-black/60 transition-colors duration-500">
+    <header className="sticky top-0 z-40 w-full backdrop-blur-2xl border-b border-white/[0.08] bg-black/75 transition-colors duration-500">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-16 sm:h-20 gap-2 sm:gap-4">
           
           {/* Brand & Couple Profile */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 shrink-0">
             <button
               onClick={() => setIsProfileModalOpen(true)}
-              className="group flex items-center gap-3.5 text-left p-1.5 -ml-1.5 rounded-2xl hover:bg-white/[0.04] transition-all"
+              className="group flex items-center gap-2.5 sm:gap-3 text-left p-1 rounded-2xl hover:bg-white/[0.04] transition-all"
             >
-              <div className="relative">
-                <div className="w-10 h-10 rounded-xl bg-white border border-white/20 p-[1px] shadow-sm flex items-center justify-center">
+              <div className="relative shrink-0">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white border border-white/20 p-[1px] shadow-sm flex items-center justify-center">
                   <div className="w-full h-full rounded-[10px] bg-black flex items-center justify-center">
                     <Heart className="w-4 h-4 text-white fill-white transition-transform group-hover:scale-110" />
                   </div>
@@ -104,16 +104,16 @@ export default function Header() {
                 <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-white border-2 border-black" />
               </div>
 
-              <div>
+              <div className="min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-base font-bold font-serif tracking-tight text-white group-hover:text-zinc-300 transition-colors">
+                  <span className="text-sm sm:text-base font-bold font-serif tracking-tight text-white group-hover:text-zinc-300 transition-colors whitespace-nowrap">
                     {coupleProfile.partner1Name} & {coupleProfile.partner2Name}
                   </span>
-                  <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-white/10 text-zinc-300">
+                  <span className="text-[9px] sm:text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-white/10 text-zinc-300 shrink-0">
                     Dates
                   </span>
                 </div>
-                <p className="text-[11px] text-zinc-400 font-medium truncate max-w-[160px] sm:max-w-[220px]">
+                <p className="text-[10px] sm:text-[11px] text-zinc-400 font-medium truncate hidden sm:block max-w-[180px]">
                   Date Checklist & Romance Archive
                 </p>
               </div>
@@ -121,75 +121,76 @@ export default function Header() {
           </div>
 
           {/* Navigation Tabs (Center) */}
-          <nav className="hidden md:flex items-center p-1 rounded-2xl bg-zinc-950/80 border border-white/[0.08]">
+          <nav className="hidden md:flex items-center p-1 rounded-2xl bg-zinc-950/90 border border-white/[0.08] shrink-0">
             <button
               onClick={() => setActiveTab('checklist')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold tracking-wide transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold tracking-wide transition-all whitespace-nowrap shrink-0 ${
                 activeTab === 'checklist'
                   ? 'bg-white text-black shadow-md'
                   : 'text-zinc-400 hover:text-white hover:bg-white/[0.04]'
               }`}
             >
-              <ListChecks className="w-3.5 h-3.5" />
-              Checklist Hub
+              <ListChecks className="w-3.5 h-3.5 shrink-0" />
+              <span>Checklist</span>
             </button>
             <button
               onClick={() => setActiveTab('map')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold tracking-wide transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold tracking-wide transition-all whitespace-nowrap shrink-0 ${
                 activeTab === 'map'
                   ? 'bg-white text-black shadow-md'
                   : 'text-zinc-400 hover:text-white hover:bg-white/[0.04]'
               }`}
             >
-              <MapPin className="w-3.5 h-3.5" />
-              Date Map
+              <MapPin className="w-3.5 h-3.5 shrink-0" />
+              <span>Date Map</span>
             </button>
             <button
               onClick={() => setActiveTab('scrapbook')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold tracking-wide transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold tracking-wide transition-all whitespace-nowrap shrink-0 ${
                 activeTab === 'scrapbook'
                   ? 'bg-white text-black shadow-md'
                   : 'text-zinc-400 hover:text-white hover:bg-white/[0.04]'
               }`}
             >
-              <BookHeart className="w-3.5 h-3.5" />
-              Scrapbook & Memories
+              <BookHeart className="w-3.5 h-3.5 shrink-0" />
+              <span>Scrapbook</span>
             </button>
           </nav>
 
           {/* Right Action Tools */}
-          <div className="flex items-center gap-2 sm:gap-2.5">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             
             {/* Roulette Spark Generator */}
             <button
               onClick={() => setIsRouletteModalOpen(true)}
-              className="flex items-center gap-1.5 px-3 sm:px-3.5 py-2 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] text-white border border-white/[0.12] text-xs font-medium transition-all group"
-              title="Date Spark Generator"
+              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] text-white border border-white/[0.12] text-xs font-medium transition-all group whitespace-nowrap shrink-0"
+              title="Date Spark Roulette"
             >
-              <Sparkles className="w-3.5 h-3.5 text-zinc-300 group-hover:rotate-12 transition-transform" />
-              <span className="hidden sm:inline">Spark Roulette</span>
+              <Sparkles className="w-3.5 h-3.5 text-zinc-300 group-hover:rotate-12 transition-transform shrink-0" />
+              <span className="hidden xl:inline">Spark Roulette</span>
+              <span className="hidden sm:inline xl:hidden">Roulette</span>
             </button>
 
             {/* Plan Custom Date Button */}
             <button
               onClick={() => setIsCreateModalOpen(true)}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white text-black hover:bg-zinc-200 text-xs font-bold transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-white text-black hover:bg-zinc-200 text-xs font-bold transition-all hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap shrink-0 shadow-sm"
             >
-              <Plus className="w-3.5 h-3.5" />
+              <Plus className="w-3.5 h-3.5 shrink-0 stroke-[2.5]" />
               <span className="hidden sm:inline">New Date</span>
             </button>
 
             {/* Achievements Trophy */}
             <button
               onClick={() => setIsStatsModalOpen(true)}
-              className="p-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-zinc-300 hover:text-white border border-white/[0.08] transition-all"
+              className="p-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-zinc-300 hover:text-white border border-white/[0.08] transition-all shrink-0"
               title="Milestone Badges & Stats"
             >
-              <Trophy className="w-4 h-4" />
+              <Trophy className="w-4 h-4 shrink-0" />
             </button>
 
             {/* Ambient Atmosphere Selector */}
-            <div className="relative">
+            <div className="relative shrink-0">
               <button
                 onClick={() => {
                   setIsThemeMenuOpen(!isThemeMenuOpen);
@@ -199,7 +200,7 @@ export default function Header() {
                 className="p-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-zinc-300 hover:text-white border border-white/[0.08] transition-all"
                 title="Atmosphere Theme"
               >
-                <CircleDot className="w-4 h-4" />
+                <CircleDot className="w-4 h-4 shrink-0" />
               </button>
 
               <AnimatePresence>
@@ -244,7 +245,7 @@ export default function Header() {
             </div>
 
             {/* Ambient Soundscapes Toggle */}
-            <div className="relative">
+            <div className="relative shrink-0">
               <button
                 onClick={() => {
                   setIsAudioMenuOpen(!isAudioMenuOpen);
@@ -259,9 +260,9 @@ export default function Header() {
                 title="Ambient Soundscapes"
               >
                 {ambientSound === 'none' ? (
-                  <VolumeX className="w-4 h-4" />
+                  <VolumeX className="w-4 h-4 shrink-0" />
                 ) : (
-                  <Volume2 className="w-4 h-4" />
+                  <Volume2 className="w-4 h-4 shrink-0" />
                 )}
               </button>
 
@@ -305,7 +306,7 @@ export default function Header() {
             {/* Google Drive Cloud Sync Button */}
             <button
               onClick={() => syncToDrive()}
-              className={`flex items-center gap-1.5 px-2.5 py-2 rounded-xl text-xs font-medium border transition-all ${
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 sm:py-2 rounded-xl text-xs font-medium border transition-all whitespace-nowrap shrink-0 ${
                 syncStatus === 'syncing'
                   ? 'bg-white/10 text-white border-white/20'
                   : syncStatus === 'synced'
@@ -321,19 +322,19 @@ export default function Header() {
               }
             >
               {syncStatus === 'syncing' ? (
-                <RefreshCw className="w-3.5 h-3.5 animate-spin text-white" />
+                <RefreshCw className="w-3.5 h-3.5 animate-spin text-white shrink-0" />
               ) : syncStatus === 'error' ? (
-                <CloudOff className="w-3.5 h-3.5 text-red-400" />
+                <CloudOff className="w-3.5 h-3.5 text-red-400 shrink-0" />
               ) : (
-                <Cloud className="w-3.5 h-3.5 text-white" />
+                <Cloud className="w-3.5 h-3.5 text-white shrink-0" />
               )}
-              <span className="hidden lg:inline text-[11px]">
+              <span className="hidden xl:inline text-[11px] whitespace-nowrap">
                 {syncStatus === 'syncing' ? 'Syncing...' : 'Drive Sync'}
               </span>
             </button>
 
             {/* Settings Menu */}
-            <div className="relative">
+            <div className="relative shrink-0">
               <button
                 onClick={() => {
                   setIsSettingsOpen(!isSettingsOpen);
@@ -343,7 +344,7 @@ export default function Header() {
                 className="p-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-zinc-300 hover:text-white border border-white/[0.08] transition-all"
                 title="Settings & Data"
               >
-                <Settings className="w-4 h-4" />
+                <Settings className="w-4 h-4 shrink-0" />
               </button>
 
               <AnimatePresence>
