@@ -31,7 +31,7 @@ import {
   Eye
 } from 'lucide-react';
 import { useDateContext } from '../context/DateContext';
-import { DateStatus, ItineraryStep, DateCategory, CostLevel, TimeOfDay, DateSetting } from '../types/date';
+import { DateIdea, DateStatus, ItineraryStep, DateCategory, CostLevel, TimeOfDay, DateSetting } from '../types/date';
 import { normalizeGoogleDriveImageUrl } from '../utils/image';
 import { formatDateString, formatTimeString } from '../utils/date';
 import { uploadImageFile } from '../utils/upload';
@@ -47,9 +47,8 @@ const presetImages = [
   'https://images.unsplash.com/photo-1522383225653-ed111181a951?auto=format&fit=crop&w=1200&q=80',
 ];
 
-export default function DateDetailModal() {
+function DateDetailModalContent({ selectedDate }: { selectedDate: DateIdea }) {
   const { 
-    selectedDate, 
     setSelectedDate, 
     toggleFavorite, 
     toggleChecklistItem, 
@@ -196,8 +195,6 @@ export default function DateDetailModal() {
   const [draggedPhotoIdx, setDraggedPhotoIdx] = useState<number | null>(null);
   const [dragOverPhotoIdx, setDragOverPhotoIdx] = useState<number | null>(null);
   const [previewPhotoUrl, setPreviewPhotoUrl] = useState<string | null>(null);
-
-  if (!selectedDate) return null;
 
   const completedChecklist = (selectedDate.checklist || []).filter((i) => i.completed).length;
   const totalChecklist = (selectedDate.checklist || []).length;
@@ -379,8 +376,50 @@ export default function DateDetailModal() {
     showSavedFeedback('Starter timeline inserted ✓');
   };
 
-  const handleSaveMemory = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleAutoSaveMemory = () => {
+    saveMemory(
+      selectedDate.id,
+      memoryNotes,
+      {
+        favoriteDish,
+        funniestMoment,
+        favoriteSong,
+        photoCaption,
+      },
+      selectedDate.memoriesPhotos,
+      actualCost
+    );
+    showSavedFeedback('Memory saved ✓');
+  };
+
+  const handleCloseModal = () => {
+    // Automatically persist any typed memory notes before closing
+    if (
+      memoryNotes !== (selectedDate.memoryNotes || '') ||
+      favoriteDish !== (selectedDate.bestMoments?.favoriteDish || '') ||
+      funniestMoment !== (selectedDate.bestMoments?.funniestMoment || '') ||
+      favoriteSong !== (selectedDate.bestMoments?.favoriteSong || '') ||
+      photoCaption !== (selectedDate.bestMoments?.photoCaption || '') ||
+      actualCost !== selectedDate.actualCost
+    ) {
+      saveMemory(
+        selectedDate.id,
+        memoryNotes,
+        {
+          favoriteDish,
+          funniestMoment,
+          favoriteSong,
+          photoCaption,
+        },
+        selectedDate.memoriesPhotos,
+        actualCost
+      );
+    }
+    setSelectedDate(null);
+  };
+
+  const handleSaveMemory = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     const photos = selectedDate.memoriesPhotos ? [...selectedDate.memoriesPhotos] : [];
     if (newPhotoUrl.trim()) {
       const cleanPhotoUrl = normalizeGoogleDriveImageUrl(newPhotoUrl.trim());
@@ -440,12 +479,14 @@ export default function DateDetailModal() {
       <div 
         className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 overflow-y-auto bg-black/85 backdrop-blur-lg overscroll-contain pb-safe"
         data-lenis-prevent
+        onClick={handleCloseModal}
       >
         <motion.div
           initial={{ opacity: 0, scale: 0.96, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.96, y: 20 }}
           transition={{ duration: 0.25 }}
+          onClick={(e) => e.stopPropagation()}
           className="relative w-full max-w-3xl rounded-t-[28px] sm:rounded-3xl overflow-hidden bg-zinc-950 border border-white/[0.1] shadow-2xl my-0 sm:my-auto flex flex-col max-h-[92vh] sm:max-h-[88vh]"
           data-lenis-prevent
         >
@@ -501,7 +542,7 @@ export default function DateDetailModal() {
                 </button>
 
                 <button
-                  onClick={() => setSelectedDate(null)}
+                  onClick={handleCloseModal}
                   className="p-1.5 sm:p-2 rounded-full bg-black/80 backdrop-blur-md border border-white/[0.1] text-zinc-400 hover:text-white transition-colors"
                 >
                   <X className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -1395,6 +1436,7 @@ export default function DateDetailModal() {
                     placeholder="Write a sweet reflection about this date, how you felt, and funny moments..."
                     value={memoryNotes}
                     onChange={(e) => setMemoryNotes(e.target.value)}
+                    onBlur={handleAutoSaveMemory}
                     className="w-full bg-black border border-white/[0.1] rounded-xl p-3 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-white"
                   />
                 </div>
@@ -1410,6 +1452,7 @@ export default function DateDetailModal() {
                       placeholder="e.g., Tagliatelle al Tartufo"
                       value={favoriteDish}
                       onChange={(e) => setFavoriteDish(e.target.value)}
+                      onBlur={handleAutoSaveMemory}
                       className="w-full bg-black border border-white/[0.1] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-white"
                     />
                   </div>
@@ -1424,6 +1467,7 @@ export default function DateDetailModal() {
                       placeholder="e.g., The fort collapsed!"
                       value={funniestMoment}
                       onChange={(e) => setFunniestMoment(e.target.value)}
+                      onBlur={handleAutoSaveMemory}
                       className="w-full bg-black border border-white/[0.1] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-white"
                     />
                   </div>
@@ -1438,6 +1482,7 @@ export default function DateDetailModal() {
                       placeholder="e.g., La Vie En Rose"
                       value={favoriteSong}
                       onChange={(e) => setFavoriteSong(e.target.value)}
+                      onBlur={handleAutoSaveMemory}
                       className="w-full bg-black border border-white/[0.1] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-white"
                     />
                   </div>
@@ -1452,6 +1497,7 @@ export default function DateDetailModal() {
                       placeholder="e.g., 2500"
                       value={actualCost !== undefined ? actualCost : ''}
                       onChange={(e) => setActualCost(e.target.value ? Number(e.target.value) : undefined)}
+                      onBlur={handleAutoSaveMemory}
                       className="w-full bg-black border border-white/[0.1] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-white"
                     />
                   </div>
@@ -1676,6 +1722,7 @@ export default function DateDetailModal() {
                       placeholder="Polaroid Caption / Quote (e.g. Lost in laughter)"
                       value={photoCaption}
                       onChange={(e) => setPhotoCaption(e.target.value)}
+                      onBlur={handleAutoSaveMemory}
                       className="w-full bg-zinc-900 border border-white/[0.08] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none"
                     />
                     <input
@@ -1714,7 +1761,7 @@ export default function DateDetailModal() {
             </button>
 
             <button
-              onClick={() => setSelectedDate(null)}
+              onClick={handleCloseModal}
               className="px-5 py-2 rounded-xl bg-white text-black text-xs font-bold transition-colors hover:bg-zinc-200 shadow-md"
             >
               Done
@@ -1758,4 +1805,10 @@ export default function DateDetailModal() {
       </AnimatePresence>
     </AnimatePresence>
   );
+}
+
+export default function DateDetailModal() {
+  const { selectedDate } = useDateContext();
+  if (!selectedDate) return null;
+  return <DateDetailModalContent key={selectedDate.id} selectedDate={selectedDate} />;
 }

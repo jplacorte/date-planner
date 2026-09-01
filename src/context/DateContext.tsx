@@ -391,13 +391,12 @@ export const DateProvider = ({ children }: { children: ReactNode }) => {
 
   const saveMemory = (
     dateId: string,
-    memoryNotes: string,
+    memoryNotes?: string,
     bestMoments?: DateIdea['bestMoments'],
     memoriesPhotos?: string[],
     actualCost?: number
   ) => {
     soundEngine.playPopSound();
-    triggerConfetti();
     dateStore.setDates((prev) =>
       prev.map((d) => {
         if (d.id !== dateId) return d;
@@ -405,9 +404,9 @@ export const DateProvider = ({ children }: { children: ReactNode }) => {
           ...d,
           status: 'completed',
           completedAt: d.completedAt || new Date().toISOString(),
-          memoryNotes,
-          bestMoments: bestMoments || d.bestMoments,
-          memoriesPhotos: memoriesPhotos || d.memoriesPhotos,
+          memoryNotes: memoryNotes !== undefined ? memoryNotes : d.memoryNotes,
+          bestMoments: bestMoments !== undefined ? bestMoments : d.bestMoments,
+          memoriesPhotos: memoriesPhotos !== undefined ? memoriesPhotos : d.memoriesPhotos,
           actualCost: actualCost !== undefined ? actualCost : d.actualCost,
         };
       })
