@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { 
   BookHeart, 
@@ -12,9 +12,24 @@ import {
 } from 'lucide-react';
 import { useDateContext } from '../context/DateContext';
 import { formatDateString } from '../utils/date';
+import PhotoLightboxModal from './PhotoLightboxModal';
 
 export default function ScrapbookView() {
   const { dates, setSelectedDate, coupleProfile } = useDateContext();
+
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxPhotos, setLightboxPhotos] = useState<string[]>([]);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [lightboxTitle, setLightboxTitle] = useState('');
+  const [lightboxCaption, setLightboxCaption] = useState<string | undefined>();
+
+  const handleOpenPhotoLightbox = (photos: string[], startIndex: number = 0, title?: string, caption?: string) => {
+    setLightboxPhotos(photos);
+    setLightboxIndex(startIndex);
+    setLightboxTitle(title || '');
+    setLightboxCaption(caption);
+    setLightboxOpen(true);
+  };
 
   const completedDates = dates.filter((d) => d.status === 'completed');
 
@@ -78,7 +93,14 @@ export default function ScrapbookView() {
                 <div className="bg-zinc-950 border border-white/[0.1] p-3.5 sm:p-4 pb-4 sm:pb-5 rounded-2xl shadow-xl space-y-3 hover:border-white/[0.25] group">
                   
                   {/* Photo Container */}
-                  <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-neutral-900 shadow-inner">
+                  <div 
+                    className="relative aspect-[4/3] rounded-xl overflow-hidden bg-neutral-900 shadow-inner group/photo cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const allPhotos = date.memoriesPhotos && date.memoriesPhotos.length > 0 ? date.memoriesPhotos : [date.coverImage];
+                      handleOpenPhotoLightbox(allPhotos, 0, date.title, date.bestMoments?.photoCaption);
+                    }}
+                  >
                     <img
                       src={date.memoriesPhotos?.[0] || date.coverImage}
                       alt={date.title}
@@ -117,17 +139,22 @@ export default function ScrapbookView() {
                   {date.memoriesPhotos && date.memoriesPhotos.length > 1 && (
                     <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pt-0.5">
                       {date.memoriesPhotos.map((p, pIdx) => (
-                        <div 
+                        <button
                           key={pIdx}
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleOpenPhotoLightbox(date.memoriesPhotos || [date.coverImage], pIdx, date.title, date.bestMoments?.photoCaption);
+                          }}
                           className={`relative w-8 h-8 rounded-lg overflow-hidden shrink-0 border transition-all ${
-                            pIdx === 0 ? 'border-white ring-1 ring-white/40' : 'border-white/20 opacity-70 group-hover:opacity-100'
+                            pIdx === 0 ? 'border-white ring-1 ring-white/40' : 'border-white/20 opacity-70 hover:opacity-100 hover:scale-105'
                           }`}
                         >
                           <img src={p} alt={`Thumb ${pIdx + 1}`} className="w-full h-full object-cover" />
                           {pIdx === 0 && (
                             <div className="absolute inset-0 bg-white/10" />
                           )}
-                        </div>
+                        </button>
                       ))}
                     </div>
                   )}
@@ -150,13 +177,13 @@ export default function ScrapbookView() {
                         &ldquo;{date.bestMoments.photoCaption}&rdquo;
                       </p>
                     ) : (
-                      <p className="text-xs text-zinc-400 line-clamp-2">
+                      <p className="text-xs text-zinc-400 font-light line-clamp-2">
                         {date.memoryNotes || date.subtitle}
                       </p>
                     )}
 
-                    {/* Highlights */}
-                    <div className="pt-1.5 flex flex-wrap gap-1">
+                    {/* Highlights Row */}
+                    <div className="flex items-center gap-2 flex-wrap pt-1">
                       {date.bestMoments?.favoriteDish && (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-zinc-900 text-zinc-300 text-[10px] font-mono border border-white/[0.06]">
                           <Utensils className="w-2.5 h-2.5" />
@@ -200,6 +227,16 @@ export default function ScrapbookView() {
           </p>
         </div>
       )}
+
+      {/* Universal Photo Lightbox Modal */}
+      <PhotoLightboxModal
+        isOpen={lightboxOpen}
+        onClose={() => setLightboxOpen(false)}
+        photos={lightboxPhotos}
+        initialIndex={lightboxIndex}
+        title={lightboxTitle}
+        caption={lightboxCaption}
+      />
 
     </div>
   );

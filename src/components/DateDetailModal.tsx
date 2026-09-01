@@ -37,6 +37,7 @@ import { formatDateString, formatTimeString } from '../utils/date';
 import { uploadImageFile } from '../utils/upload';
 import GoogleDrivePicker from './GoogleDrivePicker';
 import { AestheticDatePicker, AestheticTimePicker } from './AestheticDateTimePicker';
+import PhotoLightboxModal from './PhotoLightboxModal';
 
 const presetImages = [
   'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80',
@@ -191,10 +192,22 @@ function DateDetailModalContent({ selectedDate }: { selectedDate: DateIdea }) {
   const [isUploadingMemoryPhoto, setIsUploadingMemoryPhoto] = useState(false);
   const memoryFileInputRef = useRef<HTMLInputElement>(null);
 
-  // Photo arrangement & preview state
+  // Photo arrangement & Lightbox state
   const [draggedPhotoIdx, setDraggedPhotoIdx] = useState<number | null>(null);
   const [dragOverPhotoIdx, setDragOverPhotoIdx] = useState<number | null>(null);
-  const [previewPhotoUrl, setPreviewPhotoUrl] = useState<string | null>(null);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [lightboxPhotos, setLightboxPhotos] = useState<string[]>([]);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [lightboxTitle, setLightboxTitle] = useState('');
+  const [lightboxCaption, setLightboxCaption] = useState<string | undefined>();
+
+  const handleOpenLightbox = (photos: string[], startIndex: number = 0, title?: string, caption?: string) => {
+    setLightboxPhotos(photos);
+    setLightboxIndex(startIndex);
+    setLightboxTitle(title || selectedDate.title);
+    setLightboxCaption(caption || selectedDate.bestMoments?.photoCaption);
+    setIsLightboxOpen(true);
+  };
 
   const completedChecklist = (selectedDate.checklist || []).filter((i) => i.completed).length;
   const totalChecklist = (selectedDate.checklist || []).length;
@@ -533,6 +546,16 @@ function DateDetailModalContent({ selectedDate }: { selectedDate: DateIdea }) {
               </button>
 
               <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleOpenLightbox([selectedDate.coverImage, ...(selectedDate.memoriesPhotos || [])], 0, selectedDate.title, selectedDate.subtitle)}
+                  className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-white/[0.15] text-white text-[11px] sm:text-xs font-medium hover:bg-white hover:text-black transition-all shadow-md"
+                  title="View Full Cover Photo"
+                >
+                  <Eye className="w-3.5 h-3.5" />
+                  <span>View Photo</span>
+                </button>
+
                 <button
                   onClick={() => setIsChangingCover(!isChangingCover)}
                   className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-white/[0.15] text-white text-[11px] sm:text-xs font-medium hover:bg-white hover:text-black transition-all shadow-md"
@@ -1564,7 +1587,10 @@ function DateDetailModalContent({ selectedDate }: { selectedDate: DateIdea }) {
                             }`}
                           >
                             {/* Photo Aspect Frame */}
-                            <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-900">
+                            <div 
+                              className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-900 cursor-pointer"
+                              onClick={() => handleOpenLightbox(selectedDate.memoriesPhotos || [], idx, selectedDate.title, selectedDate.bestMoments?.photoCaption)}
+                            >
                               <img
                                 src={photo}
                                 alt={`Memory photo ${idx + 1}`}
@@ -1572,7 +1598,7 @@ function DateDetailModalContent({ selectedDate }: { selectedDate: DateIdea }) {
                               />
 
                               {/* Order Badge */}
-                              <div className="absolute top-1.5 left-1.5 flex items-center gap-1 z-10">
+                              <div className="absolute top-1.5 left-1.5 flex items-center gap-1 z-10 pointer-events-none">
                                 {isFirst ? (
                                   <span className="px-2 py-0.5 rounded-md bg-white text-black font-bold text-[9px] uppercase tracking-wider flex items-center gap-0.5 shadow-md">
                                     <Star className="w-2.5 h-2.5 fill-black" />
@@ -1591,9 +1617,9 @@ function DateDetailModalContent({ selectedDate }: { selectedDate: DateIdea }) {
                                   type="button"
                                   onClick={(e) => {
                                     e.stopPropagation();
-                                    setPreviewPhotoUrl(photo);
+                                    handleOpenLightbox(selectedDate.memoriesPhotos || [], idx, selectedDate.title, selectedDate.bestMoments?.photoCaption);
                                   }}
-                                  className="p-1 rounded-md bg-black/80 hover:bg-white text-zinc-300 hover:text-black border border-white/10 transition-all"
+                                  className="p-1 rounded-md bg-black/80 hover:bg-white text-zinc-300 hover:text-black border border-white/10 transition-all shadow"
                                   title="Enlarge preview"
                                 >
                                   <Eye className="w-3 h-3" />
@@ -1771,38 +1797,23 @@ function DateDetailModalContent({ selectedDate }: { selectedDate: DateIdea }) {
         </motion.div>
       </div>
 
-      {/* Photo Enlarge Lightbox Modal */}
-      <AnimatePresence>
-        {previewPhotoUrl && (
-          <div 
-            className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl"
-            onClick={() => setPreviewPhotoUrl(null)}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              onClick={(e) => e.stopPropagation()}
-              className="relative max-w-4xl max-h-[85vh] rounded-2xl overflow-hidden border border-white/20 bg-black shadow-2xl flex flex-col"
-            >
-              <div className="absolute top-3 right-3 z-10">
-                <button
-                  type="button"
-                  onClick={() => setPreviewPhotoUrl(null)}
-                  className="p-2 rounded-full bg-black/80 hover:bg-white text-white hover:text-black border border-white/20 transition-all shadow-lg"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-              <img
-                src={previewPhotoUrl}
-                alt="Enlarged memory"
-                className="max-h-[80vh] w-auto object-contain"
-              />
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+      {/* Universal Photo Lightbox Modal */}
+      <PhotoLightboxModal
+        isOpen={isLightboxOpen}
+        onClose={() => setIsLightboxOpen(false)}
+        photos={lightboxPhotos}
+        initialIndex={lightboxIndex}
+        title={lightboxTitle}
+        caption={lightboxCaption}
+        onSetFeatured={(idx) => {
+          handleSetFeaturedPhoto(idx);
+          setLightboxIndex(0);
+        }}
+        onSetCover={(url) => {
+          updateDateCoverImage(selectedDate.id, url);
+          showSavedFeedback('Set as date cover image ✓');
+        }}
+      />
     </AnimatePresence>
   );
 }
