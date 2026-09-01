@@ -33,9 +33,10 @@ import {
 import { useDateContext } from '../context/DateContext';
 import { DateStatus, ItineraryStep, DateCategory, CostLevel, TimeOfDay, DateSetting } from '../types/date';
 import { normalizeGoogleDriveImageUrl } from '../utils/image';
-import { formatTimeString } from '../utils/date';
+import { formatDateString, formatTimeString } from '../utils/date';
 import { uploadImageFile } from '../utils/upload';
 import GoogleDrivePicker from './GoogleDrivePicker';
+import { AestheticDatePicker, AestheticTimePicker } from './AestheticDateTimePicker';
 
 const presetImages = [
   'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80',
@@ -195,10 +196,6 @@ export default function DateDetailModal() {
   const [draggedPhotoIdx, setDraggedPhotoIdx] = useState<number | null>(null);
   const [dragOverPhotoIdx, setDragOverPhotoIdx] = useState<number | null>(null);
   const [previewPhotoUrl, setPreviewPhotoUrl] = useState<string | null>(null);
-
-  // Scheduled date/time picker state
-  const [scheduledDate, setScheduledDate] = useState(selectedDate?.scheduledDate || '');
-  const [scheduledTime, setScheduledTime] = useState(selectedDate?.scheduledTime || '');
 
   if (!selectedDate) return null;
 
@@ -407,11 +404,31 @@ export default function DateDetailModal() {
     showSavedFeedback('Memories & scrapbook saved ✓');
   };
 
-  const handleScheduleChange = (status: DateStatus, dateVal: string, timeVal: string) => {
-    setScheduledDate(dateVal);
-    setScheduledTime(timeVal);
-    updateDateStatus(selectedDate.id, status, dateVal, timeVal);
-    showSavedFeedback('Status & schedule updated ✓');
+  const handleStatusChange = (status: DateStatus) => {
+    updateDateStatus(selectedDate.id, status, selectedDate.scheduledDate, selectedDate.scheduledTime);
+    showSavedFeedback(`Status set to ${status} ✓`);
+  };
+
+  const handleDateChange = (dateVal: string) => {
+    const newStatus = selectedDate.status === 'wishlist' ? 'planned' : selectedDate.status;
+    updateDateStatus(selectedDate.id, newStatus, dateVal, selectedDate.scheduledTime);
+    showSavedFeedback(`Scheduled date saved for ${formatDateString(dateVal, { month: 'short', day: 'numeric', weekday: 'short' })} ✓`);
+  };
+
+  const handleClearDate = () => {
+    updateDateStatus(selectedDate.id, selectedDate.status, '', selectedDate.scheduledTime);
+    showSavedFeedback('Scheduled date cleared ✓');
+  };
+
+  const handleTimeChange = (timeVal: string) => {
+    const newStatus = selectedDate.status === 'wishlist' ? 'planned' : selectedDate.status;
+    updateDateStatus(selectedDate.id, newStatus, selectedDate.scheduledDate, timeVal);
+    showSavedFeedback(`Scheduled time set to ${formatTimeString(timeVal)} ✓`);
+  };
+
+  const handleClearTime = () => {
+    updateDateStatus(selectedDate.id, selectedDate.status, selectedDate.scheduledDate, '');
+    showSavedFeedback('Scheduled time cleared ✓');
   };
 
   const mapSearchUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
@@ -683,7 +700,7 @@ export default function DateDetailModal() {
                 {(['wishlist', 'planned', 'booked', 'completed'] as DateStatus[]).map((st) => (
                   <button
                     key={st}
-                    onClick={() => handleScheduleChange(st, scheduledDate, scheduledTime)}
+                    onClick={() => handleStatusChange(st)}
                     className={`px-2 sm:px-2.5 py-1 rounded-lg text-[10px] sm:text-xs font-semibold capitalize transition-all whitespace-nowrap ${
                       selectedDate.status === st
                         ? 'bg-white text-black font-bold shadow-sm'
@@ -696,27 +713,23 @@ export default function DateDetailModal() {
               </div>
             </div>
 
-            {/* Date & Time Picker */}
-            <div className="grid grid-cols-2 sm:flex items-center gap-2">
-              <div className="flex items-center gap-1.5 bg-zinc-900 px-2.5 py-1 rounded-xl border border-white/[0.06]">
-                <Clock className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
-                <input
-                  type="date"
-                  value={scheduledDate}
-                  onChange={(e) => handleScheduleChange(selectedDate.status, e.target.value, scheduledTime)}
-                  className="bg-transparent text-xs text-white focus:outline-none w-full"
-                />
-              </div>
+            {/* Aesthetic Date & Time Pickers */}
+            <div className="flex items-center justify-end gap-2 flex-wrap sm:flex-nowrap">
+              <AestheticDatePicker
+                value={selectedDate.scheduledDate}
+                onChange={handleDateChange}
+                onClear={handleClearDate}
+                label="Pick Date"
+                align="right"
+              />
 
-              <div className="flex items-center gap-1.5 bg-zinc-900 px-2.5 py-1 rounded-xl border border-white/[0.06]">
-                <Clock className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
-                <input
-                  type="time"
-                  value={scheduledTime}
-                  onChange={(e) => handleScheduleChange(selectedDate.status, scheduledDate, e.target.value)}
-                  className="bg-transparent text-xs text-white focus:outline-none w-full"
-                />
-              </div>
+              <AestheticTimePicker
+                value={selectedDate.scheduledTime}
+                onChange={handleTimeChange}
+                onClear={handleClearTime}
+                label="Set Time"
+                align="right"
+              />
             </div>
           </div>
 
