@@ -10,9 +10,9 @@ export default function Footer() {
   const completedCount = dates.filter((d) => d.status === 'completed').length;
 
   return (
-    <footer className="w-full border-t border-white/[0.08] bg-black/90 backdrop-blur-xl mt-16 py-10 transition-colors">
+    <footer className="w-full border-t border-white/[0.08] bg-black/90 backdrop-blur-xl mt-10 sm:mt-16 pt-8 pb-28 md:pb-10 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-5 sm:gap-6 text-center md:text-left">
           
           {/* Couple Motto & Logo */}
           <div className="space-y-1">
@@ -39,7 +39,7 @@ export default function Footer() {
           </div>
 
           {/* Quick Actions */}
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap justify-center items-center gap-2">
             <button
               onClick={() => setIsRouletteModalOpen(true)}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] text-zinc-300 border border-white/[0.08] text-xs font-medium transition-colors"

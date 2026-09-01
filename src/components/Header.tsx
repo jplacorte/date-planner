@@ -85,31 +85,31 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full backdrop-blur-2xl border-b border-white/[0.08] bg-black/75 transition-colors duration-500">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-20 gap-2 sm:gap-4">
+    <header className="sticky top-0 z-40 w-full backdrop-blur-2xl border-b border-white/[0.08] bg-black/80 transition-colors duration-500 pt-safe">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-14 sm:h-20 gap-2 sm:gap-4">
           
           {/* Brand & Couple Profile */}
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0 min-w-0">
             <button
               onClick={() => setIsProfileModalOpen(true)}
-              className="group flex items-center gap-2.5 sm:gap-3 text-left p-1 rounded-2xl hover:bg-white/[0.04] transition-all"
+              className="group flex items-center gap-2 sm:gap-3 text-left p-1 rounded-2xl hover:bg-white/[0.04] transition-all min-w-0"
             >
               <div className="relative shrink-0">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white border border-white/20 p-[1px] shadow-sm flex items-center justify-center">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-white border border-white/20 p-[1px] shadow-sm flex items-center justify-center">
                   <div className="w-full h-full rounded-[10px] bg-black flex items-center justify-center">
-                    <Heart className="w-4 h-4 text-white fill-white transition-transform group-hover:scale-110" />
+                    <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white fill-white transition-transform group-hover:scale-110" />
                   </div>
                 </div>
-                <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-white border-2 border-black" />
+                <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-white border-2 border-black" />
               </div>
 
               <div className="min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-sm sm:text-base font-bold font-serif tracking-tight text-white group-hover:text-zinc-300 transition-colors whitespace-nowrap">
+                  <span className="text-xs sm:text-base font-bold font-serif tracking-tight text-white group-hover:text-zinc-300 transition-colors truncate max-w-[120px] xs:max-w-[160px] sm:max-w-none">
                     {coupleProfile.partner1Name} & {coupleProfile.partner2Name}
                   </span>
-                  <span className="text-[9px] sm:text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-white/10 text-zinc-300 shrink-0">
+                  <span className="text-[8px] sm:text-[10px] uppercase font-mono px-1 sm:px-1.5 py-0.5 rounded bg-white/10 text-zinc-300 shrink-0 hidden xs:inline">
                     Dates
                   </span>
                 </div>
@@ -120,7 +120,7 @@ export default function Header() {
             </button>
           </div>
 
-          {/* Navigation Tabs (Center) */}
+          {/* Navigation Tabs (Center - Desktop) */}
           <nav className="hidden md:flex items-center p-1 rounded-2xl bg-zinc-950/90 border border-white/[0.08] shrink-0">
             <button
               onClick={() => setActiveTab('checklist')}
@@ -158,39 +158,39 @@ export default function Header() {
           </nav>
 
           {/* Right Action Tools */}
-          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
             
-            {/* Roulette Spark Generator */}
+            {/* Roulette Spark Generator (Desktop / Tablet) */}
             <button
               onClick={() => setIsRouletteModalOpen(true)}
-              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] text-white border border-white/[0.12] text-xs font-medium transition-all group whitespace-nowrap shrink-0"
+              className="hidden sm:flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] text-white border border-white/[0.12] text-xs font-medium transition-all group whitespace-nowrap shrink-0"
               title="Date Spark Roulette"
             >
               <Sparkles className="w-3.5 h-3.5 text-zinc-300 group-hover:rotate-12 transition-transform shrink-0" />
               <span className="hidden xl:inline">Spark Roulette</span>
-              <span className="hidden sm:inline xl:hidden">Roulette</span>
+              <span className="inline xl:hidden">Roulette</span>
             </button>
 
             {/* Plan Custom Date Button */}
             <button
               onClick={() => setIsCreateModalOpen(true)}
-              className="flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-white text-black hover:bg-zinc-200 text-xs font-bold transition-all hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap shrink-0 shadow-sm"
+              className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-white text-black hover:bg-zinc-200 text-xs font-bold transition-all hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap shrink-0 shadow-sm"
             >
               <Plus className="w-3.5 h-3.5 shrink-0 stroke-[2.5]" />
-              <span className="hidden sm:inline">New Date</span>
+              <span className="hidden xs:inline">New Date</span>
             </button>
 
             {/* Achievements Trophy */}
             <button
               onClick={() => setIsStatsModalOpen(true)}
-              className="p-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-zinc-300 hover:text-white border border-white/[0.08] transition-all shrink-0"
+              className="p-1.5 sm:p-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-zinc-300 hover:text-white border border-white/[0.08] transition-all shrink-0"
               title="Milestone Badges & Stats"
             >
-              <Trophy className="w-4 h-4 shrink-0" />
+              <Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
             </button>
 
             {/* Ambient Atmosphere Selector */}
-            <div className="relative shrink-0">
+            <div className="relative shrink-0 hidden sm:block">
               <button
                 onClick={() => {
                   setIsThemeMenuOpen(!isThemeMenuOpen);
@@ -209,7 +209,7 @@ export default function Header() {
                     initial={{ opacity: 0, y: 8, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                    className="absolute right-0 mt-2 w-52 rounded-2xl bg-zinc-950 border border-white/15 shadow-2xl p-1.5 z-50"
+                    className="absolute right-0 mt-2 w-52 rounded-2xl bg-zinc-950 border border-white/15 shadow-2xl p-1.5 z-50 max-w-[calc(100vw-2rem)]"
                   >
                     <div className="px-3 py-1.5 text-[10px] font-mono uppercase tracking-wider text-zinc-500">
                       Monochrome Theme
@@ -245,7 +245,7 @@ export default function Header() {
             </div>
 
             {/* Ambient Soundscapes Toggle */}
-            <div className="relative shrink-0">
+            <div className="relative shrink-0 hidden sm:block">
               <button
                 onClick={() => {
                   setIsAudioMenuOpen(!isAudioMenuOpen);
@@ -272,7 +272,7 @@ export default function Header() {
                     initial={{ opacity: 0, y: 8, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                    className="absolute right-0 mt-2 w-48 rounded-2xl bg-zinc-950 border border-white/15 shadow-2xl p-1.5 z-50"
+                    className="absolute right-0 mt-2 w-48 rounded-2xl bg-zinc-950 border border-white/15 shadow-2xl p-1.5 z-50 max-w-[calc(100vw-2rem)]"
                   >
                     <div className="px-3 py-1.5 text-[10px] font-mono uppercase tracking-wider text-zinc-500 flex items-center justify-between">
                       <span>Soundscape</span>
@@ -303,10 +303,10 @@ export default function Header() {
               </AnimatePresence>
             </div>
 
-            {/* Google Drive Cloud Sync Button */}
+            {/* Google Drive Cloud Sync Button (Desktop) */}
             <button
               onClick={() => syncToDrive()}
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 sm:py-2 rounded-xl text-xs font-medium border transition-all whitespace-nowrap shrink-0 ${
+              className={`hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 sm:py-2 rounded-xl text-xs font-medium border transition-all whitespace-nowrap shrink-0 ${
                 syncStatus === 'syncing'
                   ? 'bg-white/10 text-white border-white/20'
                   : syncStatus === 'synced'
@@ -333,7 +333,7 @@ export default function Header() {
               </span>
             </button>
 
-            {/* Settings Menu */}
+            {/* Settings & Tools Menu */}
             <div className="relative shrink-0">
               <button
                 onClick={() => {
@@ -341,10 +341,10 @@ export default function Header() {
                   setIsThemeMenuOpen(false);
                   setIsAudioMenuOpen(false);
                 }}
-                className="p-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-zinc-300 hover:text-white border border-white/[0.08] transition-all"
+                className="p-1.5 sm:p-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-zinc-300 hover:text-white border border-white/[0.08] transition-all"
                 title="Settings & Data"
               >
-                <Settings className="w-4 h-4 shrink-0" />
+                <Settings className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
               </button>
 
               <AnimatePresence>
@@ -353,8 +353,40 @@ export default function Header() {
                     initial={{ opacity: 0, y: 8, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                    className="absolute right-0 mt-2 w-56 rounded-2xl bg-zinc-950 border border-white/15 shadow-2xl p-1.5 z-50 space-y-0.5"
+                    className="absolute right-0 mt-2 w-60 rounded-2xl bg-zinc-950 border border-white/15 shadow-2xl p-2 z-50 space-y-1 max-w-[calc(100vw-1.5rem)]"
                   >
+                    {/* Mobile Only: Theme & Sound quick toggles */}
+                    <div className="sm:hidden pb-1 space-y-1 border-b border-white/10">
+                      <div className="px-2 py-1 text-[10px] font-mono uppercase tracking-wider text-zinc-500">
+                        Atmosphere & Audio
+                      </div>
+                      <div className="grid grid-cols-2 gap-1 px-1">
+                        <button
+                          onClick={() => {
+                            const themeKeys: MoodTheme[] = ['dusk', 'candlelight', 'midnight', 'dawn'];
+                            const next = themeKeys[(themeKeys.indexOf(moodTheme) + 1) % themeKeys.length];
+                            setMoodTheme(next);
+                          }}
+                          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-zinc-900 text-[11px] text-zinc-300 border border-white/5"
+                        >
+                          <CircleDot className="w-3 h-3 text-white" />
+                          <span className="capitalize truncate">{moodTheme}</span>
+                        </button>
+
+                        <button
+                          onClick={() => {
+                            const sounds: AmbientSound[] = ['none', 'lofi', 'rain', 'fireplace', 'acoustic'];
+                            const next = sounds[(sounds.indexOf(ambientSound) + 1) % sounds.length];
+                            setAmbientSound(next);
+                          }}
+                          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-zinc-900 text-[11px] text-zinc-300 border border-white/5"
+                        >
+                          {ambientSound === 'none' ? <VolumeX className="w-3 h-3" /> : <Volume2 className="w-3 h-3 text-white" />}
+                          <span className="capitalize truncate">{ambientSound === 'none' ? 'Mute' : ambientSound}</span>
+                        </button>
+                      </div>
+                    </div>
+
                     <button
                       onClick={() => {
                         syncToDrive();
@@ -426,37 +458,6 @@ export default function Header() {
               className="hidden"
             />
           </div>
-        </div>
-
-        {/* Mobile Tab Bar */}
-        <div className="flex md:hidden items-center justify-around py-2 border-t border-white/[0.06]">
-          <button
-            onClick={() => setActiveTab('checklist')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium ${
-              activeTab === 'checklist' ? 'text-white bg-white/10' : 'text-zinc-400'
-            }`}
-          >
-            <ListChecks className="w-3.5 h-3.5" />
-            Checklist
-          </button>
-          <button
-            onClick={() => setActiveTab('map')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium ${
-              activeTab === 'map' ? 'text-white bg-white/10' : 'text-zinc-400'
-            }`}
-          >
-            <MapPin className="w-3.5 h-3.5" />
-            Map
-          </button>
-          <button
-            onClick={() => setActiveTab('scrapbook')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium ${
-              activeTab === 'scrapbook' ? 'text-white bg-white/10' : 'text-zinc-400'
-            }`}
-          >
-            <BookHeart className="w-3.5 h-3.5" />
-            Scrapbook
-          </button>
         </div>
 
       </div>

@@ -79,18 +79,18 @@ export default function ChecklistHub() {
     <div className="space-y-6">
       
       {/* Search & Filter Control Bar */}
-      <div className="space-y-4 bg-zinc-950/70 p-4 sm:p-5 rounded-3xl border border-white/[0.08] backdrop-blur-2xl shadow-xl">
+      <div className="space-y-3.5 sm:space-y-4 bg-zinc-950/70 p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl border border-white/[0.08] backdrop-blur-2xl shadow-xl">
         
         {/* Top Search Input Row */}
-        <div className="flex flex-col sm:flex-row gap-3">
+        <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3">
           <div className="relative flex-1">
             <Search className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Search date ideas, vibes, locations, or checklist tasks..."
+              placeholder="Search dates, vibes, spots, or tasks..."
               value={filterState.searchQuery}
               onChange={(e) => setFilterState((prev) => ({ ...prev, searchQuery: e.target.value }))}
-              className="w-full bg-black/70 border border-white/[0.1] rounded-2xl pl-10 pr-9 py-2.5 text-xs sm:text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-white transition-colors"
+              className="w-full bg-black/70 border border-white/[0.1] rounded-xl sm:rounded-2xl pl-10 pr-9 py-2 sm:py-2.5 text-xs sm:text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-white transition-colors"
             />
             {filterState.searchQuery && (
               <button
@@ -106,7 +106,7 @@ export default function ChecklistHub() {
             {/* Favorites Toggle */}
             <button
               onClick={() => setFilterState((prev) => ({ ...prev, favoritesOnly: !prev.favoritesOnly }))}
-              className={`flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl border text-xs font-semibold transition-all ${
+              className={`flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl border text-xs font-semibold transition-all ${
                 filterState.favoritesOnly
                   ? 'bg-white text-black border-white'
                   : 'bg-white/[0.04] text-zinc-400 border-white/[0.08] hover:text-white hover:bg-white/[0.08]'
@@ -119,7 +119,7 @@ export default function ChecklistHub() {
             {/* Plan Date CTA */}
             <button
               onClick={() => setIsCreateModalOpen(true)}
-              className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-white hover:bg-zinc-200 text-black text-xs font-bold transition-all shrink-0"
+              className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl bg-white hover:bg-zinc-200 text-black text-xs font-bold transition-all shrink-0"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add Idea</span>
@@ -128,7 +128,7 @@ export default function ChecklistHub() {
         </div>
 
         {/* Category Filter Chips */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+        <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 scrollbar-none touch-scroll -mx-1 px-1">
           {categories.map((cat) => {
             const Icon = cat.icon;
             const active = filterState.category === cat.id;
@@ -136,7 +136,7 @@ export default function ChecklistHub() {
               <button
                 key={cat.id}
                 onClick={() => setFilterState((prev) => ({ ...prev, category: cat.id }))}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all ${
+                className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all shrink-0 ${
                   active
                     ? 'bg-white text-black font-bold shadow-sm'
                     : 'bg-zinc-900/80 text-zinc-400 border border-white/[0.06] hover:bg-zinc-800 hover:text-white'
@@ -150,8 +150,8 @@ export default function ChecklistHub() {
         </div>
 
         {/* Status Tab Filter Row */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-white/[0.06]">
-          <div className="flex flex-wrap gap-1.5">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 sm:gap-3 pt-3 border-t border-white/[0.06]">
+          <div className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none touch-scroll">
             {statuses.map((st) => {
               const active = filterState.status === st.id;
               const count = getStatusCount(st.id);
@@ -159,7 +159,7 @@ export default function ChecklistHub() {
                 <button
                   key={st.id}
                   onClick={() => setFilterState((prev) => ({ ...prev, status: st.id }))}
-                  className={`px-3 py-1 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 ${
+                  className={`px-2.5 sm:px-3 py-1 rounded-xl text-xs font-medium transition-all flex items-center gap-1 sm:gap-1.5 whitespace-nowrap shrink-0 ${
                     active
                       ? 'bg-white text-black font-bold'
                       : 'text-zinc-400 hover:text-white hover:bg-white/[0.04]'
@@ -175,11 +175,11 @@ export default function ChecklistHub() {
           </div>
 
           {/* Secondary Filters */}
-          <div className="flex items-center gap-2">
+          <div className="grid grid-cols-2 sm:flex items-center gap-2">
             <select
               value={filterState.cost}
               onChange={(e) => setFilterState((prev) => ({ ...prev, cost: e.target.value as CostLevel | 'all' }))}
-              className="bg-black/80 border border-white/[0.08] rounded-xl px-2.5 py-1 text-xs text-zinc-300 focus:outline-none"
+              className="bg-black/80 border border-white/[0.08] rounded-xl px-2.5 py-1.5 text-xs text-zinc-300 focus:outline-none w-full sm:w-auto"
             >
               <option value="all">Budget: All</option>
               <option value="₱">₱ Budget</option>
@@ -191,7 +191,7 @@ export default function ChecklistHub() {
             <select
               value={filterState.setting}
               onChange={(e) => setFilterState((prev) => ({ ...prev, setting: e.target.value as DateSetting | 'all' }))}
-              className="bg-black/80 border border-white/[0.08] rounded-xl px-2.5 py-1 text-xs text-zinc-300 focus:outline-none"
+              className="bg-black/80 border border-white/[0.08] rounded-xl px-2.5 py-1.5 text-xs text-zinc-300 focus:outline-none w-full sm:w-auto"
             >
               <option value="all">Setting: All</option>
               <option value="indoor">Indoor</option>
@@ -205,7 +205,7 @@ export default function ChecklistHub() {
 
       {/* Results Header Count */}
       <div className="flex items-center justify-between px-2 text-xs">
-        <span className="font-mono uppercase text-zinc-500 tracking-wider">
+        <span className="font-mono uppercase text-zinc-500 tracking-wider text-[11px] sm:text-xs">
           Showing {filteredDates.length} of {dates.length} Dates
         </span>
 
@@ -221,7 +221,7 @@ export default function ChecklistHub() {
                 favoritesOnly: false,
               })
             }
-            className="text-white hover:underline font-semibold"
+            className="text-white hover:underline font-semibold text-[11px] sm:text-xs"
           >
             Reset All Filters
           </button>
@@ -230,7 +230,7 @@ export default function ChecklistHub() {
 
       {/* Dates Cards Grid */}
       {filteredDates.length > 0 ? (
-        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           <AnimatePresence>
             {filteredDates.map((date) => (
               <DateCard key={date.id} date={date} />

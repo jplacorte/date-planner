@@ -246,19 +246,19 @@ export default function DateDetailModal() {
   return (
     <AnimatePresence>
       <div 
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-black/85 backdrop-blur-lg overscroll-contain"
+        className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 overflow-y-auto bg-black/85 backdrop-blur-lg overscroll-contain pb-safe"
         data-lenis-prevent
       >
         <motion.div
-          initial={{ opacity: 0, scale: 0.96, y: 15 }}
+          initial={{ opacity: 0, scale: 0.96, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.96, y: 15 }}
+          exit={{ opacity: 0, scale: 0.96, y: 20 }}
           transition={{ duration: 0.25 }}
-          className="relative w-full max-w-3xl rounded-3xl overflow-hidden bg-zinc-950 border border-white/[0.1] shadow-2xl my-auto flex flex-col max-h-[88vh]"
+          className="relative w-full max-w-3xl rounded-t-[28px] sm:rounded-3xl overflow-hidden bg-zinc-950 border border-white/[0.1] shadow-2xl my-0 sm:my-auto flex flex-col max-h-[92vh] sm:max-h-[88vh]"
           data-lenis-prevent
         >
           {/* Header Cover Banner */}
-          <div className="relative h-60 sm:h-64 w-full shrink-0">
+          <div className="relative h-48 sm:h-64 w-full shrink-0">
             <img
               src={selectedDate.coverImage}
               alt={selectedDate.title}
@@ -266,15 +266,20 @@ export default function DateDetailModal() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/70 to-black/40" />
 
+            {/* Mobile Sheet Drag Indicator Bar */}
+            <div className="absolute top-2 inset-x-0 sm:hidden flex justify-center z-20">
+              <div className="w-10 h-1 bg-white/30 rounded-full" />
+            </div>
+
             {/* Top Close, Favorite & Cover Change Actions */}
-            <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
+            <div className="absolute top-3 sm:top-4 left-3 sm:left-4 right-3 sm:right-4 flex items-center justify-between z-10">
               <button
                 onClick={() => toggleFavorite(selectedDate.id)}
-                className="p-2 rounded-full bg-black/80 backdrop-blur-md border border-white/[0.1] text-white hover:text-zinc-300 transition-colors"
+                className="p-1.5 sm:p-2 rounded-full bg-black/80 backdrop-blur-md border border-white/[0.1] text-white hover:text-zinc-300 transition-colors"
                 title="Favorite Date"
               >
                 <Heart
-                  className={`w-4 h-4 ${
+                  className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${
                     selectedDate.isFavorite ? 'text-white fill-white' : 'text-white'
                   }`}
                 />
@@ -283,7 +288,7 @@ export default function DateDetailModal() {
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setIsChangingCover(!isChangingCover)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-white/[0.15] text-white text-xs font-medium hover:bg-white hover:text-black transition-all shadow-md"
+                  className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-white/[0.15] text-white text-[11px] sm:text-xs font-medium hover:bg-white hover:text-black transition-all shadow-md"
                 >
                   <Camera className="w-3.5 h-3.5" />
                   <span>Change Photo</span>
@@ -291,9 +296,9 @@ export default function DateDetailModal() {
 
                 <button
                   onClick={() => setSelectedDate(null)}
-                  className="p-2 rounded-full bg-black/80 backdrop-blur-md border border-white/[0.1] text-zinc-400 hover:text-white transition-colors"
+                  className="p-1.5 sm:p-2 rounded-full bg-black/80 backdrop-blur-md border border-white/[0.1] text-zinc-400 hover:text-white transition-colors"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </button>
               </div>
             </div>
@@ -305,7 +310,7 @@ export default function DateDetailModal() {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="absolute top-14 right-4 z-30 w-80 rounded-2xl bg-zinc-950/95 border border-white/20 p-4 backdrop-blur-2xl shadow-2xl space-y-3"
+                  className="absolute top-12 inset-x-2 sm:inset-x-auto sm:right-4 z-30 sm:w-80 rounded-2xl bg-zinc-950/95 border border-white/20 p-3.5 sm:p-4 backdrop-blur-2xl shadow-2xl space-y-3 max-w-[calc(100vw-1rem)] sm:max-w-none"
                 >
                   <div className="flex items-center justify-between border-b border-white/10 pb-2">
                     <span className="text-xs font-bold text-white flex items-center gap-1.5">
@@ -349,7 +354,7 @@ export default function DateDetailModal() {
                         <button
                           key={idx}
                           onClick={() => handleApplyCoverUrl(img)}
-                          className="relative h-10 rounded-lg overflow-hidden border border-white/15 hover:border-white transition-all hover:scale-105"
+                          className="relative h-9 sm:h-10 rounded-lg overflow-hidden border border-white/15 hover:border-white transition-all hover:scale-105"
                         >
                           <img src={img} alt="Preset" className="w-full h-full object-cover" />
                         </button>
@@ -364,7 +369,7 @@ export default function DateDetailModal() {
                   <div className="flex gap-1.5 pt-1">
                     <input
                       type="url"
-                      placeholder="Paste image or Google Drive link..."
+                      placeholder="Paste image or Drive link..."
                       value={customCoverUrl}
                       onChange={(e) => setCustomCoverUrl(e.target.value)}
                       className="flex-1 bg-black border border-white/10 rounded-xl px-2.5 py-1 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-white"
@@ -382,20 +387,20 @@ export default function DateDetailModal() {
             </AnimatePresence>
 
             {/* Title & Info on Cover */}
-            <div className="absolute bottom-4 left-6 right-6 z-10 space-y-1.5">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="px-2.5 py-0.5 rounded-md bg-white text-black text-[10px] font-bold uppercase tracking-wider">
+            <div className="absolute bottom-3 sm:bottom-4 left-3.5 sm:left-6 right-3.5 sm:right-6 z-10 space-y-1 sm:space-y-1.5">
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                <span className="px-2 py-0.5 rounded-md bg-white text-black text-[9px] sm:text-[10px] font-bold uppercase tracking-wider">
                   {selectedDate.category}
                 </span>
-                <span className="px-2 py-0.5 rounded-md bg-black/80 border border-white/[0.1] text-white font-mono text-xs font-bold">
+                <span className="px-2 py-0.5 rounded-md bg-black/80 border border-white/[0.1] text-white font-mono text-[10px] sm:text-xs font-bold">
                   {selectedDate.estimatedCost}
                 </span>
-                <span className="px-2 py-0.5 rounded-md bg-black/80 border border-white/[0.1] text-zinc-300 text-xs">
+                <span className="px-2 py-0.5 rounded-md bg-black/80 border border-white/[0.1] text-zinc-300 text-[10px] sm:text-xs">
                   {selectedDate.duration}
                 </span>
               </div>
 
-              <h2 className="text-2xl sm:text-3xl font-bold font-serif text-white leading-snug">
+              <h2 className="text-lg xs:text-xl sm:text-3xl font-bold font-serif text-white leading-snug">
                 {selectedDate.title}
               </h2>
               <p className="text-xs text-zinc-400 font-light line-clamp-1">
@@ -405,15 +410,15 @@ export default function DateDetailModal() {
           </div>
 
           {/* Quick Status & Schedule Bar */}
-          <div className="bg-black px-6 py-3.5 border-b border-white/[0.08] flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-medium text-zinc-500">Status:</span>
-              <div className="flex gap-1 bg-zinc-900 p-1 rounded-xl border border-white/[0.06]">
+          <div className="bg-black px-3.5 sm:px-6 py-2.5 sm:py-3.5 border-b border-white/[0.08] flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 sm:gap-3 shrink-0">
+            <div className="flex items-center justify-between sm:justify-start gap-2">
+              <span className="text-xs font-medium text-zinc-500 shrink-0">Status:</span>
+              <div className="flex gap-1 bg-zinc-900 p-0.5 sm:p-1 rounded-xl border border-white/[0.06] overflow-x-auto scrollbar-none">
                 {(['wishlist', 'planned', 'booked', 'completed'] as DateStatus[]).map((st) => (
                   <button
                     key={st}
                     onClick={() => handleScheduleChange(st, scheduledDate, scheduledTime)}
-                    className={`px-2.5 py-1 rounded-lg text-xs font-semibold capitalize transition-all ${
+                    className={`px-2 sm:px-2.5 py-1 rounded-lg text-[10px] sm:text-xs font-semibold capitalize transition-all whitespace-nowrap ${
                       selectedDate.status === st
                         ? 'bg-white text-black font-bold shadow-sm'
                         : 'text-zinc-400 hover:text-white'
@@ -426,34 +431,34 @@ export default function DateDetailModal() {
             </div>
 
             {/* Date & Time Picker */}
-            <div className="flex items-center gap-2">
+            <div className="grid grid-cols-2 sm:flex items-center gap-2">
               <div className="flex items-center gap-1.5 bg-zinc-900 px-2.5 py-1 rounded-xl border border-white/[0.06]">
-                <Clock className="w-3.5 h-3.5 text-zinc-400" />
+                <Clock className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
                 <input
                   type="date"
                   value={scheduledDate}
                   onChange={(e) => handleScheduleChange(selectedDate.status, e.target.value, scheduledTime)}
-                  className="bg-transparent text-xs text-white focus:outline-none"
+                  className="bg-transparent text-xs text-white focus:outline-none w-full"
                 />
               </div>
 
               <div className="flex items-center gap-1.5 bg-zinc-900 px-2.5 py-1 rounded-xl border border-white/[0.06]">
-                <Clock className="w-3.5 h-3.5 text-zinc-400" />
+                <Clock className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
                 <input
                   type="time"
                   value={scheduledTime}
                   onChange={(e) => handleScheduleChange(selectedDate.status, scheduledDate, e.target.value)}
-                  className="bg-transparent text-xs text-white focus:outline-none"
+                  className="bg-transparent text-xs text-white focus:outline-none w-full"
                 />
               </div>
             </div>
           </div>
 
           {/* Navigation Sub-Tabs */}
-          <div className="flex border-b border-white/[0.08] bg-zinc-950 px-6">
+          <div className="flex items-center overflow-x-auto scrollbar-none touch-scroll border-b border-white/[0.08] bg-zinc-950 px-3 sm:px-6 shrink-0">
             <button
               onClick={() => setActiveTab('checklist')}
-              className={`py-3 px-4 font-semibold text-xs sm:text-sm border-b-2 transition-all flex items-center gap-1.5 ${
+              className={`py-2.5 sm:py-3 px-3 sm:px-4 font-semibold text-xs sm:text-sm border-b-2 transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                 activeTab === 'checklist'
                   ? 'border-white text-white'
                   : 'border-transparent text-zinc-500 hover:text-zinc-300'
@@ -464,7 +469,7 @@ export default function DateDetailModal() {
             </button>
             <button
               onClick={() => setActiveTab('itinerary')}
-              className={`py-3 px-4 font-semibold text-xs sm:text-sm border-b-2 transition-all flex items-center gap-1.5 ${
+              className={`py-2.5 sm:py-3 px-3 sm:px-4 font-semibold text-xs sm:text-sm border-b-2 transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                 activeTab === 'itinerary'
                   ? 'border-white text-white'
                   : 'border-transparent text-zinc-500 hover:text-zinc-300'
@@ -475,7 +480,7 @@ export default function DateDetailModal() {
             </button>
             <button
               onClick={() => setActiveTab('details')}
-              className={`py-3 px-4 font-semibold text-xs sm:text-sm border-b-2 transition-all flex items-center gap-1.5 ${
+              className={`py-2.5 sm:py-3 px-3 sm:px-4 font-semibold text-xs sm:text-sm border-b-2 transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                 activeTab === 'details'
                   ? 'border-white text-white'
                   : 'border-transparent text-zinc-500 hover:text-zinc-300'
@@ -486,7 +491,7 @@ export default function DateDetailModal() {
             </button>
             <button
               onClick={() => setActiveTab('memory')}
-              className={`py-3 px-4 font-semibold text-xs sm:text-sm border-b-2 transition-all flex items-center gap-1.5 ${
+              className={`py-2.5 sm:py-3 px-3 sm:px-4 font-semibold text-xs sm:text-sm border-b-2 transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                 activeTab === 'memory'
                   ? 'border-white text-white'
                   : 'border-transparent text-zinc-500 hover:text-zinc-300'
@@ -498,7 +503,7 @@ export default function DateDetailModal() {
           </div>
 
           {/* Modal Tab Body */}
-          <div className="p-6 overflow-y-auto space-y-5 flex-1 overscroll-contain" data-lenis-prevent>
+          <div className="p-4 sm:p-6 overflow-y-auto space-y-4 sm:space-y-5 flex-1 overscroll-contain touch-scroll" data-lenis-prevent>
             
             {/* --- TAB 1: PRE-DATE CHECKLIST --- */}
             {activeTab === 'checklist' && (
@@ -1105,7 +1110,7 @@ export default function DateDetailModal() {
           </div>
 
           {/* Modal Footer Actions */}
-          <div className="bg-black p-3.5 px-6 border-t border-white/[0.08] flex items-center justify-between">
+          <div className="bg-black p-3.5 sm:p-4 px-4 sm:px-6 border-t border-white/[0.08] flex items-center justify-between shrink-0">
             <button
               onClick={() => {
                 if (confirm(`Delete "${selectedDate.title}"?`)) {

@@ -12,6 +12,7 @@ import StatsModal from '../components/StatsModal';
 import CreateDateModal from '../components/CreateDateModal';
 import ProfileModal from '../components/ProfileModal';
 import Footer from '../components/Footer';
+import MobileNav from '../components/MobileNav';
 import { useDateContext } from '../context/DateContext';
 
 function AppContent() {
@@ -54,12 +55,15 @@ function AppContent() {
         <HeroCountdown />
 
         {/* Main Tab Area */}
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <main className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2 sm:py-4 pb-24 md:pb-6">
           {activeTab === 'checklist' && <ChecklistHub />}
           {activeTab === 'map' && <DateMapView />}
           {activeTab === 'scrapbook' && <ScrapbookView />}
         </main>
       </div>
+
+      {/* Floating Mobile Dock */}
+      <MobileNav />
 
       {/* Modals & Drawers */}
       <DateDetailModal />

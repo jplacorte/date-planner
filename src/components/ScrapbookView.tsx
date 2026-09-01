@@ -19,16 +19,16 @@ export default function ScrapbookView() {
   const completedDates = dates.filter((d) => d.status === 'completed');
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       
       {/* Scrapbook Header Banner */}
-      <div className="relative rounded-3xl p-6 sm:p-8 border border-white/[0.08] bg-zinc-950/70 backdrop-blur-2xl shadow-xl flex flex-col sm:flex-row items-center justify-between gap-6">
-        <div className="space-y-2 text-center sm:text-left">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-white text-[10px] font-mono uppercase tracking-wider">
+      <div className="relative rounded-2xl sm:rounded-3xl p-4 sm:p-8 border border-white/[0.08] bg-zinc-950/70 backdrop-blur-2xl shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6">
+        <div className="space-y-1.5 sm:space-y-2 text-center sm:text-left">
+          <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-white/10 text-white text-[10px] font-mono uppercase tracking-wider">
             <BookHeart className="w-3.5 h-3.5" />
             <span>Couple Memory Vault</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold font-serif text-white tracking-tight">
+          <h2 className="text-xl sm:text-3xl font-bold font-serif text-white tracking-tight">
             {coupleProfile.partner1Name} & {coupleProfile.partner2Name}’s Archive
           </h2>
           <p className="text-xs text-zinc-400 max-w-xl font-light">
@@ -36,21 +36,21 @@ export default function ScrapbookView() {
           </p>
         </div>
 
-        <div className="flex items-center gap-4 bg-black/60 px-5 py-3 rounded-2xl border border-white/[0.08] backdrop-blur-md shrink-0">
+        <div className="flex items-center gap-4 bg-black/60 px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl border border-white/[0.08] backdrop-blur-md shrink-0">
           <div className="text-center">
-            <div className="text-2xl font-bold font-mono text-white">
+            <div className="text-xl sm:text-2xl font-bold font-mono text-white">
               {completedDates.length}
             </div>
-            <div className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">
+            <div className="text-[9px] sm:text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">
               Completed
             </div>
           </div>
-          <div className="h-6 w-px bg-white/10" />
+          <div className="h-5 sm:h-6 w-px bg-white/10" />
           <div className="text-center">
-            <div className="text-2xl font-bold font-mono text-white">
+            <div className="text-xl sm:text-2xl font-bold font-mono text-white">
               {completedDates.reduce((acc, d) => acc + (d.memoriesPhotos?.length || 1), 0)}
             </div>
-            <div className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">
+            <div className="text-[9px] sm:text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">
               Photos Saved
             </div>
           </div>
@@ -59,7 +59,7 @@ export default function ScrapbookView() {
 
       {/* Polaroid Gallery Grid */}
       {completedDates.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 pt-2">
           {completedDates.map((date, idx) => {
             const rotations = ['rotate-1', '-rotate-1', 'rotate-0'];
             const rot = rotations[idx % rotations.length];
@@ -75,7 +75,7 @@ export default function ScrapbookView() {
                 className={`cursor-pointer transition-all duration-300 ${rot}`}
               >
                 {/* Polaroid Frame */}
-                <div className="bg-zinc-950 border border-white/[0.1] p-4 pb-5 rounded-2xl shadow-xl space-y-3 hover:border-white/[0.25] group">
+                <div className="bg-zinc-950 border border-white/[0.1] p-3.5 sm:p-4 pb-4 sm:pb-5 rounded-2xl shadow-xl space-y-3 hover:border-white/[0.25] group">
                   
                   {/* Photo Container */}
                   <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-neutral-900 shadow-inner">
@@ -158,11 +158,11 @@ export default function ScrapbookView() {
         </div>
       ) : (
         /* Empty State */
-        <div className="rounded-3xl p-10 text-center border border-white/[0.08] bg-zinc-950/40 backdrop-blur-xl space-y-3">
+        <div className="rounded-3xl p-8 sm:p-10 text-center border border-white/[0.08] bg-zinc-950/40 backdrop-blur-xl space-y-3">
           <div className="w-12 h-12 rounded-full bg-white/[0.05] border border-white/[0.1] flex items-center justify-center mx-auto text-zinc-400">
             <Camera className="w-6 h-6" />
           </div>
-          <h3 className="text-lg font-bold font-serif text-white">
+          <h3 className="text-base sm:text-lg font-bold font-serif text-white">
             Scrapbook Vault Ready
           </h3>
           <p className="text-xs text-zinc-500 max-w-md mx-auto">

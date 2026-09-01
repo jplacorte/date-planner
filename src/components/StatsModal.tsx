@@ -38,27 +38,32 @@ export default function StatsModal() {
   return (
     <AnimatePresence>
       <div 
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-black/85 backdrop-blur-lg overscroll-contain"
+        className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 overflow-y-auto bg-black/85 backdrop-blur-lg overscroll-contain pb-safe"
         data-lenis-prevent
       >
         <motion.div
-          initial={{ opacity: 0, scale: 0.96, y: 15 }}
+          initial={{ opacity: 0, scale: 0.96, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.96, y: 15 }}
-          className="relative w-full max-w-2xl rounded-3xl overflow-hidden bg-zinc-950 border border-white/[0.1] shadow-2xl p-6 sm:p-7 space-y-5 max-h-[88vh] overflow-y-auto overscroll-contain my-auto"
+          exit={{ opacity: 0, scale: 0.96, y: 20 }}
+          className="relative w-full max-w-2xl rounded-t-[28px] sm:rounded-3xl overflow-hidden bg-zinc-950 border border-white/[0.1] shadow-2xl p-4 sm:p-7 space-y-4 sm:space-y-5 max-h-[92vh] sm:max-h-[88vh] overflow-y-auto overscroll-contain touch-scroll my-0 sm:my-auto"
           data-lenis-prevent
         >
+          {/* Mobile Sheet Drag Indicator Bar */}
+          <div className="sm:hidden flex justify-center pb-1">
+            <div className="w-10 h-1 bg-white/30 rounded-full" />
+          </div>
+
           {/* Header */}
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <div className="p-2 rounded-xl bg-white text-black">
+            <div className="flex items-center gap-2 sm:gap-2.5">
+              <div className="p-1.5 sm:p-2 rounded-xl bg-white text-black shrink-0">
                 <Trophy className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="text-lg font-bold font-serif text-white">
+                <h3 className="text-base sm:text-lg font-bold font-serif text-white">
                   Couple Milestones & Stats
                 </h3>
-                <p className="text-xs text-zinc-400">
+                <p className="text-[11px] sm:text-xs text-zinc-400">
                   {coupleProfile.partner1Name} & {coupleProfile.partner2Name}’s journey in numbers.
                 </p>
               </div>
@@ -66,19 +71,19 @@ export default function StatsModal() {
 
             <button
               onClick={() => setIsStatsModalOpen(false)}
-              className="p-1.5 rounded-full bg-white/[0.05] hover:bg-white/[0.1] text-zinc-400 hover:text-white"
+              className="p-1.5 rounded-full bg-white/[0.05] hover:bg-white/[0.1] text-zinc-400 hover:text-white shrink-0"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
 
           {/* Metrics Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-            <div className="bg-black p-3.5 rounded-2xl border border-white/[0.08] text-center space-y-0.5">
-              <div className="text-2xl font-bold font-mono text-white">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
+            <div className="bg-black p-3 sm:p-3.5 rounded-2xl border border-white/[0.08] text-center space-y-0.5">
+              <div className="text-xl sm:text-2xl font-bold font-mono text-white">
                 {completedDates.length}
               </div>
-              <div className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">
+              <div className="text-[9px] sm:text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">
                 Completed
               </div>
             </div>

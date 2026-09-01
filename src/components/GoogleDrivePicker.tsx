@@ -101,7 +101,7 @@ export default function GoogleDrivePicker({ onSelectPhoto }: GoogleDrivePickerPr
           Connecting to Google Drive...
         </div>
       ) : photos.length > 0 ? (
-        <div className="grid grid-cols-4 sm:grid-cols-5 gap-1.5 max-h-40 overflow-y-auto pr-1">
+        <div className="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-5 gap-1.5 max-h-40 overflow-y-auto pr-1">
           {photos.map((photo) => (
             <button
               key={photo.id}

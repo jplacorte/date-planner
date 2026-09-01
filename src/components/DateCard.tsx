@@ -65,11 +65,11 @@ export default function DateCard({ date }: { date: DateIdea }) {
       exit={{ opacity: 0, scale: 0.95 }}
       whileHover={{ y: -3 }}
       transition={{ duration: 0.25 }}
-      className="group relative rounded-3xl overflow-hidden border border-white/[0.08] hover:border-white/[0.2] bg-zinc-950/80 backdrop-blur-xl shadow-lg hover:shadow-2xl transition-all flex flex-col justify-between"
+      className="group relative rounded-2xl sm:rounded-3xl overflow-hidden border border-white/[0.08] hover:border-white/[0.2] bg-zinc-950/80 backdrop-blur-xl shadow-lg hover:shadow-2xl transition-all flex flex-col justify-between"
     >
       {/* Cover Image */}
       <div 
-        className="relative h-48 w-full overflow-hidden cursor-pointer"
+        className="relative h-44 sm:h-48 w-full overflow-hidden cursor-pointer"
         onClick={() => setSelectedDate(date)}
       >
         <img
@@ -80,8 +80,8 @@ export default function DateCard({ date }: { date: DateIdea }) {
         <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent" />
 
         {/* Top Badges */}
-        <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-auto">
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/80 backdrop-blur-md border border-white/[0.1] text-white text-[11px] font-medium">
+        <div className="absolute top-2.5 sm:top-3 left-2.5 sm:left-3 right-2.5 sm:right-3 flex items-center justify-between pointer-events-auto">
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/80 backdrop-blur-md border border-white/[0.1] text-white text-[10px] sm:text-[11px] font-medium">
             <CategoryIcon className="w-3 h-3 text-zinc-400" />
             <span>{categoryLabels[date.category]}</span>
           </div>
@@ -103,26 +103,26 @@ export default function DateCard({ date }: { date: DateIdea }) {
         </div>
 
         {/* Bottom Image Info */}
-        <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[11px] text-zinc-300">
-          <span className="font-medium flex items-center gap-1">
-            <MapPin className="w-3 h-3 text-zinc-400" />
-            <span className="truncate max-w-[170px]">{date.locationName}</span>
+        <div className="absolute bottom-2 sm:bottom-2.5 left-2.5 sm:left-3 right-2.5 sm:right-3 flex items-center justify-between text-[11px] text-zinc-300">
+          <span className="font-medium flex items-center gap-1 text-[10px] sm:text-[11px]">
+            <MapPin className="w-3 h-3 text-zinc-400 shrink-0" />
+            <span className="truncate max-w-[140px] xs:max-w-[170px]">{date.locationName}</span>
           </span>
-          <span className="px-1.5 py-0.5 rounded bg-black/80 font-mono text-white font-semibold border border-white/[0.08]">
+          <span className="px-1.5 py-0.5 rounded bg-black/80 font-mono text-white font-semibold border border-white/[0.08] text-[10px] sm:text-[11px]">
             {date.estimatedCost}
           </span>
         </div>
       </div>
 
       {/* Card Body */}
-      <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3.5">
+      <div className="p-3.5 sm:p-5 flex-1 flex flex-col justify-between space-y-3 sm:space-y-3.5">
         
         {/* Title & Status */}
         <div>
           <div className="flex items-start justify-between gap-2">
             <h3 
               onClick={() => setSelectedDate(date)}
-              className="text-base font-bold font-serif text-white group-hover:text-zinc-200 transition-colors cursor-pointer leading-snug"
+              className="text-sm sm:text-base font-bold font-serif text-white group-hover:text-zinc-200 transition-colors cursor-pointer leading-snug"
             >
               {date.title}
             </h3>
@@ -132,7 +132,7 @@ export default function DateCard({ date }: { date: DateIdea }) {
               value={date.status}
               onClick={(e) => e.stopPropagation()}
               onChange={(e) => updateDateStatus(date.id, e.target.value as DateStatus)}
-              className={`text-[10px] font-bold px-2 py-0.5 rounded-md border cursor-pointer focus:outline-none transition-colors ${statusInfo.bg} ${statusInfo.text} ${statusInfo.border}`}
+              className={`text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-lg border cursor-pointer focus:outline-none transition-colors shrink-0 ${statusInfo.bg} ${statusInfo.text} ${statusInfo.border}`}
             >
               <option value="wishlist" className="bg-zinc-950 text-white">Wishlist</option>
               <option value="planned" className="bg-zinc-950 text-white">Planned</option>
@@ -148,9 +148,9 @@ export default function DateCard({ date }: { date: DateIdea }) {
 
         {/* Scheduled Date Pill */}
         {date.scheduledDate && (
-          <div className="flex items-center gap-1.5 text-[11px] text-zinc-300 font-mono bg-zinc-900 px-2.5 py-1 rounded-lg border border-white/[0.06]">
-            <Calendar className="w-3 h-3 text-zinc-400" />
-            <span>
+          <div className="flex items-center gap-1.5 text-[10px] sm:text-[11px] text-zinc-300 font-mono bg-zinc-900 px-2.5 py-1 rounded-lg border border-white/[0.06]">
+            <Calendar className="w-3 h-3 text-zinc-400 shrink-0" />
+            <span className="truncate">
               {formatDateString(date.scheduledDate, {
                 month: 'short',
                 day: 'numeric',
@@ -165,11 +165,11 @@ export default function DateCard({ date }: { date: DateIdea }) {
         {totalChecklist > 0 && (
           <div className="space-y-1.5 pt-2 border-t border-white/[0.06]">
             <div className="flex items-center justify-between text-[11px]">
-              <span className="text-zinc-400 font-medium flex items-center gap-1">
+              <span className="text-zinc-400 font-medium flex items-center gap-1 text-[10px] sm:text-[11px]">
                 <CheckCircle2 className="w-3 h-3 text-white" />
                 Checklist
               </span>
-              <span className="text-zinc-400 font-mono text-[10px]">
+              <span className="text-zinc-400 font-mono text-[9px] sm:text-[10px]">
                 {completedChecklist}/{totalChecklist} ({progressPercent}%)
               </span>
             </div>
@@ -191,7 +191,7 @@ export default function DateCard({ date }: { date: DateIdea }) {
                     e.stopPropagation();
                     toggleChecklistItem(date.id, item.id);
                   }}
-                  className="flex items-start gap-2 text-xs text-zinc-300 hover:text-white cursor-pointer group/item py-0.5"
+                  className="flex items-start gap-2 text-xs text-zinc-300 hover:text-white cursor-pointer group/item py-1"
                 >
                   {item.completed ? (
                     <CheckCircle2 className="w-3.5 h-3.5 text-white shrink-0 mt-0.5" />
@@ -209,7 +209,7 @@ export default function DateCard({ date }: { date: DateIdea }) {
 
         {/* Footer */}
         <div className="pt-2.5 border-t border-white/[0.06] flex items-center justify-between">
-          <div className="flex items-center gap-1 text-[11px] text-zinc-500">
+          <div className="flex items-center gap-1 text-[10px] sm:text-[11px] text-zinc-500">
             <Clock className="w-3 h-3" />
             <span>{date.duration}</span>
           </div>

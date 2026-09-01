@@ -61,8 +61,8 @@ export default function HeroCountdown() {
   const wishlistDatesTotal = dates.filter((d) => d.status === 'wishlist').length;
 
   return (
-    <section className="relative overflow-hidden py-8 sm:py-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="relative overflow-hidden py-4 sm:py-8 sm:py-10">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         {upcomingDate ? (
           <motion.div
             initial={{ opacity: 0, y: 15 }}
@@ -80,26 +80,26 @@ export default function HeroCountdown() {
               <div className="absolute inset-0 bg-gradient-to-r from-black via-black/90 to-black/60" />
             </div>
 
-            <div className="relative z-10 p-6 sm:p-10 lg:p-12 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <div className="relative z-10 p-4 sm:p-8 lg:p-12 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center">
               
               {/* Left Column: Date Details & Countdown */}
-              <div className="lg:col-span-7 space-y-5">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-white text-[11px] font-mono uppercase tracking-wider">
+              <div className="lg:col-span-7 space-y-4 sm:space-y-5">
+                <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 rounded-full bg-white/10 border border-white/15 text-white text-[10px] sm:text-[11px] font-mono uppercase tracking-wider">
                   <Flame className="w-3.5 h-3.5 text-white" />
                   <span>Upcoming Date Itinerary</span>
                 </div>
 
                 <div>
-                  <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold font-serif text-white tracking-tight leading-tight">
+                  <h1 className="text-xl xs:text-2xl sm:text-4xl lg:text-5xl font-bold font-serif text-white tracking-tight leading-snug sm:leading-tight">
                     {upcomingDate.title}
                   </h1>
-                  <p className="mt-2 text-xs sm:text-sm text-zinc-400 font-light leading-relaxed max-w-xl">
+                  <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm text-zinc-400 font-light leading-relaxed max-w-xl">
                     {upcomingDate.subtitle}
                   </p>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-3 text-xs text-zinc-300">
-                  <div className="flex items-center gap-1.5 bg-black/60 px-3 py-1.5 rounded-xl border border-white/[0.08]">
+                <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-zinc-300">
+                  <div className="flex items-center gap-1.5 bg-black/60 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border border-white/[0.08] text-[11px] sm:text-xs">
                     <Calendar className="w-3.5 h-3.5 text-zinc-400" />
                     <span>
                       {formatDateString(upcomingDate.scheduledDate, {
@@ -111,26 +111,26 @@ export default function HeroCountdown() {
                   </div>
 
                   {upcomingDate.scheduledTime && (
-                    <div className="flex items-center gap-1.5 bg-black/60 px-3 py-1.5 rounded-xl border border-white/[0.08]">
+                    <div className="flex items-center gap-1.5 bg-black/60 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border border-white/[0.08] text-[11px] sm:text-xs">
                       <Clock className="w-3.5 h-3.5 text-zinc-400" />
                       <span>{formatTimeString(upcomingDate.scheduledTime)}</span>
                     </div>
                   )}
 
-                  <div className="flex items-center gap-1.5 bg-black/60 px-3 py-1.5 rounded-xl border border-white/[0.08]">
-                    <MapPin className="w-3.5 h-3.5 text-zinc-400" />
-                    <span>{upcomingDate.locationName}</span>
+                  <div className="flex items-center gap-1.5 bg-black/60 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border border-white/[0.08] text-[11px] sm:text-xs">
+                    <MapPin className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+                    <span className="truncate max-w-[150px] xs:max-w-[200px]">{upcomingDate.locationName}</span>
                   </div>
                 </div>
 
                 {/* Pre-Date Checklist Progress Bar */}
-                <div className="bg-black/60 p-4 rounded-2xl border border-white/[0.08] space-y-2 max-w-xl">
+                <div className="bg-black/60 p-3.5 sm:p-4 rounded-2xl border border-white/[0.08] space-y-2 max-w-xl">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-zinc-300 font-medium flex items-center gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-white" />
-                      Pre-Date Checklist Readiness
+                    <span className="text-zinc-300 font-medium flex items-center gap-1.5 text-[11px] sm:text-xs">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-white shrink-0" />
+                      <span>Pre-Date Readiness</span>
                     </span>
-                    <span className="text-white font-mono font-bold">
+                    <span className="text-white font-mono font-bold text-[11px] sm:text-xs">
                       {completedChecklistCount}/{totalChecklistCount} ({checklistPercent}%)
                     </span>
                   </div>
@@ -145,17 +145,17 @@ export default function HeroCountdown() {
                 </div>
 
                 {/* Actions */}
-                <div className="flex flex-wrap items-center gap-3 pt-1">
+                <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-2.5 sm:gap-3 pt-1">
                   <button
                     onClick={() => setSelectedDate(upcomingDate)}
-                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white hover:bg-zinc-200 text-black font-bold text-xs shadow-lg transition-all hover:scale-[1.01] active:scale-[0.99]"
+                    className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-white hover:bg-zinc-200 text-black font-bold text-xs shadow-lg transition-all hover:scale-[1.01] active:scale-[0.99]"
                   >
                     <span>Open Checklist & Prep</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                   <button
                     onClick={() => setIsRouletteModalOpen(true)}
-                    className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] text-zinc-200 border border-white/[0.1] font-medium text-xs transition-all"
+                    className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] text-zinc-200 border border-white/[0.1] font-medium text-xs transition-all"
                   >
                     <Sparkles className="w-3.5 h-3.5 text-zinc-400" />
                     <span>Spark Idea</span>
@@ -164,55 +164,55 @@ export default function HeroCountdown() {
               </div>
 
               {/* Right Column: Dynamic Countdown Clock Box */}
-              <div className="lg:col-span-5 flex flex-col items-center lg:items-end">
-                <div className="w-full max-w-sm rounded-2xl bg-black/80 border border-white/[0.1] p-6 backdrop-blur-xl shadow-2xl">
-                  <div className="flex items-center justify-between border-b border-white/[0.08] pb-3 mb-4">
+              <div className="lg:col-span-5 flex flex-col items-center lg:items-end w-full">
+                <div className="w-full max-w-sm rounded-2xl bg-black/80 border border-white/[0.1] p-4 sm:p-6 backdrop-blur-xl shadow-2xl">
+                  <div className="flex items-center justify-between border-b border-white/[0.08] pb-2.5 sm:pb-3 mb-3 sm:mb-4">
                     <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-400">
                       Live Countdown
                     </span>
                     <span className="w-2 h-2 rounded-full bg-white animate-ping" />
                   </div>
 
-                  <div className="grid grid-cols-4 gap-2 text-center">
-                    <div className="bg-zinc-900/80 border border-white/[0.08] rounded-xl p-3">
-                      <div className="text-2xl font-bold font-mono text-white">
+                  <div className="grid grid-cols-4 gap-1.5 sm:gap-2 text-center">
+                    <div className="bg-zinc-900/80 border border-white/[0.08] rounded-xl p-2 sm:p-3">
+                      <div className="text-xl sm:text-2xl font-bold font-mono text-white">
                         {String(timeLeft.days).padStart(2, '0')}
                       </div>
-                      <div className="text-[9px] uppercase tracking-wider text-zinc-500 font-medium mt-1">
+                      <div className="text-[8px] sm:text-[9px] uppercase tracking-wider text-zinc-500 font-medium mt-0.5 sm:mt-1">
                         Days
                       </div>
                     </div>
 
-                    <div className="bg-zinc-900/80 border border-white/[0.08] rounded-xl p-3">
-                      <div className="text-2xl font-bold font-mono text-white">
+                    <div className="bg-zinc-900/80 border border-white/[0.08] rounded-xl p-2 sm:p-3">
+                      <div className="text-xl sm:text-2xl font-bold font-mono text-white">
                         {String(timeLeft.hours).padStart(2, '0')}
                       </div>
-                      <div className="text-[9px] uppercase tracking-wider text-zinc-500 font-medium mt-1">
+                      <div className="text-[8px] sm:text-[9px] uppercase tracking-wider text-zinc-500 font-medium mt-0.5 sm:mt-1">
                         Hours
                       </div>
                     </div>
 
-                    <div className="bg-zinc-900/80 border border-white/[0.08] rounded-xl p-3">
-                      <div className="text-2xl font-bold font-mono text-white">
+                    <div className="bg-zinc-900/80 border border-white/[0.08] rounded-xl p-2 sm:p-3">
+                      <div className="text-xl sm:text-2xl font-bold font-mono text-white">
                         {String(timeLeft.minutes).padStart(2, '0')}
                       </div>
-                      <div className="text-[9px] uppercase tracking-wider text-zinc-500 font-medium mt-1">
+                      <div className="text-[8px] sm:text-[9px] uppercase tracking-wider text-zinc-500 font-medium mt-0.5 sm:mt-1">
                         Mins
                       </div>
                     </div>
 
-                    <div className="bg-zinc-900/80 border border-white/[0.08] rounded-xl p-3">
-                      <div className="text-2xl font-bold font-mono text-white">
+                    <div className="bg-zinc-900/80 border border-white/[0.08] rounded-xl p-2 sm:p-3">
+                      <div className="text-xl sm:text-2xl font-bold font-mono text-white">
                         {String(timeLeft.seconds).padStart(2, '0')}
                       </div>
-                      <div className="text-[9px] uppercase tracking-wider text-zinc-500 font-medium mt-1">
+                      <div className="text-[8px] sm:text-[9px] uppercase tracking-wider text-zinc-500 font-medium mt-0.5 sm:mt-1">
                         Secs
                       </div>
                     </div>
                   </div>
 
                   {/* Relationship Snapshot Banner */}
-                  <div className="mt-4 pt-3.5 border-t border-white/[0.08] flex items-center justify-between text-xs text-zinc-400">
+                  <div className="mt-3 sm:mt-4 pt-3 sm:pt-3.5 border-t border-white/[0.08] flex items-center justify-between text-xs text-zinc-400">
                     <div>
                       <span className="text-white font-bold">{completedDatesTotal}</span> Completed
                     </div>
@@ -231,12 +231,12 @@ export default function HeroCountdown() {
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            className="rounded-3xl p-8 sm:p-10 text-center border border-white/[0.08] bg-zinc-950/60 backdrop-blur-xl space-y-4"
+            className="rounded-3xl p-6 sm:p-10 text-center border border-white/[0.08] bg-zinc-950/60 backdrop-blur-xl space-y-4"
           >
             <div className="w-12 h-12 rounded-2xl bg-white text-black p-2.5 mx-auto flex items-center justify-center">
               <Sparkles className="w-6 h-6" />
             </div>
-            <h2 className="text-2xl sm:text-3xl font-bold font-serif text-white">
+            <h2 className="text-xl sm:text-3xl font-bold font-serif text-white">
               {coupleProfile.partner1Name} & {coupleProfile.partner2Name}’s Date Checklist
             </h2>
             <p className="text-zinc-400 text-xs max-w-lg mx-auto font-light">
