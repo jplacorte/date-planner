@@ -67,6 +67,14 @@ export default function DateDetailModal() {
   // Title & Details edit state
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [isEditingDetails, setIsEditingDetails] = useState(false);
+  const [savedFeedback, setSavedFeedback] = useState<string | null>(null);
+
+  const showSavedFeedback = (msg: string) => {
+    setSavedFeedback(msg);
+    setTimeout(() => {
+      setSavedFeedback((prev) => (prev === msg ? null : prev));
+    }, 2500);
+  };
 
   const [editedTitle, setEditedTitle] = useState(selectedDate?.title || '');
   const [editedSubtitle, setEditedSubtitle] = useState(selectedDate?.subtitle || '');
@@ -118,6 +126,7 @@ export default function DateDetailModal() {
       subtitle: editedSubtitle.trim(),
     });
     setIsEditingTitle(false);
+    showSavedFeedback('Date title & tagline saved ✓');
   };
 
   const handleSaveDetails = (e?: React.FormEvent) => {
@@ -144,6 +153,7 @@ export default function DateDetailModal() {
       vibeTags: tags.length > 0 ? tags : selectedDate.vibeTags,
     });
     setIsEditingDetails(false);
+    showSavedFeedback('Date specifications saved ✓');
   };
 
   // Cover photo change state
@@ -198,6 +208,7 @@ export default function DateDetailModal() {
       const res = await uploadImageFile(file);
       updateDateCoverImage(selectedDate.id, res.url);
       setIsChangingCover(false);
+      showSavedFeedback('Cover photo updated ✓');
     } catch (err) {
       console.error('Failed to upload cover photo:', err);
       alert('Could not upload cover image. Please try another image.');
@@ -212,6 +223,7 @@ export default function DateDetailModal() {
     updateDateCoverImage(selectedDate.id, cleanUrl);
     setCustomCoverUrl('');
     setIsChangingCover(false);
+    showSavedFeedback('Cover photo updated ✓');
   };
 
   // Memory photo file upload handler
@@ -229,6 +241,7 @@ export default function DateDetailModal() {
         photos,
         actualCost
       );
+      showSavedFeedback('Photo uploaded to scrapbook ✓');
     } catch (err) {
       console.error('Failed to upload memory photo:', err);
       alert('Could not upload photo. Please try another image.');
@@ -243,6 +256,7 @@ export default function DateDetailModal() {
     if (!newChecklistText.trim()) return;
     addChecklistItem(selectedDate.id, newChecklistText, newChecklistCategory);
     setNewChecklistText('');
+    showSavedFeedback('Checklist item added ✓');
   };
 
   // Itinerary handlers
@@ -258,6 +272,7 @@ export default function DateDetailModal() {
     setNewStepActivity('');
     setNewStepLocation('');
     setNewStepNotes('');
+    showSavedFeedback('Timeline step added ✓');
   };
 
   const startEditStep = (step: ItineraryStep) => {
@@ -279,6 +294,7 @@ export default function DateDetailModal() {
       notes: editStepData.notes.trim() || undefined,
     });
     setEditingStepId(null);
+    showSavedFeedback('Itinerary step saved ✓');
   };
 
   const insertStarterTimeline = () => {
@@ -289,6 +305,7 @@ export default function DateDetailModal() {
       { time: '9:00 PM', activity: 'Sweet Dessert & Evening Stroll', notes: 'Play soundtrack & talk' },
     ];
     defaultSteps.forEach((s) => addItineraryStep(selectedDate.id, s));
+    showSavedFeedback('Starter timeline inserted ✓');
   };
 
   const handleSaveMemory = (e: React.FormEvent) => {
@@ -313,13 +330,14 @@ export default function DateDetailModal() {
       actualCost
     );
     setNewPhotoUrl('');
-    alert('Memory and scrapbook journal saved.');
+    showSavedFeedback('Memories & scrapbook saved ✓');
   };
 
   const handleScheduleChange = (status: DateStatus, dateVal: string, timeVal: string) => {
     setScheduledDate(dateVal);
     setScheduledTime(timeVal);
     updateDateStatus(selectedDate.id, status, dateVal, timeVal);
+    showSavedFeedback('Status & schedule updated ✓');
   };
 
   const mapSearchUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
@@ -340,6 +358,20 @@ export default function DateDetailModal() {
           className="relative w-full max-w-3xl rounded-t-[28px] sm:rounded-3xl overflow-hidden bg-zinc-950 border border-white/[0.1] shadow-2xl my-0 sm:my-auto flex flex-col max-h-[92vh] sm:max-h-[88vh]"
           data-lenis-prevent
         >
+          {/* Real-time Save Feedback Toast */}
+          <AnimatePresence>
+            {savedFeedback && (
+              <motion.div
+                initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                className="absolute top-14 left-1/2 -translate-x-1/2 z-50 px-3.5 py-1.5 rounded-full bg-white text-black text-xs font-bold shadow-2xl flex items-center gap-1.5 border border-white/40 pointer-events-none"
+              >
+                <CheckCircle2 className="w-3.5 h-3.5 text-black" />
+                <span>{savedFeedback}</span>
+              </motion.div>
+            )}
+          </AnimatePresence>
           {/* Header Cover Banner */}
           <div className="relative h-48 sm:h-64 w-full shrink-0">
             <img
