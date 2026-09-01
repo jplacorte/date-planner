@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   X, 
@@ -81,13 +81,21 @@ export default function DateDetailModal() {
   const [editedBestTimeOfDay, setEditedBestTimeOfDay] = useState<TimeOfDay>(selectedDate?.bestTimeOfDay || 'sunset');
   const [editedVibeTags, setEditedVibeTags] = useState(selectedDate?.vibeTags?.join(', ') || '');
 
-  useEffect(() => {
-    if (selectedDate) {
+  const handleOpenEditTitle = () => {
+    if (!selectedDate) return;
+    setEditedTitle(selectedDate.title);
+    setEditedSubtitle(selectedDate.subtitle || '');
+    setIsEditingTitle(true);
+  };
+
+  const handleToggleEditDetails = () => {
+    if (!selectedDate) return;
+    if (!isEditingDetails) {
       setEditedTitle(selectedDate.title);
       setEditedSubtitle(selectedDate.subtitle || '');
       setEditedDescription(selectedDate.description || '');
       setEditedCategory(selectedDate.category);
-      setEditedEstimatedCost(selectedDate.estimatedCost || '₱₱');
+      setEditedEstimatedCost(selectedDate.estimatedCost);
       setEditedDuration(selectedDate.duration || '2-3 hours');
       setEditedDressCode(selectedDate.dressCode || 'Smart Casual');
       setEditedLocationName(selectedDate.locationName || '');
@@ -95,10 +103,11 @@ export default function DateDetailModal() {
       setEditedSetting(selectedDate.setting || 'indoor');
       setEditedBestTimeOfDay(selectedDate.bestTimeOfDay || 'sunset');
       setEditedVibeTags(selectedDate.vibeTags?.join(', ') || '');
-      setIsEditingTitle(false);
+      setIsEditingDetails(true);
+    } else {
       setIsEditingDetails(false);
     }
-  }, [selectedDate?.id]);
+  };
 
   const handleSaveTitle = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -547,7 +556,7 @@ export default function DateDetailModal() {
 
                     <button
                       type="button"
-                      onClick={() => setIsEditingTitle(true)}
+                      onClick={handleOpenEditTitle}
                       className="p-1.5 px-2.5 rounded-xl bg-black/80 hover:bg-white text-zinc-300 hover:text-black border border-white/15 transition-all shadow-md shrink-0 flex items-center gap-1 text-[11px] font-semibold"
                       title="Edit Date Title"
                     >
@@ -1006,7 +1015,7 @@ export default function DateDetailModal() {
                   </span>
                   <button
                     type="button"
-                    onClick={() => setIsEditingDetails(!isEditingDetails)}
+                    onClick={handleToggleEditDetails}
                     className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white/[0.08] hover:bg-white text-zinc-200 hover:text-black border border-white/10 text-xs font-semibold transition-all shadow-sm"
                   >
                     <Edit3 className="w-3.5 h-3.5" />
