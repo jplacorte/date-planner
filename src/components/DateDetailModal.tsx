@@ -1480,9 +1480,9 @@ export default function DateDetailModal() {
                   {/* Photo Arranger Grid */}
                   {selectedDate.memoriesPhotos && selectedDate.memoriesPhotos.length > 0 ? (
                     <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 gap-3 pt-1">
-                      {selectedDate.memoriesPhotos.map((photo, idx) => {
+                      {selectedDate.memoriesPhotos.map((photo, idx, arr) => {
                         const isFirst = idx === 0;
-                        const isLast = idx === (selectedDate.memoriesPhotos?.length || 0) - 1;
+                        const isLast = idx === arr.length - 1;
                         const isDragging = draggedPhotoIdx === idx;
                         const isDragOver = dragOverPhotoIdx === idx;
 
@@ -1608,7 +1608,7 @@ export default function DateDetailModal() {
                               </button>
 
                               <span className="text-[10px] font-mono text-zinc-500 font-semibold px-1">
-                                {idx + 1}/{selectedDate.memoriesPhotos.length}
+                                {idx + 1}/{arr.length}
                               </span>
 
                               <button
