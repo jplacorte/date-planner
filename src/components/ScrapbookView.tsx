@@ -85,9 +85,20 @@ export default function ScrapbookView() {
                       className="w-full h-full object-cover group-hover:scale-105 transition-all duration-500"
                     />
                     
-                    {/* Top Heart Badge */}
-                    <div className="absolute top-2 right-2 p-1.5 rounded-full bg-black/80 backdrop-blur-md">
-                      <Heart className="w-3.5 h-3.5 text-white fill-white" />
+                    {/* Top Badges */}
+                    <div className="absolute top-2 left-2 right-2 flex items-center justify-between pointer-events-none">
+                      {date.memoriesPhotos && date.memoriesPhotos.length > 1 ? (
+                        <div className="px-2 py-0.5 rounded-full bg-black/80 backdrop-blur-md text-[10px] font-mono font-bold text-white flex items-center gap-1 border border-white/10 shadow">
+                          <Camera className="w-2.5 h-2.5" />
+                          <span>{date.memoriesPhotos.length} photos</span>
+                        </div>
+                      ) : (
+                        <span />
+                      )}
+
+                      <div className="p-1.5 rounded-full bg-black/80 backdrop-blur-md shadow">
+                        <Heart className="w-3.5 h-3.5 text-white fill-white" />
+                      </div>
                     </div>
 
                     {/* Date Stamp */}
@@ -101,6 +112,25 @@ export default function ScrapbookView() {
                       </div>
                     )}
                   </div>
+
+                  {/* Multi-Photo Preview Strip */}
+                  {date.memoriesPhotos && date.memoriesPhotos.length > 1 && (
+                    <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pt-0.5">
+                      {date.memoriesPhotos.map((p, pIdx) => (
+                        <div 
+                          key={pIdx}
+                          className={`relative w-8 h-8 rounded-lg overflow-hidden shrink-0 border transition-all ${
+                            pIdx === 0 ? 'border-white ring-1 ring-white/40' : 'border-white/20 opacity-70 group-hover:opacity-100'
+                          }`}
+                        >
+                          <img src={p} alt={`Thumb ${pIdx + 1}`} className="w-full h-full object-cover" />
+                          {pIdx === 0 && (
+                            <div className="absolute inset-0 bg-white/10" />
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
 
                   {/* Caption Area */}
                   <div className="space-y-1.5 px-0.5">
