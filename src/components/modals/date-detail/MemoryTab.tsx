@@ -272,7 +272,7 @@ export default function MemoryTab({
                               e.stopPropagation();
                               handleSetFeaturedPhoto(idx);
                             }}
-                            className="px-2 py-1 rounded-lg bg-accent hover:bg-accent-deep text-white text-[10px] font-bold flex items-center gap-1 shadow"
+                            className="px-2 py-1 rounded-lg bg-white hover:bg-zinc-200 text-zinc-950 text-[10px] font-bold flex items-center gap-1 shadow"
                             title="Set as #1 Scrapbook Hero"
                           >
                             <Star className="w-3 h-3 fill-current" />
@@ -299,7 +299,7 @@ export default function MemoryTab({
                           e.stopPropagation();
                           handleRemoveMemoryPhoto(idx);
                         }}
-                        className="px-2.5 py-0.5 rounded-md bg-accent/90 hover:bg-accent text-white text-[10px] font-semibold flex items-center gap-1 transition-colors mt-0.5"
+                        className="px-2.5 py-0.5 rounded-md bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-[10px] font-semibold flex items-center gap-1 transition-colors mt-0.5 border border-white/10"
                       >
                         <Trash2 className="w-3 h-3" />
                         <span>Remove</span>
@@ -382,7 +382,7 @@ export default function MemoryTab({
 
       <button
         type="submit"
-        className="w-full py-3 rounded-xl bg-accent hover:bg-accent-deep text-white font-bold text-xs transition-all shadow-md"
+        className="w-full py-3 rounded-xl bg-white hover:bg-zinc-200 text-zinc-950 font-bold text-xs transition-all shadow-md"
       >
         Save Memories & Update Scrapbook
       </button>

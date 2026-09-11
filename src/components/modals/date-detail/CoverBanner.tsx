@@ -178,7 +178,7 @@ export default function CoverBanner({
           <button
             type="button"
             onClick={() => coverFileInputRef.current?.click()}
-            className="w-full flex items-center justify-center gap-2 py-2 rounded-xl bg-accent hover:bg-accent-deep text-white text-xs font-semibold shadow-md transition-all"
+            className="w-full flex items-center justify-center gap-2 py-2 rounded-xl bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-semibold shadow-md transition-all"
           >
             <Upload className="w-3.5 h-3.5" />
             <span>{isUploadingCover ? 'Uploading...' : 'Upload from Device'}</span>
@@ -289,7 +289,7 @@ export default function CoverBanner({
           </button>
           <button
             type="submit"
-            className="px-4 py-1 rounded-xl bg-accent hover:bg-accent-deep text-white text-xs font-semibold"
+            className="px-4 py-1 rounded-xl bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-semibold"
           >
             Save
           </button>
@@ -298,7 +298,7 @@ export default function CoverBanner({
     ) : (
       <>
         <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-          <span className="px-2 py-0.5 rounded-full bg-accent text-white text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.12em]">
+          <span className="px-2 py-0.5 rounded-full bg-white text-zinc-950 text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.12em]">
             {selectedDate.category}
           </span>
           <span className="px-2 py-0.5 rounded-md bg-black/80 border border-white/[0.1] text-white font-mono text-[10px] sm:text-xs font-bold">

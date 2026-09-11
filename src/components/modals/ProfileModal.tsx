@@ -136,7 +136,7 @@ export default function ProfileModal() {
 
             <button
               type="submit"
-              className="w-full py-2.5 rounded-xl bg-accent hover:bg-accent-deep text-white font-bold text-xs shadow-lg transition-all"
+              className="w-full py-2.5 rounded-xl bg-white hover:bg-zinc-200 text-zinc-950 font-bold text-xs shadow-lg transition-all"
             >
               Save Profile
             </button>

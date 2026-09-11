@@ -1,102 +1,96 @@
 @import "tailwindcss";
 
 /* ===========================================================================
-   WARM EDITORIAL MINIMALISM
+   LUXURY MONOCHROME / BLACK & WHITE DESIGN SYSTEM
    ---------------------------------------------------------------------------
-   The app is written against Tailwind's `zinc` / `white` / `black` utilities.
-   Rather than rewrite every class name, the scales themselves are redefined
-   here as a warm ramp, so `bg-zinc-900` or `text-white` resolve to tactile
-   neutrals everywhere at once. Pure #000/#FFF never render.
+   High-contrast, timeless black and white aesthetic. Pure blacks (#000000),
+   obsidian panels, sharp grayscale gradations, and luminous pure white accents.
    =========================================================================== */
 
 @theme {
   --font-sans: var(--font-sans), system-ui, -apple-system, sans-serif;
   --font-serif: var(--font-serif), Georgia, "Times New Roman", serif;
 
-  /* Warm monochrome ramp — replaces Tailwind's blue-leaning zinc */
-  --color-zinc-50: #faf8f5;   /* cream    */
-  --color-zinc-100: #f3efea;  /* linen    */
-  --color-zinc-200: #e7e1d9;  /* parchment*/
-  --color-zinc-300: #d3cabf;
-  --color-zinc-400: #a9a099;  /* metadata */
-  --color-zinc-500: #8a817a;
-  --color-zinc-600: #6d645d;
-  --color-zinc-700: #4d463f;
-  --color-zinc-800: #35302b;
-  --color-zinc-900: #241f1c;  /* panel    */
-  --color-zinc-950: #17130f;  /* espresso */
+  /* True grayscale ramp — crisp neutral tones without color tint */
+  --color-zinc-50: #fafafa;
+  --color-zinc-100: #f4f4f5;
+  --color-zinc-200: #e4e4e7;
+  --color-zinc-300: #d4d4d8;
+  --color-zinc-400: #a1a1aa;
+  --color-zinc-500: #71717a;
+  --color-zinc-600: #52525b;
+  --color-zinc-700: #3f3f46;
+  --color-zinc-800: #27272a;
+  --color-zinc-900: #18181b;
+  --color-zinc-950: #09090b;
 
-  /* `neutral` is used in a handful of spots; keep it on the same ramp */
-  --color-neutral-50: #faf8f5;
-  --color-neutral-100: #f3efea;
-  --color-neutral-200: #e7e1d9;
-  --color-neutral-300: #d3cabf;
-  --color-neutral-400: #a9a099;
-  --color-neutral-500: #8a817a;
-  --color-neutral-600: #6d645d;
-  --color-neutral-700: #4d463f;
-  --color-neutral-800: #35302b;
-  --color-neutral-900: #241f1c;
-  --color-neutral-950: #17130f;
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f4f4f5;
+  --color-neutral-200: #e4e4e7;
+  --color-neutral-300: #d4d4d8;
+  --color-neutral-400: #a1a1aa;
+  --color-neutral-500: #71717a;
+  --color-neutral-600: #52525b;
+  --color-neutral-700: #3f3f46;
+  --color-neutral-800: #27272a;
+  --color-neutral-900: #18181b;
+  --color-neutral-950: #09090b;
 
-  /* Deep ink and warm cream stand in for pure black and white */
-  --color-white: #faf8f5;
-  --color-black: #141211;
+  /* Pure black and white */
+  --color-white: #ffffff;
+  --color-black: #000000;
 
   /* Editorial semantics */
-  --color-ink: #1e1c1a;
-  --color-cream: #faf8f5;
-  --color-linen: #f3efea;
-  --color-parchment: #e7e1d9;
-  --color-stone: #78716c;
-  --color-espresso: #141211;
-  --color-charcoal: #1c1a18;
+  --color-ink: #000000;
+  --color-cream: #ffffff;
+  --color-linen: #f4f4f5;
+  --color-parchment: #e4e4e7;
+  --color-stone: #71717a;
+  --color-espresso: #000000;
+  --color-charcoal: #09090b;
 
-  /* Single accent, used sparingly for active states and highlights */
-  --color-accent: #c86d51;        /* terracotta */
-  --color-accent-soft: #e0947c;
-  --color-accent-deep: #a3543c;
-  --color-sage: #6b7a68;          /* olive sage, secondary signal */
-  --color-champagne: #d4af37;     /* milestones only */
+  /* Monochrome accent system: crisp whites and platinum tones */
+  --color-accent: #ffffff;
+  --color-accent-soft: #f4f4f5;
+  --color-accent-deep: #e4e4e7;
+  --color-sage: #a1a1aa;
+  --color-champagne: #ffffff;
 
-  /* Warm rust for errors — red without the Valentine's glare */
-  --color-red-300: #e5a08c;
-  --color-red-400: #d98268;
-  --color-red-500: #c05f42;
-  --color-red-900: #4a2318;
-  --color-red-950: #2c150e;
+  /* Minimal grayscale signals */
+  --color-red-300: #fca5a5;
+  --color-red-400: #f87171;
+  --color-red-500: #ef4444;
+  --color-red-900: #450a0a;
+  --color-red-950: #2a0808;
 
-  /* Amber softened to champagne, reserved for milestones */
-  --color-amber-200: #e6cd8a;
-  --color-amber-300: #d4af37;
-  --color-amber-400: #c39f2f;
+  --color-amber-200: #fef08a;
+  --color-amber-300: #fde047;
+  --color-amber-400: #facc15;
 
-  /* Rose is retired. Nothing references it, but the aliases stay so any
-     stray `rose-*` class lands on terracotta rather than hot pink. */
-  --color-rose-200: #e9b5a3;
-  --color-rose-300: #e0947c;
-  --color-rose-400: #c86d51;
-  --color-rose-500: #c86d51;
-  --color-rose-600: #a3543c;
+  --color-rose-200: #e4e4e7;
+  --color-rose-300: #f4f4f5;
+  --color-rose-400: #ffffff;
+  --color-rose-500: #ffffff;
+  --color-rose-600: #e4e4e7;
 }
 
 /* ---------------------------------------------------------------------------
-   Ambient mood themes — warm atmospheres rather than cold gradients
+   Ambient mood themes — sleek black-and-white atmospheres
    --------------------------------------------------------------------------- */
 html[data-theme="dusk"] body {
-  background: radial-gradient(circle at 50% 0%, #221d1a 0%, #17130f 55%, #0e0b09 100%);
+  background: radial-gradient(circle at 50% 0%, #1c1c1f 0%, #09090b 60%, #000000 100%);
 }
 
 html[data-theme="candlelight"] body {
-  background: radial-gradient(circle at 50% 0%, #2a211a 0%, #1a1410 55%, #0d0a08 100%);
+  background: radial-gradient(circle at 50% 0%, #222226 0%, #0c0c0e 60%, #000000 100%);
 }
 
 html[data-theme="midnight"] body {
-  background: radial-gradient(circle at 50% 0%, #1b1917 0%, #110f0d 60%, #080706 100%);
+  background: #000000;
 }
 
 html[data-theme="dawn"] body {
-  background: radial-gradient(circle at 50% 0%, #2e2823 0%, #1d1916 60%, #100d0b 100%);
+  background: radial-gradient(circle at 50% 0%, #27272a 0%, #121214 60%, #000000 100%);
 }
 
 /* ---------------------------------------------------------------------------
@@ -109,18 +103,18 @@ html {
 }
 
 body {
-  color: var(--color-linen);
+  color: #f4f4f5;
   font-family: var(--font-sans);
   min-height: 100vh;
   min-height: 100dvh;
-  background-color: var(--color-espresso);
+  background-color: #000000;
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior-y: none;
 }
 
 ::selection {
-  background: rgba(200, 109, 81, 0.28);
-  color: var(--color-cream);
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
 }
 
 /* Editorial display type: high-contrast serif for titles and captions */
@@ -163,7 +157,7 @@ body {
 }
 
 /* ---------------------------------------------------------------------------
-   Warm scrollbar
+   Monochrome scrollbar
    --------------------------------------------------------------------------- */
 ::-webkit-scrollbar {
   width: 6px;
@@ -171,59 +165,47 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-espresso);
+  background: #000000;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #35302b;
+  background: #27272a;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #6d645d;
+  background: #3f3f46;
 }
 
 /* ---------------------------------------------------------------------------
-   Surfaces — 1px hairlines over warm panels
+   Surfaces — 1px hairlines over sleek monochrome panels
    --------------------------------------------------------------------------- */
 .hairline-border {
-  border-color: rgba(250, 248, 245, 0.08);
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
 .hairline-border-hover:hover {
-  border-color: rgba(250, 248, 245, 0.2);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
-.warm-panel {
-  background: rgba(29, 25, 22, 0.72);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(250, 248, 245, 0.08);
-}
-
-.warm-card {
-  background: rgba(36, 31, 28, 0.45);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(250, 248, 245, 0.06);
-}
-
-/* Legacy aliases from the monochrome system */
+.warm-panel,
 .mono-panel {
-  background: rgba(29, 25, 22, 0.72);
+  background: rgba(18, 18, 20, 0.78);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(250, 248, 245, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
+
+.warm-card,
 .mono-card {
-  background: rgba(36, 31, 28, 0.45);
+  background: rgba(24, 24, 27, 0.55);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(250, 248, 245, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* ---------------------------------------------------------------------------
-   Chips — borderless vibe/budget/energy tags with a soft tint fill
+   Chips — borderless tags with high-contrast grayscale fill
    --------------------------------------------------------------------------- */
 .chip {
   display: inline-flex;
@@ -231,8 +213,8 @@ body {
   gap: 0.3rem;
   padding: 0.16rem 0.55rem;
   border-radius: 9999px;
-  background: rgba(231, 225, 217, 0.07);
-  color: #c5bcb2;
+  background: rgba(255, 255, 255, 0.06);
+  color: #d4d4d8;
   font-size: 10px;
   line-height: 1.5;
   font-weight: 500;
@@ -241,47 +223,47 @@ body {
 }
 
 .chip-accent {
-  background: rgba(200, 109, 81, 0.14);
-  color: var(--color-accent-soft);
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
 }
 
-/* Compact, icon-first action pill — never a bulky coloured CTA */
+/* Compact, icon-first action pill — monochrome style */
 .pill-action {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
   padding: 0.25rem 0.6rem;
   border-radius: 9999px;
-  border: 1px solid rgba(250, 248, 245, 0.1);
-  background: rgba(250, 248, 245, 0.04);
-  color: #c5bcb2;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: #d4d4d8;
   font-size: 10.5px;
   font-weight: 600;
   transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
 
 .pill-action:hover {
-  color: var(--color-cream);
-  border-color: rgba(200, 109, 81, 0.45);
-  background: rgba(200, 109, 81, 0.1);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* ---------------------------------------------------------------------------
-   Itinerary timeline — a single hairline connecting time-stamped nodes
+   Itinerary timeline — crisp monochrome rail
    --------------------------------------------------------------------------- */
 .timeline-rail {
-  border-left: 1px solid rgba(250, 248, 245, 0.12);
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-/* The stop happening right now gets a quiet warm outline */
+/* The stop happening right now gets a luminous outline */
 .timeline-active {
-  border-color: rgba(200, 109, 81, 0.5) !important;
-  box-shadow: 0 0 0 1px rgba(200, 109, 81, 0.16);
+  border-color: #ffffff !important;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25);
 }
 
 /* Stops already behind you recede rather than disappear */
 .timeline-past {
-  opacity: 0.5;
+  opacity: 0.45;
 }
 
 /* ---------------------------------------------------------------------------

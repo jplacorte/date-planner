@@ -226,7 +226,7 @@ export default function DateRouletteModal() {
             <button
               onClick={spinRoulette}
               disabled={isSpinning || candidates.length === 0}
-              className="flex-1 py-3 rounded-xl bg-accent hover:bg-accent-deep disabled:opacity-50 text-white font-semibold text-xs shadow-lg flex items-center justify-center gap-2 transition-all"
+              className="flex-1 py-3 rounded-xl bg-white hover:bg-zinc-200 disabled:opacity-50 text-zinc-950 font-bold text-xs shadow-lg flex items-center justify-center gap-2 transition-all"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isSpinning ? 'animate-spin' : ''}`} />
               <span>{isSpinning ? 'Selecting...' : 'Spin the Spark Wheel'}</span>

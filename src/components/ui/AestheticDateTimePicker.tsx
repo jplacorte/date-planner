@@ -241,15 +241,15 @@ export function AestheticDatePicker({
                     onClick={() => handleSelectDay(dayNum)}
                     className={`h-8 rounded-xl text-[11px] font-mono font-medium flex items-center justify-center transition-all relative ${
                       isSelected
-                        ? 'bg-accent text-white font-semibold shadow-lg scale-105 z-10 ring-2 ring-accent/40'
+                        ? 'bg-white text-zinc-950 font-bold shadow-lg scale-105 z-10 ring-2 ring-white/40'
                         : isToday
                         ? 'border border-white/25 text-zinc-100 hover:bg-white/10'
-                        : 'text-zinc-300 hover:bg-white/10 hover:text-zinc-50'
+                        : 'text-zinc-300 hover:bg-white/10 hover:text-white'
                     }`}
                   >
                     {dayNum}
                     {isToday && !isSelected && (
-                      <span className="absolute bottom-1 w-1 h-1 rounded-full bg-accent" />
+                      <span className="absolute bottom-1 w-1 h-1 rounded-full bg-white" />
                     )}
                   </button>
                 );
@@ -509,7 +509,7 @@ export function AestheticTimePicker({
                 <button
                   type="button"
                   onClick={handleApplyCustomTime}
-                  className="px-3 py-1.5 rounded-xl bg-accent hover:bg-accent-deep text-white text-xs font-semibold transition-all shadow shrink-0"
+                  className="px-3 py-1.5 rounded-xl bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-semibold transition-all shadow shrink-0"
                 >
                   Set
                 </button>

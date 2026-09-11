@@ -200,9 +200,8 @@ export const DateProvider = ({ children }: { children: ReactNode }) => {
       particleCount: 80,
       spread: 70,
       origin: { y: 0.6 },
-      // Terracotta, champagne and sage confetti — celebratory without the
-      // Valentine's glare of hot pink and electric purple.
-      colors: ['#C86D51', '#E0947C', '#D4AF37', '#6B7A68', '#E7E1D9'],
+      // Monochrome confetti: silver, platinum, white and crisp dark slate
+      colors: ['#FFFFFF', '#F4F4F5', '#E4E4E7', '#A1A1AA', '#71717A', '#18181B'],
     });
   }, []);
 

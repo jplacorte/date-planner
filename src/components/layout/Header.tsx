@@ -96,15 +96,15 @@ export default function Header() {
               className="group flex items-center gap-2 sm:gap-3 text-left p-1 rounded-2xl hover:bg-white/[0.04] transition-all min-w-0"
             >
               <div className="relative shrink-0">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-accent/12 border border-accent/30 flex items-center justify-center">
-                  <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent fill-accent transition-transform group-hover:scale-110" />
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/[0.08] border border-white/20 flex items-center justify-center">
+                  <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white fill-white transition-transform group-hover:scale-110" />
                 </div>
-                <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-sage border-2 border-zinc-950" />
+                <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-white border-2 border-zinc-950" />
               </div>
 
               <div className="min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-sm sm:text-lg font-display font-medium tracking-tight text-zinc-50 group-hover:text-white transition-colors truncate max-w-[120px] xs:max-w-[160px] sm:max-w-none">
+                  <span className="text-sm sm:text-lg font-display font-medium tracking-tight text-white group-hover:text-zinc-200 transition-colors truncate max-w-[120px] xs:max-w-[160px] sm:max-w-none">
                     {coupleProfile.partner1Name} & {coupleProfile.partner2Name}
                   </span>
                 </div>
@@ -121,8 +121,8 @@ export default function Header() {
               onClick={() => setActiveTab('checklist')}
               className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all whitespace-nowrap shrink-0 ${
                 activeTab === 'checklist'
-                  ? 'bg-accent/15 text-accent-soft'
-                  : 'text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.04]'
+                  ? 'bg-white/15 text-white'
+                  : 'text-zinc-400 hover:text-white hover:bg-white/[0.04]'
               }`}
             >
               <ListChecks className="w-3.5 h-3.5 shrink-0" />
@@ -132,8 +132,8 @@ export default function Header() {
               onClick={() => setActiveTab('map')}
               className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all whitespace-nowrap shrink-0 ${
                 activeTab === 'map'
-                  ? 'bg-accent/15 text-accent-soft'
-                  : 'text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.04]'
+                  ? 'bg-white/15 text-white'
+                  : 'text-zinc-400 hover:text-white hover:bg-white/[0.04]'
               }`}
             >
               <MapPin className="w-3.5 h-3.5 shrink-0" />
@@ -143,8 +143,8 @@ export default function Header() {
               onClick={() => setActiveTab('scrapbook')}
               className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all whitespace-nowrap shrink-0 ${
                 activeTab === 'scrapbook'
-                  ? 'bg-accent/15 text-accent-soft'
-                  : 'text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.04]'
+                  ? 'bg-white/15 text-white'
+                  : 'text-zinc-400 hover:text-white hover:bg-white/[0.04]'
               }`}
             >
               <BookHeart className="w-3.5 h-3.5 shrink-0" />
@@ -169,7 +169,7 @@ export default function Header() {
             {/* Plan Custom Date Button */}
             <button
               onClick={() => setIsCreateModalOpen(true)}
-              className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-full bg-accent hover:bg-accent-deep text-white text-xs font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap shrink-0 shadow-sm"
+              className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-full bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap shrink-0 shadow-sm"
             >
               <Plus className="w-3.5 h-3.5 shrink-0 stroke-[2.5]" />
               <span className="hidden xs:inline">New Date</span>

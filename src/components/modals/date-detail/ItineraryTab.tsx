@@ -288,7 +288,7 @@ export default function ItineraryTab({
 
         <button
           type="submit"
-          className="w-full py-2 rounded-xl bg-accent/90 text-white font-semibold text-xs hover:bg-accent transition-all flex items-center justify-center gap-1.5"
+          className="w-full py-2 rounded-xl bg-white text-zinc-950 font-semibold text-xs hover:bg-zinc-200 transition-all flex items-center justify-center gap-1.5"
         >
           <Plus className="w-3.5 h-3.5" />
           <span>Add Step to Timeline</span>
@@ -313,10 +313,10 @@ export default function ItineraryTab({
                   onClick={() => toggleItineraryStep(selectedDate.id, step.id)}
                   className={`absolute -left-[8px] top-3.5 w-[15px] h-[15px] rounded-full border transition-all flex items-center justify-center ${
                     step.completed
-                      ? 'bg-accent border-accent text-white'
+                      ? 'bg-white border-white text-zinc-950'
                       : isActive
-                        ? 'bg-zinc-950 border-accent'
-                        : 'bg-zinc-950 border-white/25 hover:border-accent/60'
+                        ? 'bg-zinc-950 border-white ring-2 ring-white/30'
+                        : 'bg-zinc-950 border-white/25 hover:border-white/60'
                   }`}
                   title="Toggle Completed"
                 >
@@ -382,7 +382,7 @@ export default function ItineraryTab({
                       <button
                         type="button"
                         onClick={() => handleSaveStepEdit(step.id)}
-                        className="px-4 py-1 rounded-full bg-accent/90 text-white text-xs font-semibold hover:bg-accent transition-colors"
+                        className="px-4 py-1 rounded-full bg-white text-zinc-950 text-xs font-semibold hover:bg-zinc-200 transition-colors"
                       >
                         Save Step
                       </button>

@@ -428,7 +428,7 @@ export default function CreateDateModal() {
                 <button
                   type="button"
                   onClick={handleAddChecklist}
-                  className="px-3.5 py-1.5 rounded-xl bg-accent hover:bg-accent-deep text-white text-xs font-semibold"
+                  className="px-3.5 py-1.5 rounded-xl bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-semibold"
                 >
                   Add Step
                 </button>
@@ -483,7 +483,7 @@ export default function CreateDateModal() {
                 <button
                   type="button"
                   onClick={handleAddItineraryStep}
-                  className="sm:col-span-3 flex items-center justify-center gap-1 py-1.5 rounded-xl bg-accent hover:bg-accent-deep text-white text-xs font-semibold"
+                  className="sm:col-span-3 flex items-center justify-center gap-1 py-1.5 rounded-xl bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-semibold"
                 >
                   <Plus className="w-3 h-3" />
                   <span>Add Step</span>
@@ -493,7 +493,7 @@ export default function CreateDateModal() {
 
             <button
               type="submit"
-              className="w-full py-3.5 rounded-xl bg-accent hover:bg-accent-deep text-white font-bold text-xs shadow-lg transition-all hover:scale-[1.01] active:scale-[0.99]"
+              className="w-full py-3.5 rounded-xl bg-white hover:bg-zinc-200 text-zinc-950 font-bold text-xs shadow-lg transition-all hover:scale-[1.01] active:scale-[0.99]"
             >
               Save & Add Date Idea
             </button>

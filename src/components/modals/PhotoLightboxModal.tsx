@@ -107,7 +107,7 @@ function PhotoLightboxModalContent({
               {currentIndex + 1} / {photos.length}
             </span>
             {isFirst && (
-              <span className="px-2 py-0.5 rounded-full bg-accent text-white text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.12em] flex items-center gap-1 shadow">
+              <span className="px-2 py-0.5 rounded-full bg-white text-zinc-950 text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.12em] flex items-center gap-1 shadow">
                 <Star className="w-2.5 h-2.5 fill-current" />
                 <span>Featured Hero</span>
               </span>

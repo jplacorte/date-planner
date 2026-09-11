@@ -147,7 +147,7 @@ export default function HeroCountdown() {
                 <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-2.5 sm:gap-3 pt-1">
                   <button
                     onClick={() => setSelectedDate(upcomingDate)}
-                    className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-accent hover:bg-accent-deep text-white font-semibold text-xs shadow-lg transition-all hover:scale-[1.01] active:scale-[0.99]"
+                    className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-white hover:bg-zinc-200 text-zinc-950 font-semibold text-xs shadow-lg transition-all hover:scale-[1.01] active:scale-[0.99]"
                   >
                     <span>Open the plan</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -244,7 +244,7 @@ export default function HeroCountdown() {
             <div className="flex flex-wrap justify-center gap-3 pt-2">
               <button
                 onClick={() => setIsCreateModalOpen(true)}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent hover:bg-accent-deep text-white font-semibold text-xs shadow-md transition-all"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white hover:bg-zinc-200 text-zinc-950 font-semibold text-xs shadow-md transition-all"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Plan First Date</span>

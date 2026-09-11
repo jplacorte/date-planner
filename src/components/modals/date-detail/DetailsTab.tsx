@@ -222,7 +222,7 @@ export default function DetailsTab({ selectedDate, editor }: DetailsTabProps) {
             </button>
             <button
               type="submit"
-              className="px-5 py-2 rounded-xl bg-accent hover:bg-accent-deep text-white text-xs font-semibold transition-all shadow-md"
+              className="px-5 py-2 rounded-xl bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-semibold transition-all shadow-md"
             >
               Save Changes
             </button>
@@ -256,7 +256,7 @@ export default function DetailsTab({ selectedDate, editor }: DetailsTabProps) {
                 href={mapSearchUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-accent hover:bg-accent-deep text-white text-xs font-semibold transition-colors"
+                className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-semibold transition-colors"
               >
                 <span>Directions</span>
                 <ExternalLink className="w-3 h-3" />

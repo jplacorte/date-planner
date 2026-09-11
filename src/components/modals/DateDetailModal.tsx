@@ -148,7 +148,7 @@ function DateDetailModalContent({ selectedDate }: { selectedDate: DateIdea }) {
             <button
               type="button"
               onClick={handleCloseModal}
-              className="px-5 py-2 rounded-full bg-accent hover:bg-accent-deep text-white text-xs font-semibold transition-colors shadow-md"
+              className="px-5 py-2 rounded-full bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-semibold transition-colors shadow-md"
             >
               Done
             </button>

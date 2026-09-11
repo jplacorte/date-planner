@@ -67,7 +67,7 @@ export default function MobileNav() {
           <div className="flex items-center justify-center px-1">
             <button
               onClick={() => setIsCreateModalOpen(true)}
-              className="flex items-center justify-center w-10 h-10 rounded-xl bg-accent text-white font-semibold shadow-lg hover:scale-105 active:scale-95 transition-all"
+              className="flex items-center justify-center w-10 h-10 rounded-xl bg-white text-zinc-950 font-semibold shadow-lg hover:bg-zinc-200 hover:scale-105 active:scale-95 transition-all"
               title="Add New Date"
             >
               <Plus className="w-5 h-5 stroke-[2.5]" />

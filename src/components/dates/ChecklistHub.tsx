@@ -112,14 +112,14 @@ export default function ChecklistHub() {
                   : 'bg-white/[0.04] text-zinc-400 border-white/[0.08] hover:text-white hover:bg-white/[0.08]'
               }`}
             >
-              <Heart className={`w-3.5 h-3.5 ${filterState.favoritesOnly ? 'fill-accent text-accent' : ''}`} />
+              <Heart className={`w-3.5 h-3.5 ${filterState.favoritesOnly ? 'fill-white text-white' : ''}`} />
               <span>Favorites</span>
             </button>
 
             {/* Plan Date CTA */}
             <button
               onClick={() => setIsCreateModalOpen(true)}
-              className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl bg-accent hover:bg-accent-deep text-white text-xs font-bold transition-all shrink-0"
+              className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-bold transition-all shrink-0"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add Idea</span>
@@ -254,7 +254,7 @@ export default function ChecklistHub() {
           <div className="flex justify-center gap-3 pt-2">
             <button
               onClick={() => setIsCreateModalOpen(true)}
-              className="px-4 py-2 rounded-xl bg-accent hover:bg-accent-deep text-white text-xs font-semibold shadow-md transition-all"
+              className="px-4 py-2 rounded-xl bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-semibold shadow-md transition-all"
             >
               + Plan New Date
             </button>

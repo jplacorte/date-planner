@@ -54,7 +54,7 @@ export default function ChecklistTab({
         </div>
         <div className="w-full bg-white/[0.07] h-[3px] rounded-full overflow-hidden">
           <div
-            className="h-full bg-accent transition-all duration-300"
+            className="h-full bg-white transition-all duration-300"
             style={{ width: `${progressPercent}%` }}
           />
         </div>
@@ -67,12 +67,12 @@ export default function ChecklistTab({
           placeholder="Outfit detail, reservation task, something to pack..."
           value={newChecklistText}
           onChange={(e) => setNewChecklistText(e.target.value)}
-          className="flex-1 bg-white/[0.03] border border-white/[0.09] rounded-full px-4 py-2 text-xs sm:text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-accent/50 transition-colors"
+          className="flex-1 bg-white/[0.03] border border-white/[0.09] rounded-full px-4 py-2 text-xs sm:text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-white/40 transition-colors"
         />
         <select
           value={newChecklistCategory}
           onChange={(e) => setNewChecklistCategory(e.target.value as 'prep' | 'outfit' | 'booking' | 'custom')}
-          className="bg-white/[0.03] border border-white/[0.09] rounded-full px-3 py-2 text-xs text-zinc-300 focus:outline-none focus:border-accent/50"
+          className="bg-white/[0.03] border border-white/[0.09] rounded-full px-3 py-2 text-xs text-zinc-300 focus:outline-none focus:border-white/40"
         >
           <option value="custom" className="bg-zinc-950">Custom</option>
           <option value="prep" className="bg-zinc-950">Prep</option>
@@ -81,7 +81,7 @@ export default function ChecklistTab({
         </select>
         <button
           type="submit"
-          className="px-4 py-2 rounded-full bg-accent/90 text-white text-xs font-semibold hover:bg-accent transition-colors flex items-center gap-1 shrink-0"
+          className="px-4 py-2 rounded-full bg-white text-zinc-950 text-xs font-semibold hover:bg-zinc-200 transition-colors flex items-center gap-1 shrink-0"
         >
           <Plus className="w-3.5 h-3.5" />
           <span>Add</span>
