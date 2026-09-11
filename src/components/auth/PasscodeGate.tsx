@@ -38,13 +38,14 @@ export default function PasscodeGate({
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (isSubmitting || passcode.length === 0) return;
+    const cleanPasscode = passcode.trim();
+    if (isSubmitting || cleanPasscode.length === 0) return;
 
     setIsSubmitting(true);
     setError(null);
 
     try {
-      await signIn(passcode);
+      await signIn(cleanPasscode);
     } catch (cause) {
       setError(
         cause instanceof ApiRequestError

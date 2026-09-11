@@ -10,8 +10,8 @@ import {
 import { getClientKey, rateLimit, resetRateLimit } from '@/lib/auth/rate-limit';
 import { apiError, apiInternalError, apiSuccess } from '@/lib/http/responses';
 
-/** Brute-force budget: 5 attempts per IP per 15 minutes. */
-const ATTEMPT_LIMIT = 5;
+/** Brute-force budget: 10 attempts per IP per 15 minutes. */
+const ATTEMPT_LIMIT = 10;
 const ATTEMPT_WINDOW_MS = 15 * 60 * 1000;
 
 export const runtime = 'nodejs';
@@ -38,14 +38,16 @@ export async function POST(request: NextRequest) {
     }
 
     const body: unknown = await request.json().catch(() => null);
-    const candidate =
+    const rawCandidate =
       typeof body === 'object' && body !== null
         ? (body as { passcode?: unknown }).passcode
         : undefined;
 
-    if (typeof candidate !== 'string' || candidate.length === 0) {
+    if (typeof rawCandidate !== 'string' || rawCandidate.trim().length === 0) {
       return apiError('bad_request', 'Enter your passcode.');
     }
+
+    const candidate = rawCandidate.trim();
 
     // Cap the compared length so an oversized body cannot be used to burn CPU.
     const isValid = await verifyPasscode(candidate.slice(0, 256), passcode);

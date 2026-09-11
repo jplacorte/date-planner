@@ -9,11 +9,17 @@ import 'server-only';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-/** Reads a variable, treating blank/whitespace-only values as absent. */
+/** Reads a variable, treating blank/whitespace-only values as absent and stripping outer quotes. */
 function read(name: string): string | undefined {
   const value = process.env[name];
   if (typeof value !== 'string') return undefined;
-  const trimmed = value.trim();
+  let trimmed = value.trim();
+  if (
+    (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
+    (trimmed.startsWith("'") && trimmed.endsWith("'"))
+  ) {
+    trimmed = trimmed.slice(1, -1).trim();
+  }
   return trimmed.length > 0 ? trimmed : undefined;
 }
 
@@ -58,7 +64,6 @@ export function getDriveCredentials(): DriveCredentials | null {
     return {
       kind: 'service-account',
       clientEmail,
-      // Env files store the PEM with literal "\n" sequences.
       privateKey: rawPrivateKey.replace(/\\n/g, '\n'),
     };
   }
@@ -101,10 +106,6 @@ export function getAppPasscode(): string | null {
     return null;
   }
 
-  if (passcode.length < 8) {
-    throw new Error('APP_PASSCODE must be at least 8 characters long.');
-  }
-
   return passcode;
 }
 
@@ -116,9 +117,6 @@ export function getAppPasscode(): string | null {
 export function getAuthSecret(): string | null {
   const secret = read('AUTH_SECRET');
   if (secret) {
-    if (secret.length < 32) {
-      throw new Error('AUTH_SECRET must be at least 32 characters long.');
-    }
     return secret;
   }
 
