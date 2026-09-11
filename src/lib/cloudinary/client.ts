@@ -148,3 +148,94 @@ export async function uploadToCloudinary(
     stream.end(buffer);
   });
 }
+
+export interface CloudinaryPhoto {
+  id: string;
+  name: string;
+  url: string;
+  thumbnailUrl: string;
+  folder?: string;
+  createdAt: string;
+}
+
+/**
+ * Lists images stored in Cloudinary under the Date-planner folder (or account).
+ */
+export async function listCloudinaryPhotos(
+  folder?: string
+): Promise<{ photos: CloudinaryPhoto[]; total: number; cloudName: string }> {
+  const client = configureCloudinary();
+  const creds = getCloudinaryCredentials();
+  if (!client || !creds) {
+    throw new Error('Cloudinary credentials are not configured.');
+  }
+
+  const searchFolder = folder
+    ? resolveDateCloudinaryFolder(folder)
+    : ROOT_CLOUDINARY_FOLDER;
+
+  try {
+    // 1. Try listing with prefix for the Date-planner folder
+    let res = await client.api.resources({
+      type: 'upload',
+      prefix: searchFolder,
+      max_results: 60,
+      resource_type: 'image',
+    });
+
+    // 2. Fall back to recent uploads if folder is empty or not yet populated
+    if (!res.resources || res.resources.length === 0) {
+      res = await client.api.resources({
+        type: 'upload',
+        max_results: 60,
+        resource_type: 'image',
+      });
+    }
+
+    const resources = res.resources || [];
+    const photos: CloudinaryPhoto[] = resources.map(
+      (item: {
+        public_id: string;
+        secure_url: string;
+        asset_folder?: string;
+        folder?: string;
+        created_at: string;
+      }) => {
+        const publicId = item.public_id;
+        const cleanName = publicId.split('/').pop() || publicId;
+        const thumbnailUrl = client.url(publicId, {
+          width: 300,
+          height: 300,
+          crop: 'fill',
+          quality: 'auto',
+          fetch_format: 'auto',
+          secure: true,
+        });
+
+        return {
+          id: publicId,
+          name: cleanName,
+          url: item.secure_url,
+          thumbnailUrl,
+          folder: item.asset_folder || item.folder,
+          createdAt: item.created_at,
+        };
+      }
+    );
+
+    return {
+      photos,
+      total: photos.length,
+      cloudName: creds.cloudName,
+    };
+  } catch (error: unknown) {
+    const err = error as {
+      error?: { message?: string };
+      message?: string;
+    };
+    throw new Error(
+      err?.error?.message || err?.message || 'Failed to list Cloudinary photos.'
+    );
+  }
+}
+

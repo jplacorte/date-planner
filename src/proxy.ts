@@ -20,6 +20,8 @@ const IMAGE_SOURCES = [
   'data:',
   'blob:',
   'https://res.cloudinary.com',
+  'https://images.unsplash.com',
+  'https://*.unsplash.com',
   'https://lh3.googleusercontent.com',
   'https://drive.google.com',
   'https://*.googleusercontent.com',

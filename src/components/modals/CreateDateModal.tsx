@@ -9,7 +9,7 @@ import { normalizeGoogleDriveImageUrl } from '@/lib/media/image';
 import { PRESET_COVER_IMAGES } from '@/lib/media/preset-images';
 import { formatTimeString } from '@/lib/date/format';
 import { uploadImageFile } from '@/lib/media/upload-client';
-import GoogleDrivePicker from '@/components/ui/GoogleDrivePicker';
+import CloudPhotoPicker from '@/components/ui/CloudPhotoPicker';
 
 
 export default function CreateDateModal() {
@@ -387,14 +387,19 @@ export default function CreateDateModal() {
                 </div>
               </div>
 
-              {/* Google Drive Folder Picker */}
-              <GoogleDrivePicker onSelectPhoto={(url) => setCoverImage(url)} />
+              {/* Cloud Photo Picker (Cloudinary & Google Drive) */}
+              <CloudPhotoPicker
+                folder={title.trim() || undefined}
+                onSelectPhoto={(url) => setCoverImage(url)}
+              />
 
               <input
                 type="url"
-                placeholder="Or paste image or Google Drive URL..."
+                placeholder="Or paste image, Cloudinary, or Drive URL..."
                 value={coverImage.startsWith('data:') ? '' : coverImage}
-                onChange={(e) => setCoverImage(normalizeGoogleDriveImageUrl(e.target.value))}
+                onChange={(e) =>
+                  setCoverImage(normalizeGoogleDriveImageUrl(e.target.value))
+                }
                 className="w-full bg-zinc-900 border border-white/[0.08] rounded-xl px-3 py-1.5 text-xs text-zinc-300 focus:outline-none"
               />
             </div>

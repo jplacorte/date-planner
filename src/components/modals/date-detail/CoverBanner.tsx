@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 
 import { useDateContext } from '@/context/DateContext';
-import GoogleDrivePicker from '@/components/ui/GoogleDrivePicker';
+import CloudPhotoPicker from '@/components/ui/CloudPhotoPicker';
 import { PRESET_COVER_IMAGES } from '@/lib/media/preset-images';
 import { normalizeGoogleDriveImageUrl } from '@/lib/media/image';
 import { uploadImageFile } from '@/lib/media/upload-client';
@@ -214,14 +214,17 @@ export default function CoverBanner({
           </div>
         </div>
 
-        {/* Google Drive Folder Picker */}
-        <GoogleDrivePicker onSelectPhoto={(url) => handleApplyCoverUrl(url)} />
+        {/* Cloud Photo Picker (Cloudinary & Google Drive) */}
+        <CloudPhotoPicker
+          folder={selectedDate.cloudinaryFolder || selectedDate.title}
+          onSelectPhoto={(url) => handleApplyCoverUrl(url)}
+        />
 
         {/* URL Input */}
         <div className="flex gap-1.5 pt-1">
           <input
             type="url"
-            placeholder="Paste image or Drive link..."
+            placeholder="Paste image, Cloudinary, or Drive link..."
             value={customCoverUrl}
             onChange={(e) => setCustomCoverUrl(e.target.value)}
             className="flex-1 bg-white/[0.03] border border-white/[0.08] rounded-xl px-2.5 py-1 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-accent/45"

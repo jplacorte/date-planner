@@ -23,7 +23,7 @@ import {
 
 import { useDateContext } from '@/context/DateContext';
 import { createCloudinaryDateFolder } from '@/lib/media/upload-client';
-import GoogleDrivePicker from '@/components/ui/GoogleDrivePicker';
+import CloudPhotoPicker from '@/components/ui/CloudPhotoPicker';
 import type { MemoryEditor } from '@/hooks/use-memory-editor';
 import type { DateIdea } from '@/types/date';
 
@@ -488,15 +488,18 @@ export default function MemoryTab({
           <div className="py-6 text-center border border-dashed border-white/10 rounded-xl bg-zinc-950/50 space-y-1.5">
             <Camera className="w-5 h-5 text-zinc-500 mx-auto" />
             <p className="text-xs text-zinc-400 font-medium">No scrapbook photos added yet</p>
-            <p className="text-[11px] text-zinc-600">Upload photos above or select from Google Drive below.</p>
+            <p className="text-[11px] text-zinc-600">
+              Upload photos above or select from Cloudinary below.
+            </p>
           </div>
         )}
 
-        {/* Google Drive Folder Gallery */}
+        {/* Cloud Photo Picker (Cloudinary & Google Drive) */}
         <div className="pt-1">
-          <GoogleDrivePicker
+          <CloudPhotoPicker
+            folder={selectedDate.cloudinaryFolder || selectedDate.title}
             onSelectPhoto={(url) =>
-              addPhotoUrl(url, 'Photo added from Google Drive ✓')
+              addPhotoUrl(url, 'Photo added to scrapbook ✓')
             }
           />
         </div>
