@@ -28,6 +28,7 @@ interface DateContextType {
   coupleProfile: CoupleProfile;
   moodTheme: MoodTheme;
   ambientSound: AmbientSound;
+  ambientVolume: number;
   filterState: FilterState;
   activeTab: 'checklist' | 'map' | 'scrapbook';
   selectedDate: DateIdea | null;
@@ -53,6 +54,7 @@ interface DateContextType {
   setIsProfileModalOpen: (open: boolean) => void;
   setMoodTheme: (theme: MoodTheme) => void;
   setAmbientSound: (sound: AmbientSound) => void;
+  setAmbientVolume: (volume: number) => void;
   setFilterState: React.Dispatch<React.SetStateAction<FilterState>>;
 
   // Date Manipulation
@@ -103,6 +105,7 @@ export const DateProvider = ({ children }: { children: ReactNode }) => {
   const moodTheme = useSyncExternalStore(dateStore.subscribe, dateStore.getTheme, dateStore.getServerTheme);
 
   const [ambientSound, setAmbientSoundState] = useState<AmbientSound>('none');
+  const [ambientVolume, setAmbientVolumeState] = useState<number>(() => soundEngine.getVolume());
   const [filterState, setFilterState] = useState<FilterState>(initialFilters);
   const [activeTab, setActiveTab] = useState<'checklist' | 'map' | 'scrapbook'>('checklist');
 
@@ -217,6 +220,12 @@ export const DateProvider = ({ children }: { children: ReactNode }) => {
     } else {
       soundEngine.playAmbient(sound);
     }
+  };
+
+  const setAmbientVolume = (volume: number) => {
+    const clamped = Math.max(0, Math.min(1, volume));
+    setAmbientVolumeState(clamped);
+    soundEngine.setVolume(clamped);
   };
 
   const toggleChecklistItem = (dateId: string, itemId: string) => {
@@ -469,6 +478,7 @@ export const DateProvider = ({ children }: { children: ReactNode }) => {
         coupleProfile,
         moodTheme,
         ambientSound,
+        ambientVolume,
         filterState,
         activeTab,
         selectedDate,
@@ -490,6 +500,7 @@ export const DateProvider = ({ children }: { children: ReactNode }) => {
         setIsProfileModalOpen,
         setMoodTheme,
         setAmbientSound,
+        setAmbientVolume,
         setFilterState,
         toggleChecklistItem,
         addChecklistItem,

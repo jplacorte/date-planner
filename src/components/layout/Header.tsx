@@ -32,6 +32,8 @@ export default function Header() {
     setMoodTheme,
     ambientSound,
     setAmbientSound,
+    ambientVolume,
+    setAmbientVolume,
     activeTab,
     setActiveTab,
     setIsCreateModalOpen,
@@ -240,24 +242,29 @@ export default function Header() {
             </div>
 
             {/* Ambient Soundscapes Toggle */}
-            <div className="relative shrink-0 hidden sm:block">
+            <div className="relative shrink-0">
               <button
                 onClick={() => {
                   setIsAudioMenuOpen(!isAudioMenuOpen);
                   setIsThemeMenuOpen(false);
                   setIsSettingsOpen(false);
                 }}
-                className={`p-2 rounded-xl border transition-all ${
+                className={`p-1.5 sm:p-2 rounded-xl border transition-all flex items-center gap-1.5 ${
                   ambientSound !== 'none'
-                    ? 'bg-accent/15 text-accent-soft border-accent/45'
+                    ? 'bg-white text-black border-white shadow-sm font-medium'
                     : 'bg-white/[0.04] hover:bg-white/[0.08] text-zinc-300 hover:text-white border-white/[0.08]'
                 }`}
                 title="Ambient Soundscapes"
               >
                 {ambientSound === 'none' ? (
-                  <VolumeX className="w-4 h-4 shrink-0" />
+                  <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
                 ) : (
-                  <Volume2 className="w-4 h-4 shrink-0" />
+                  <>
+                    <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 animate-pulse" />
+                    <span className="hidden md:inline text-[11px] capitalize pr-0.5">
+                      {ambientSound}
+                    </span>
+                  </>
                 )}
               </button>
 
@@ -267,32 +274,73 @@ export default function Header() {
                     initial={{ opacity: 0, y: 8, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                    className="absolute right-0 mt-2 w-48 rounded-2xl bg-zinc-950 border border-white/15 shadow-2xl p-1.5 z-50 max-w-[calc(100vw-2rem)]"
+                    className="absolute right-0 mt-2 w-56 rounded-2xl bg-zinc-950/95 border border-white/15 shadow-2xl p-2 z-50 max-w-[calc(100vw-2rem)] backdrop-blur-xl"
                   >
-                    <div className="px-3 py-1.5 text-[10px] font-mono uppercase tracking-wider text-zinc-500 flex items-center justify-between">
+                    <div className="px-3 py-1.5 text-[10px] font-mono uppercase tracking-wider text-zinc-400 flex items-center justify-between border-b border-white/10 pb-2">
                       <span>Soundscape</span>
-                      <Music className="w-3 h-3 text-zinc-400" />
+                      <Music className="w-3.5 h-3.5 text-zinc-300" />
                     </div>
-                    {soundOptions.map((opt) => {
-                      const active = ambientSound === opt.id;
-                      return (
-                        <button
-                          key={opt.id}
-                          onClick={() => {
-                            setAmbientSound(opt.id);
-                            setIsAudioMenuOpen(false);
-                          }}
-                          className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
-                            active
-                              ? 'bg-accent/15 text-accent-soft font-semibold'
-                              : 'text-zinc-300 hover:bg-white/5 hover:text-white'
-                          }`}
-                        >
-                          <span>{opt.label}</span>
-                          {active && <span className="w-1.5 h-1.5 rounded-full bg-accent" />}
-                        </button>
-                      );
-                    })}
+
+                    {/* Volume Slider */}
+                    <div className="px-3 py-2.5 my-1.5 rounded-xl bg-white/[0.04] border border-white/5">
+                      <div className="flex items-center justify-between text-[10px] text-zinc-400 mb-1.5 font-mono">
+                        <span>VOLUME</span>
+                        <span className="text-zinc-200">{Math.round(ambientVolume * 100)}%</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <VolumeX className="w-3 h-3 text-zinc-500 shrink-0" />
+                        <input
+                          type="range"
+                          min="0"
+                          max="1"
+                          step="0.05"
+                          value={ambientVolume}
+                          onChange={(e) => setAmbientVolume(parseFloat(e.target.value))}
+                          className="w-full h-1 bg-white/20 rounded-lg appearance-none cursor-pointer accent-white"
+                        />
+                        <Volume2 className="w-3 h-3 text-zinc-300 shrink-0" />
+                      </div>
+                    </div>
+
+                    {/* Sound Track List */}
+                    <div className="space-y-0.5">
+                      {soundOptions.map((opt) => {
+                        const active = ambientSound === opt.id;
+                        return (
+                          <button
+                            key={opt.id}
+                            onClick={() => {
+                              if (active && opt.id !== 'none') {
+                                setAmbientSound('none');
+                              } else {
+                                setAmbientSound(opt.id);
+                              }
+                              setIsAudioMenuOpen(false);
+                            }}
+                            className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
+                              active
+                                ? 'bg-white text-black font-semibold shadow-sm'
+                                : 'text-zinc-300 hover:bg-white/5 hover:text-white'
+                            }`}
+                          >
+                            <span className="flex items-center gap-2">
+                              {opt.id === 'none' ? (
+                                <VolumeX className={`w-3.5 h-3.5 ${active ? 'text-black' : 'opacity-60'}`} />
+                              ) : (
+                                <Music className={`w-3.5 h-3.5 ${active ? 'text-black' : 'text-zinc-400'}`} />
+                              )}
+                              <span>{opt.label}</span>
+                            </span>
+                            {active && (
+                              <span className="flex items-center gap-1">
+                                <span className="w-1.5 h-1.5 rounded-full bg-black animate-ping" />
+                                <span className="w-1.5 h-1.5 rounded-full bg-black" />
+                              </span>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
                   </motion.div>
                 )}
               </AnimatePresence>
