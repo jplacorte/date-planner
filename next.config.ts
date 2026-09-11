@@ -39,13 +39,14 @@ const nextConfig: NextConfig = {
     // Only these hosts may be passed through the image optimiser, so a stored
     // URL cannot turn the optimiser into an open proxy.
     remotePatterns: [
+      { protocol: 'https', hostname: 'res.cloudinary.com' },
       { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
       { protocol: 'https', hostname: 'drive.google.com' },
     ],
   },
 
-  // googleapis is a large CommonJS dependency; keep it out of the bundle trace.
-  serverExternalPackages: ['googleapis'],
+  // Large CommonJS dependencies; keep them out of the bundle trace.
+  serverExternalPackages: ['googleapis', 'cloudinary'],
 };
 
 export default nextConfig;

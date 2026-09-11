@@ -71,6 +71,44 @@ export function getDriveCredentials(): DriveCredentials | null {
   return null;
 }
 
+export interface CloudinaryCredentials {
+  cloudName: string;
+  apiKey: string;
+  apiSecret: string;
+}
+
+/**
+ * Resolves Cloudinary credentials for photo storage.
+ * Accepts either a single `CLOUDINARY_URL` (cloudinary://key:secret@cloud_name)
+ * or separate CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET.
+ */
+export function getCloudinaryCredentials(): CloudinaryCredentials | null {
+  const url = read('CLOUDINARY_URL');
+  if (url) {
+    try {
+      const parsed = new URL(url);
+      const cloudName = parsed.hostname;
+      const apiKey = decodeURIComponent(parsed.username);
+      const apiSecret = decodeURIComponent(parsed.password);
+      if (cloudName && apiKey && apiSecret) {
+        return { cloudName, apiKey, apiSecret };
+      }
+    } catch {
+      // Fall through to discrete variables if URL parse fails
+    }
+  }
+
+  const cloudName = read('CLOUDINARY_CLOUD_NAME');
+  const apiKey = read('CLOUDINARY_API_KEY');
+  const apiSecret = read('CLOUDINARY_API_SECRET');
+
+  if (cloudName && apiKey && apiSecret) {
+    return { cloudName, apiKey, apiSecret };
+  }
+
+  return null;
+}
+
 /** The Drive folder that backs photo uploads and the synced database file. */
 export function getDriveFolderId(): string | null {
   const folderId = read('GOOGLE_DRIVE_FOLDER_ID');

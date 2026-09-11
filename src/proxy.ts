@@ -14,11 +14,12 @@ import { NextResponse, type NextRequest } from 'next/server';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-/** Origins that serve Drive-hosted photos. */
+/** Origins that serve Drive-hosted and Cloudinary photos. */
 const IMAGE_SOURCES = [
   "'self'",
   'data:',
   'blob:',
+  'https://res.cloudinary.com',
   'https://lh3.googleusercontent.com',
   'https://drive.google.com',
   'https://*.googleusercontent.com',

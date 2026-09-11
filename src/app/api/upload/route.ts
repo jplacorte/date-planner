@@ -2,6 +2,10 @@ import type { NextRequest } from 'next/server';
 
 import { isAuthenticated } from '@/lib/auth/guard';
 import { getClientKey, rateLimit } from '@/lib/auth/rate-limit';
+import {
+  isCloudinaryConfigured,
+  uploadToCloudinary,
+} from '@/lib/cloudinary/client';
 import { uploadPhoto } from '@/lib/google-drive/photos';
 import { apiError, apiInternalError, apiSuccess } from '@/lib/http/responses';
 import {
@@ -73,16 +77,24 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const sanitizedName = sanitizeFileName(file.name, sniffedType);
+
+    // Prefer Cloudinary if configured; fall back to Google Drive
+    if (isCloudinaryConfigured()) {
+      const cloudinaryResult = await uploadToCloudinary(buffer, sanitizedName);
+      return apiSuccess(cloudinaryResult);
+    }
+
     const uploaded = await uploadPhoto(
       buffer,
-      sanitizeFileName(file.name, sniffedType),
+      sanitizedName,
       sniffedType
     );
 
     if (!uploaded) {
       return apiError(
         'not_configured',
-        'Google Drive is not configured, so the photo was kept on this device.'
+        'Cloud storage is not configured, so the photo was kept on this device.'
       );
     }
 
