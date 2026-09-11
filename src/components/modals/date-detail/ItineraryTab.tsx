@@ -1,10 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Check, Clock, Edit3, MapPin, Plus, Trash2 } from 'lucide-react';
+import React, { useMemo, useState, useSyncExternalStore } from 'react';
+import { CalendarPlus, Check, Clock, Edit3, MapPin, Navigation, Plus, Trash2 } from 'lucide-react';
 
 import { useDateContext } from '@/context/DateContext';
-import { formatTimeString } from '@/lib/date/format';
+import {
+  formatTimeString,
+  isToday,
+  timeStringToMinutes,
+} from '@/lib/date/format';
 import type { DateIdea, ItineraryStep } from '@/types/date';
 
 interface ItineraryTabProps {
@@ -26,6 +30,61 @@ const EMPTY_DRAFT: StepDraft = {
   notes: '',
 };
 
+/** Builds a Google Maps search link for a venue name or address. */
+function mapsUrl(query: string) {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+}
+
+/**
+ * Google Calendar's template URL wants a UTC `YYYYMMDDTHHMMSSZ` range. Steps
+ * are one hour by default, which is close enough for a reservation reminder.
+ */
+function calendarUrl(step: ItineraryStep, dateStr?: string) {
+  const params = new URLSearchParams({
+    action: 'TEMPLATE',
+    text: step.activity,
+  });
+  if (step.location) params.set('location', step.location);
+  if (step.notes) params.set('details', step.notes);
+
+  const minutes = timeStringToMinutes(step.time);
+  const parts = dateStr?.split('-');
+  if (minutes !== null && parts?.length === 3) {
+    const start = new Date(
+      parseInt(parts[0], 10),
+      parseInt(parts[1], 10) - 1,
+      parseInt(parts[2], 10),
+      Math.floor(minutes / 60),
+      minutes % 60
+    );
+    const end = new Date(start.getTime() + 60 * 60 * 1000);
+    const stamp = (d: Date) => d.toISOString().replace(/[-:]|\.\d{3}/g, '');
+    params.set('dates', `${stamp(start)}/${stamp(end)}`);
+  }
+
+  return `https://www.google.com/calendar/render?${params.toString()}`;
+}
+
+/**
+ * The wall clock, treated as an external store so the timeline re-renders on
+ * its own each half minute without pushing state from an effect.
+ */
+function subscribeToClock(onChange: () => void) {
+  const id = window.setInterval(onChange, 30_000);
+  return () => window.clearInterval(id);
+}
+
+/** Minutes since midnight. Stable within a minute, so React can compare it. */
+function readClock() {
+  const now = new Date();
+  return now.getHours() * 60 + now.getMinutes();
+}
+
+/** The server has no viewer clock, so nothing is marked active until hydration. */
+function readClockOnServer() {
+  return -1;
+}
+
 /** Hour-by-hour plan for the date: add, edit, reorder-free timeline steps. */
 export default function ItineraryTab({
   selectedDate,
@@ -45,10 +104,38 @@ export default function ItineraryTab({
   const [editingStepId, setEditingStepId] = useState<string | null>(null);
   const [editStepData, setEditStepData] = useState<StepDraft>(EMPTY_DRAFT);
 
-  const itineraryList = selectedDate.itinerary || [];
+  const itineraryList = useMemo(
+    () => selectedDate.itinerary || [],
+    [selectedDate.itinerary]
+  );
   const completedItineraryCount = itineraryList.filter(
     (step) => step.completed
   ).length;
+
+  const clockMinutes = useSyncExternalStore(
+    subscribeToClock,
+    readClock,
+    readClockOnServer
+  );
+
+  /**
+   * Progression only applies while the date is actually happening today. On any
+   * other day the timeline stays uniformly lit, so nothing is greyed out before
+   * the night arrives.
+   */
+  const nowMinutes = isToday(selectedDate.scheduledDate) ? clockMinutes : -1;
+
+  /** Index of the stop currently underway: the last one whose time has passed. */
+  const activeStepIndex = useMemo(() => {
+    if (nowMinutes < 0) return -1;
+
+    let index = -1;
+    itineraryList.forEach((step, i) => {
+      const minutes = timeStringToMinutes(step.time);
+      if (minutes !== null && minutes <= nowMinutes) index = i;
+    });
+    return index;
+  }, [itineraryList, nowMinutes]);
 
   const handleAddItinerary = (event: React.FormEvent) => {
     event.preventDefault();
@@ -122,32 +209,29 @@ export default function ItineraryTab({
 
   return (
     <div className="space-y-5">
-      
+
       {/* Header Summary */}
-      <div className="bg-black p-4 rounded-2xl border border-white/[0.08] flex items-center justify-between text-xs">
+      <div className="bg-white/[0.03] p-4 rounded-2xl border border-white/[0.07] flex items-center justify-between text-xs">
         <div>
-          <span className="text-zinc-400 font-medium">Timeline Milestones: </span>
-          <span className="text-white font-mono font-bold">
-            {completedItineraryCount} of {itineraryList.length} Completed
+          <span className="text-zinc-400">Timeline </span>
+          <span className="text-zinc-100 font-mono">
+            {completedItineraryCount} of {itineraryList.length} done
           </span>
         </div>
 
         {itineraryList.length === 0 && (
-          <button
-            onClick={insertStarterTimeline}
-            className="px-3 py-1 rounded-xl bg-white/10 hover:bg-white text-white hover:text-black font-semibold text-xs transition-all border border-white/15"
-          >
-            + Quick Starter Timeline
+          <button onClick={insertStarterTimeline} className="pill-action">
+            <Plus className="w-3 h-3" />
+            Starter timeline
           </button>
         )}
       </div>
 
       {/* Add Itinerary Step Form */}
-      <form onSubmit={handleAddItinerary} className="bg-black p-4 rounded-2xl border border-white/[0.08] space-y-3">
+      <form onSubmit={handleAddItinerary} className="bg-white/[0.03] p-4 rounded-2xl border border-white/[0.07] space-y-3">
         <div className="flex items-center justify-between">
-          <label className="text-xs font-semibold text-zinc-300 flex items-center gap-1.5">
-            <Plus className="w-3.5 h-3.5 text-white" />
-            Add Itinerary Step
+          <label className="text-[11px] font-semibold uppercase tracking-[0.12em] text-zinc-400">
+            Add a stop
           </label>
           <div className="flex gap-1">
             {['5:00 PM', '6:30 PM', '8:00 PM', '9:30 PM'].map((presetTime) => (
@@ -155,7 +239,7 @@ export default function ItineraryTab({
                 key={presetTime}
                 type="button"
                 onClick={() => setNewStepTime(presetTime)}
-                className="px-2 py-0.5 rounded bg-zinc-900 hover:bg-zinc-800 text-[10px] font-mono text-zinc-400 border border-white/[0.06]"
+                className="px-2 py-0.5 rounded-full bg-white/[0.05] hover:bg-accent/15 hover:text-accent-soft text-[10px] font-mono text-zinc-400 border border-white/[0.06] transition-colors"
               >
                 {presetTime}
               </button>
@@ -164,13 +248,13 @@ export default function ItineraryTab({
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-12 gap-2">
-          <div className="sm:col-span-4 sm:col-span-3">
+          <div className="sm:col-span-3">
             <input
               type="text"
-              placeholder="Time (e.g. 6:30 PM)"
+              placeholder="6:30 PM"
               value={newStepTime}
               onChange={(e) => setNewStepTime(e.target.value)}
-              className="w-full bg-zinc-900 border border-white/[0.1] rounded-xl px-3 py-2 text-xs font-mono text-white focus:outline-none focus:border-white"
+              className="w-full bg-black/40 border border-white/[0.09] rounded-xl px-3 py-2 text-xs font-mono text-zinc-100 focus:outline-none focus:border-accent/50"
             />
           </div>
           <div className="sm:col-span-9">
@@ -180,7 +264,7 @@ export default function ItineraryTab({
               placeholder="Activity (e.g. Sunset Champagne Toast & Star Viewing)"
               value={newStepActivity}
               onChange={(e) => setNewStepActivity(e.target.value)}
-              className="w-full bg-zinc-900 border border-white/[0.1] rounded-xl px-3.5 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-white"
+              className="w-full bg-black/40 border border-white/[0.09] rounded-xl px-3.5 py-2 text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-accent/50"
             />
           </div>
         </div>
@@ -191,20 +275,20 @@ export default function ItineraryTab({
             placeholder="Venue / Specific Location (optional)"
             value={newStepLocation}
             onChange={(e) => setNewStepLocation(e.target.value)}
-            className="w-full bg-zinc-900 border border-white/[0.1] rounded-xl px-3 py-1.5 text-xs text-white placeholder-zinc-500 focus:outline-none"
+            className="w-full bg-black/40 border border-white/[0.09] rounded-xl px-3 py-1.5 text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-accent/50"
           />
           <input
             type="text"
             placeholder="Special note, tip, outfit note (optional)"
             value={newStepNotes}
             onChange={(e) => setNewStepNotes(e.target.value)}
-            className="w-full bg-zinc-900 border border-white/[0.1] rounded-xl px-3 py-1.5 text-xs text-white placeholder-zinc-500 focus:outline-none"
+            className="w-full bg-black/40 border border-white/[0.09] rounded-xl px-3 py-1.5 text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-accent/50"
           />
         </div>
 
         <button
           type="submit"
-          className="w-full py-2 rounded-xl bg-white text-black font-bold text-xs hover:bg-zinc-200 transition-all flex items-center justify-center gap-1.5 shadow-md"
+          className="w-full py-2 rounded-xl bg-accent/90 text-white font-semibold text-xs hover:bg-accent transition-all flex items-center justify-center gap-1.5"
         >
           <Plus className="w-3.5 h-3.5" />
           <span>Add Step to Timeline</span>
@@ -213,34 +297,41 @@ export default function ItineraryTab({
 
       {/* Itinerary Timeline List */}
       {itineraryList.length > 0 ? (
-        <div className="relative border-l-2 border-zinc-800 ml-4 space-y-4 py-2">
-          {itineraryList.map((step) => {
+        <div className="relative timeline-rail ml-4 space-y-4 py-2">
+          {itineraryList.map((step, index) => {
             const isEditing = editingStepId === step.id;
+            const isActive = index === activeStepIndex;
+            const isPast = activeStepIndex > -1 && index < activeStepIndex;
 
             return (
-              <div key={step.id} className="relative pl-6">
-                {/* Checkpoint Timeline Circle */}
+              <div
+                key={step.id}
+                className={`relative pl-6 transition-opacity duration-500 ${isPast ? 'timeline-past' : ''}`}
+              >
+                {/* Checkpoint node on the rail */}
                 <button
                   onClick={() => toggleItineraryStep(selectedDate.id, step.id)}
-                  className={`absolute -left-[9px] top-3.5 w-4 h-4 rounded-full border-2 transition-all flex items-center justify-center ${
+                  className={`absolute -left-[8px] top-3.5 w-[15px] h-[15px] rounded-full border transition-all flex items-center justify-center ${
                     step.completed
-                      ? 'bg-white border-white text-black'
-                      : 'bg-zinc-950 border-zinc-600 hover:border-white'
+                      ? 'bg-accent border-accent text-white'
+                      : isActive
+                        ? 'bg-zinc-950 border-accent'
+                        : 'bg-zinc-950 border-white/25 hover:border-accent/60'
                   }`}
                   title="Toggle Completed"
                 >
-                  {step.completed && <Check className="w-2.5 h-2.5 stroke-[3]" />}
+                  {step.completed && <Check className="w-2 h-2 stroke-[4]" />}
                 </button>
 
                 {/* Step Content / Inline Editor */}
                 {isEditing ? (
-                  <div className="bg-zinc-900 p-4 rounded-2xl border border-white/20 space-y-2.5 shadow-xl">
-                    <div className="flex items-center justify-between text-xs font-bold text-white border-b border-white/10 pb-2">
+                  <div className="bg-zinc-900 p-4 rounded-2xl border border-white/[0.14] space-y-2.5 shadow-xl">
+                    <div className="flex items-center justify-between text-xs font-semibold text-zinc-100 border-b border-white/10 pb-2">
                       <span>Edit Timeline Step</span>
                       <button
                         type="button"
                         onClick={() => setEditingStepId(null)}
-                        className="text-zinc-400 hover:text-white"
+                        className="text-zinc-400 hover:text-zinc-100"
                       >
                         ✕
                       </button>
@@ -252,14 +343,14 @@ export default function ItineraryTab({
                         placeholder="Time (e.g. 6:30 PM)"
                         value={editStepData.time}
                         onChange={(e) => setEditStepData({ ...editStepData, time: e.target.value })}
-                        className="sm:col-span-3 bg-black border border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-white font-mono"
+                        className="sm:col-span-3 bg-black/50 border border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-zinc-100 font-mono focus:outline-none focus:border-accent/50"
                       />
                       <input
                         type="text"
                         value={editStepData.activity}
                         onChange={(e) => setEditStepData({ ...editStepData, activity: e.target.value })}
                         placeholder="Activity"
-                        className="sm:col-span-9 bg-black border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white"
+                        className="sm:col-span-9 bg-black/50 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-zinc-100 focus:outline-none focus:border-accent/50"
                       />
                     </div>
 
@@ -269,14 +360,14 @@ export default function ItineraryTab({
                         value={editStepData.location}
                         onChange={(e) => setEditStepData({ ...editStepData, location: e.target.value })}
                         placeholder="Location / Venue"
-                        className="w-full bg-black border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white"
+                        className="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-zinc-100 focus:outline-none focus:border-accent/50"
                       />
                       <input
                         type="text"
                         value={editStepData.notes}
                         onChange={(e) => setEditStepData({ ...editStepData, notes: e.target.value })}
                         placeholder="Notes & Tips"
-                        className="w-full bg-black border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white"
+                        className="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-zinc-100 focus:outline-none focus:border-accent/50"
                       />
                     </div>
 
@@ -284,45 +375,54 @@ export default function ItineraryTab({
                       <button
                         type="button"
                         onClick={() => setEditingStepId(null)}
-                        className="px-3 py-1 rounded-xl bg-white/10 text-zinc-300 text-xs font-semibold hover:bg-white/20"
+                        className="pill-action"
                       >
                         Cancel
                       </button>
                       <button
                         type="button"
                         onClick={() => handleSaveStepEdit(step.id)}
-                        className="px-4 py-1 rounded-xl bg-white text-black text-xs font-bold hover:bg-zinc-200"
+                        className="px-4 py-1 rounded-full bg-accent/90 text-white text-xs font-semibold hover:bg-accent transition-colors"
                       >
                         Save Step
                       </button>
                     </div>
                   </div>
                 ) : (
-                  <div className="group bg-black p-3.5 rounded-2xl border border-white/[0.08] hover:border-white/[0.2] transition-all space-y-1.5">
+                  <div
+                    className={`group bg-white/[0.025] p-3.5 rounded-2xl border transition-all space-y-2 ${
+                      isActive
+                        ? 'timeline-active'
+                        : 'border-white/[0.07] hover:border-white/[0.16]'
+                    }`}
+                  >
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-mono font-bold text-white bg-zinc-900 px-2 py-0.5 rounded border border-white/[0.06]">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className={`text-xs font-mono ${isActive ? 'text-accent-soft' : 'text-zinc-300'}`}>
                           {formatTimeString(step.time)}
                         </span>
+                        {isActive && (
+                          <span className="chip chip-accent uppercase tracking-[0.1em]">Now</span>
+                        )}
                         {step.location && (
-                          <span className="text-xs text-zinc-400 flex items-center gap-1">
-                            <MapPin className="w-3 h-3 text-zinc-500" />
-                            {step.location}
+                          <span className="text-[11px] text-zinc-500 flex items-center gap-1 truncate">
+                            <MapPin className="w-3 h-3 shrink-0" />
+                            <span className="truncate">{step.location}</span>
                           </span>
                         )}
                       </div>
 
-                      <div className="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
+                      <div className="flex items-center gap-1 opacity-70 group-hover:opacity-100 transition-opacity shrink-0">
                         <button
                           onClick={() => startEditStep(step)}
-                          className="p-1 rounded-lg hover:bg-white/10 text-zinc-400 hover:text-white transition-colors"
+                          className="p-1 rounded-lg hover:bg-white/[0.07] text-zinc-500 hover:text-zinc-100 transition-colors"
                           title="Edit Step"
                         >
                           <Edit3 className="w-3.5 h-3.5" />
                         </button>
                         <button
                           onClick={() => removeItineraryStep(selectedDate.id, step.id)}
-                          className="p-1 rounded-lg hover:bg-white/10 text-zinc-600 hover:text-white transition-colors"
+                          className="p-1 rounded-lg hover:bg-white/[0.07] text-zinc-600 hover:text-accent-soft transition-colors"
                           title="Delete Step"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -330,16 +430,40 @@ export default function ItineraryTab({
                       </div>
                     </div>
 
-                    <div 
+                    <div
                       onClick={() => toggleItineraryStep(selectedDate.id, step.id)}
                       className="cursor-pointer"
                     >
-                      <h4 className={`text-xs sm:text-sm font-semibold transition-colors ${step.completed ? 'line-through text-zinc-600' : 'text-white'}`}>
+                      <h4 className={`text-sm font-display transition-colors ${step.completed ? 'line-through text-zinc-600' : 'text-zinc-50'}`}>
                         {step.activity}
                       </h4>
                       {step.notes && (
                         <p className="text-xs text-zinc-500 font-light mt-0.5">{step.notes}</p>
                       )}
+                    </div>
+
+                    {/* Icon-first native actions, never a bulky CTA */}
+                    <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+                      {step.location && (
+                        <a
+                          href={mapsUrl(step.location)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="pill-action"
+                        >
+                          <Navigation className="w-3 h-3" />
+                          Directions
+                        </a>
+                      )}
+                      <a
+                        href={calendarUrl(step, selectedDate.scheduledDate)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="pill-action"
+                      >
+                        <CalendarPlus className="w-3 h-3" />
+                        Add to calendar
+                      </a>
                     </div>
                   </div>
                 )}
@@ -348,17 +472,15 @@ export default function ItineraryTab({
           })}
         </div>
       ) : (
-        <div className="bg-black p-8 rounded-2xl border border-white/[0.08] text-center space-y-2">
+        <div className="bg-white/[0.03] p-8 rounded-2xl border border-white/[0.07] text-center space-y-2">
           <Clock className="w-6 h-6 text-zinc-600 mx-auto" />
-          <h4 className="text-xs font-semibold text-white">No Itinerary Steps Added</h4>
-          <p className="text-[11px] text-zinc-500 max-w-xs mx-auto">
-            Plan your time together by adding checkpoints or click below for a starter timeline.
+          <h4 className="text-sm font-display text-zinc-100">No stops yet</h4>
+          <p className="text-[11px] text-zinc-500 max-w-xs mx-auto leading-relaxed">
+            Plan your time together by adding checkpoints, or start from a typical evening.
           </p>
-          <button
-            onClick={insertStarterTimeline}
-            className="px-4 py-1.5 rounded-xl bg-white text-black font-bold text-xs hover:bg-zinc-200 transition-all mt-2"
-          >
-            Insert Starter Timeline
+          <button onClick={insertStarterTimeline} className="pill-action mt-2">
+            <Plus className="w-3 h-3" />
+            Insert starter timeline
           </button>
         </div>
       )}

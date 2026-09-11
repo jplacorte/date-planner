@@ -78,26 +78,27 @@ export default function MemoryTab({
 
   return (
     <form onSubmit={handleSaveMemory} className="space-y-4">
-      <div className="space-y-1.5">
-        <label className="text-xs font-semibold text-zinc-300 flex items-center gap-1.5">
-          <BookHeart className="w-3.5 h-3.5 text-zinc-400" />
-          Memory Journal Notes
+      {/* The "Afterglow" prompt: a frictionless invitation, not a task */}
+      <div className="space-y-2">
+        <label className="text-[11px] font-semibold uppercase tracking-[0.14em] text-zinc-400 flex items-center gap-1.5">
+          <BookHeart className="w-3.5 h-3.5 text-accent-soft" />
+          How was the night?
         </label>
         <textarea
-          rows={3}
-          placeholder="Write a sweet reflection about this date, how you felt, and funny moments..."
+          rows={4}
+          placeholder="What you want to remember about this one..."
           value={memoryNotes}
           onChange={(e) => setMemoryNotes(e.target.value)}
           onBlur={handleAutoSaveMemory}
-          className="w-full bg-black border border-white/[0.1] rounded-xl p-3 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-white"
+          className="w-full bg-white/[0.03] border border-white/[0.08] rounded-2xl p-4 text-sm font-display italic leading-relaxed text-zinc-100 placeholder-zinc-600 focus:outline-none focus:border-accent/45 transition-colors"
         />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className="space-y-1">
-          <label className="text-xs font-semibold text-zinc-300 flex items-center gap-1.5">
-            <Utensils className="w-3.5 h-3.5 text-zinc-400" />
-            Favorite Food
+          <label className="text-[11px] font-semibold uppercase tracking-[0.12em] text-zinc-400 flex items-center gap-1.5">
+            <Utensils className="w-3.5 h-3.5 text-accent-soft" />
+            Best thing we ate
           </label>
           <input
             type="text"
@@ -105,14 +106,14 @@ export default function MemoryTab({
             value={favoriteDish}
             onChange={(e) => setFavoriteDish(e.target.value)}
             onBlur={handleAutoSaveMemory}
-            className="w-full bg-black border border-white/[0.1] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-white"
+            className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-zinc-100 focus:outline-none focus:border-accent/45 transition-colors"
           />
         </div>
 
         <div className="space-y-1">
-          <label className="text-xs font-semibold text-zinc-300 flex items-center gap-1.5">
-            <Smile className="w-3.5 h-3.5 text-zinc-400" />
-            Funniest Moment
+          <label className="text-[11px] font-semibold uppercase tracking-[0.12em] text-zinc-400 flex items-center gap-1.5">
+            <Smile className="w-3.5 h-3.5 text-accent-soft" />
+            Funniest moment
           </label>
           <input
             type="text"
@@ -120,14 +121,14 @@ export default function MemoryTab({
             value={funniestMoment}
             onChange={(e) => setFunniestMoment(e.target.value)}
             onBlur={handleAutoSaveMemory}
-            className="w-full bg-black border border-white/[0.1] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-white"
+            className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-zinc-100 focus:outline-none focus:border-accent/45 transition-colors"
           />
         </div>
 
         <div className="space-y-1">
-          <label className="text-xs font-semibold text-zinc-300 flex items-center gap-1.5">
-            <Music className="w-3.5 h-3.5 text-zinc-400" />
-            Soundtrack Song
+          <label className="text-[11px] font-semibold uppercase tracking-[0.12em] text-zinc-400 flex items-center gap-1.5">
+            <Music className="w-3.5 h-3.5 text-accent-soft" />
+            Song of the night
           </label>
           <input
             type="text"
@@ -135,14 +136,14 @@ export default function MemoryTab({
             value={favoriteSong}
             onChange={(e) => setFavoriteSong(e.target.value)}
             onBlur={handleAutoSaveMemory}
-            className="w-full bg-black border border-white/[0.1] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-white"
+            className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-zinc-100 focus:outline-none focus:border-accent/45 transition-colors"
           />
         </div>
 
         <div className="space-y-1">
-          <label className="text-xs font-semibold text-zinc-300 flex items-center gap-1.5">
+          <label className="text-[11px] font-semibold uppercase tracking-[0.12em] text-zinc-400 flex items-center gap-1.5">
             <span className="text-xs font-mono font-bold text-zinc-400">₱</span>
-            Amount Spent (₱ PHP)
+            What it cost
           </label>
           <input
             type="number"
@@ -150,19 +151,19 @@ export default function MemoryTab({
             value={actualCost !== undefined ? actualCost : ''}
             onChange={(e) => setActualCost(e.target.value ? Number(e.target.value) : undefined)}
             onBlur={handleAutoSaveMemory}
-            className="w-full bg-black border border-white/[0.1] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-white"
+            className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-zinc-100 focus:outline-none focus:border-accent/45 transition-colors"
           />
         </div>
       </div>
 
       {/* Photo Gallery & Upload Section */}
       {/* Photo Gallery & Upload Section */}
-      <div className="bg-black p-4 rounded-2xl border border-white/[0.08] space-y-3">
+      <div className="bg-white/[0.03] p-4 rounded-2xl border border-white/[0.07] space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
-            <label className="text-xs font-semibold text-zinc-300 flex items-center gap-1.5">
-              <Camera className="w-3.5 h-3.5 text-zinc-400" />
-              Scrapbook Photo Gallery ({selectedDate.memoriesPhotos?.length || 0})
+            <label className="text-[11px] font-semibold uppercase tracking-[0.12em] text-zinc-400 flex items-center gap-1.5">
+              <Camera className="w-3.5 h-3.5 text-accent-soft" />
+              Photos ({selectedDate.memoriesPhotos?.length || 0})
             </label>
             <p className="text-[11px] text-zinc-500 font-light mt-0.5">
               Drag photos or use the ◀ ▶ buttons to arrange. The <span className="text-white font-medium">#1 photo</span> is featured in your Polaroid Scrapbook!
@@ -173,7 +174,7 @@ export default function MemoryTab({
             <button
               type="button"
               onClick={() => memoryFileInputRef.current?.click()}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white text-white hover:text-black text-xs font-medium border border-white/15 transition-all shadow-sm"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-accent/20 text-zinc-200 hover:text-accent-soft text-xs font-medium border border-white/15 transition-all shadow-sm"
             >
               <Upload className="w-3.5 h-3.5" />
               <span>{isUploadingMemoryPhoto ? 'Uploading...' : 'Upload Photo'}</span>
@@ -207,7 +208,7 @@ export default function MemoryTab({
                   onDrop={(e) => handleDrop(e, idx)}
                   className={`group relative rounded-2xl overflow-hidden border transition-all duration-200 cursor-grab active:cursor-grabbing bg-zinc-950 flex flex-col ${
                     isDragOver
-                      ? 'border-rose-400 ring-2 ring-rose-400/50 scale-[1.03]'
+                      ? 'border-accent ring-2 ring-accent/50 scale-[1.03]'
                       : isDragging
                       ? 'opacity-40 border-dashed border-white/40'
                       : isFirst
@@ -229,8 +230,8 @@ export default function MemoryTab({
                     {/* Order Badge */}
                     <div className="absolute top-1.5 left-1.5 flex items-center gap-1 z-10 pointer-events-none">
                       {isFirst ? (
-                        <span className="px-2 py-0.5 rounded-md bg-white text-black font-bold text-[9px] uppercase tracking-wider flex items-center gap-0.5 shadow-md">
-                          <Star className="w-2.5 h-2.5 fill-black" />
+                        <span className="px-2 py-0.5 rounded-md bg-accent/15 text-accent-soft font-semibold text-[9px] uppercase tracking-wider flex items-center gap-0.5 shadow-md">
+                          <Star className="w-2.5 h-2.5 fill-current" />
                           <span>#1 Featured</span>
                         </span>
                       ) : (
@@ -248,7 +249,7 @@ export default function MemoryTab({
                           e.stopPropagation();
                           handleOpenLightbox(selectedDate.memoriesPhotos || [], idx, selectedDate.title, selectedDate.bestMoments?.photoCaption);
                         }}
-                        className="p-1 rounded-md bg-black/80 hover:bg-white text-zinc-300 hover:text-black border border-white/10 transition-all shadow"
+                        className="p-1 rounded-md bg-black/80 hover:bg-accent/20 text-zinc-300 hover:text-accent-soft border border-white/10 transition-all shadow"
                         title="Enlarge preview"
                       >
                         <Eye className="w-3 h-3" />
@@ -271,10 +272,10 @@ export default function MemoryTab({
                               e.stopPropagation();
                               handleSetFeaturedPhoto(idx);
                             }}
-                            className="px-2 py-1 rounded-lg bg-white hover:bg-zinc-200 text-black text-[10px] font-bold flex items-center gap-1 shadow"
+                            className="px-2 py-1 rounded-lg bg-accent hover:bg-accent-deep text-white text-[10px] font-bold flex items-center gap-1 shadow"
                             title="Set as #1 Scrapbook Hero"
                           >
-                            <Star className="w-3 h-3 fill-black" />
+                            <Star className="w-3 h-3 fill-current" />
                             <span>Make #1</span>
                           </button>
                         )}
@@ -298,7 +299,7 @@ export default function MemoryTab({
                           e.stopPropagation();
                           handleRemoveMemoryPhoto(idx);
                         }}
-                        className="px-2.5 py-0.5 rounded-md bg-rose-600/90 hover:bg-rose-600 text-white text-[10px] font-semibold flex items-center gap-1 transition-colors mt-0.5"
+                        className="px-2.5 py-0.5 rounded-md bg-accent/90 hover:bg-accent text-white text-[10px] font-semibold flex items-center gap-1 transition-colors mt-0.5"
                       >
                         <Trash2 className="w-3 h-3" />
                         <span>Remove</span>
@@ -315,7 +316,7 @@ export default function MemoryTab({
                         e.stopPropagation();
                         handleReorderPhoto(idx, idx - 1);
                       }}
-                      className="p-1 rounded-md bg-zinc-900 hover:bg-white text-zinc-300 hover:text-black disabled:opacity-30 disabled:pointer-events-none border border-white/10 transition-all text-[10px] flex items-center justify-center flex-1"
+                      className="p-1 rounded-md bg-zinc-900 hover:bg-accent/20 text-zinc-300 hover:text-accent-soft disabled:opacity-30 disabled:pointer-events-none border border-white/10 transition-all text-[10px] flex items-center justify-center flex-1"
                       title="Move left"
                     >
                       <ChevronLeft className="w-3.5 h-3.5" />
@@ -332,7 +333,7 @@ export default function MemoryTab({
                         e.stopPropagation();
                         handleReorderPhoto(idx, idx + 1);
                       }}
-                      className="p-1 rounded-md bg-zinc-900 hover:bg-white text-zinc-300 hover:text-black disabled:opacity-30 disabled:pointer-events-none border border-white/10 transition-all text-[10px] flex items-center justify-center flex-1"
+                      className="p-1 rounded-md bg-zinc-900 hover:bg-accent/20 text-zinc-300 hover:text-accent-soft disabled:opacity-30 disabled:pointer-events-none border border-white/10 transition-all text-[10px] flex items-center justify-center flex-1"
                       title="Move right"
                     >
                       <ChevronRight className="w-3.5 h-3.5" />
@@ -381,7 +382,7 @@ export default function MemoryTab({
 
       <button
         type="submit"
-        className="w-full py-3 rounded-xl bg-white hover:bg-zinc-200 text-black font-bold text-xs transition-all shadow-md"
+        className="w-full py-3 rounded-xl bg-accent hover:bg-accent-deep text-white font-bold text-xs transition-all shadow-md"
       >
         Save Memories & Update Scrapbook
       </button>

@@ -157,7 +157,7 @@ export default function GoogleDrivePicker({
             href={folderUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white text-white hover:text-black font-semibold text-[10px] transition-colors mt-1"
+            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-accent/20 text-zinc-200 hover:text-accent-soft font-semibold text-[10px] transition-colors mt-1"
           >
             <span>Upload to Google Drive</span>
             <ExternalLink className="w-2.5 h-2.5" />

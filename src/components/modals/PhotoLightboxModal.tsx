@@ -107,8 +107,8 @@ function PhotoLightboxModalContent({
               {currentIndex + 1} / {photos.length}
             </span>
             {isFirst && (
-              <span className="px-2 py-0.5 rounded-full bg-white text-black text-[9px] sm:text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 shadow">
-                <Star className="w-2.5 h-2.5 fill-black" />
+              <span className="px-2 py-0.5 rounded-full bg-accent text-white text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.12em] flex items-center gap-1 shadow">
+                <Star className="w-2.5 h-2.5 fill-current" />
                 <span>Featured Hero</span>
               </span>
             )}
@@ -134,7 +134,7 @@ function PhotoLightboxModalContent({
                 onSetFeatured(currentIndex);
                 setCurrentIndex(0);
               }}
-              className="px-2.5 py-1.5 rounded-xl bg-white/10 hover:bg-white text-zinc-300 hover:text-black border border-white/20 text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm"
+              className="px-2.5 py-1.5 rounded-xl bg-white/10 hover:bg-accent/20 text-zinc-300 hover:text-accent-soft border border-white/20 text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm"
               title="Promote to #1 Featured Scrapbook Photo"
             >
               <Star className="w-3.5 h-3.5" />
@@ -146,7 +146,7 @@ function PhotoLightboxModalContent({
             <button
               type="button"
               onClick={() => onSetCover(currentPhoto)}
-              className="px-2.5 py-1.5 rounded-xl bg-white/10 hover:bg-white text-zinc-300 hover:text-black border border-white/20 text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm"
+              className="px-2.5 py-1.5 rounded-xl bg-white/10 hover:bg-accent/20 text-zinc-300 hover:text-accent-soft border border-white/20 text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm"
               title="Set as Date Cover Image"
             >
               <ImageIcon className="w-3.5 h-3.5" />
@@ -158,7 +158,7 @@ function PhotoLightboxModalContent({
             href={currentPhoto}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-2 rounded-xl bg-white/10 hover:bg-white text-zinc-300 hover:text-black border border-white/20 transition-all shadow-sm"
+            className="p-2 rounded-xl bg-white/10 hover:bg-accent/20 text-zinc-300 hover:text-accent-soft border border-white/20 transition-all shadow-sm"
             title="Open full resolution"
             onClick={(e) => e.stopPropagation()}
           >
@@ -168,7 +168,7 @@ function PhotoLightboxModalContent({
           <button
             type="button"
             onClick={onClose}
-            className="p-2 rounded-xl bg-white/15 hover:bg-white text-white hover:text-black border border-white/25 transition-all shadow-lg ml-1"
+            className="p-2 rounded-xl bg-white/15 hover:bg-accent/20 text-zinc-200 hover:text-accent-soft border border-white/25 transition-all shadow-lg ml-1"
             title="Close viewer (Esc)"
           >
             <X className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -186,7 +186,7 @@ function PhotoLightboxModalContent({
           <button
             type="button"
             onClick={handlePrev}
-            className="absolute left-2 sm:left-6 z-30 p-3 sm:p-4 rounded-full bg-black/60 hover:bg-white text-white hover:text-black border border-white/20 backdrop-blur-md transition-all shadow-2xl group focus:outline-none"
+            className="absolute left-2 sm:left-6 z-30 p-3 sm:p-4 rounded-full bg-black/60 hover:bg-accent/20 text-zinc-200 hover:text-accent-soft border border-white/20 backdrop-blur-md transition-all shadow-2xl group focus:outline-none"
             title="Previous photo (◀)"
           >
             <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 transition-transform group-hover:-translate-x-0.5" />
@@ -214,7 +214,7 @@ function PhotoLightboxModalContent({
           <button
             type="button"
             onClick={handleNext}
-            className="absolute right-2 sm:right-6 z-30 p-3 sm:p-4 rounded-full bg-black/60 hover:bg-white text-white hover:text-black border border-white/20 backdrop-blur-md transition-all shadow-2xl group focus:outline-none"
+            className="absolute right-2 sm:right-6 z-30 p-3 sm:p-4 rounded-full bg-black/60 hover:bg-accent/20 text-zinc-200 hover:text-accent-soft border border-white/20 backdrop-blur-md transition-all shadow-2xl group focus:outline-none"
             title="Next photo (▶)"
           >
             <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 transition-transform group-hover:translate-x-0.5" />

@@ -42,7 +42,7 @@ export default function DateMapView() {
               onClick={() => setActiveCategory(cat)}
               className={`px-2.5 py-1 rounded-xl text-xs font-medium capitalize transition-all whitespace-nowrap shrink-0 ${
                 activeCategory === cat
-                  ? 'bg-white text-black font-bold shadow-sm'
+                  ? 'bg-accent/15 text-accent-soft font-semibold'
                   : 'bg-zinc-900/80 text-zinc-400 border border-white/[0.06] hover:bg-zinc-800 hover:text-white'
               }`}
             >
@@ -76,8 +76,8 @@ export default function DateMapView() {
         
         {/* Subtle Map Routing Overlay Lines */}
         <svg className="absolute inset-0 w-full h-full opacity-20 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M 60,160 Q 350,70 650,220 T 1150,260" fill="none" stroke="#ffffff" strokeWidth="1.5" strokeDasharray="5,5" />
-          <path d="M 140,460 Q 420,320 840,460 T 1180,410" fill="none" stroke="#a1a1aa" strokeWidth="1.5" strokeDasharray="5,5" />
+          <path d="M 60,160 Q 350,70 650,220 T 1150,260" fill="none" stroke="#faf8f5" strokeWidth="1.5" strokeDasharray="5,5" />
+          <path d="M 140,460 Q 420,320 840,460 T 1180,410" fill="none" stroke="#a9a099" strokeWidth="1.5" strokeDasharray="5,5" />
         </svg>
 
         {/* Top Info Badge */}
@@ -125,7 +125,7 @@ export default function DateMapView() {
                 <div
                   className={`relative flex items-center gap-1.5 px-2 sm:px-2.5 py-1 rounded-xl border backdrop-blur-md transition-all shadow-md ${
                     isSelected
-                      ? 'bg-white text-black border-white scale-110 shadow-lg'
+                      ? 'bg-accent text-white border-accent scale-110 shadow-lg'
                       : date.status === 'completed'
                       ? 'bg-zinc-900 text-zinc-200 border-zinc-700 hover:scale-105'
                       : date.status === 'booked'
@@ -188,7 +188,7 @@ export default function DateMapView() {
                   <div className="flex items-center gap-2 pt-1">
                     <button
                       onClick={() => setSelectedDate(highlightedDate)}
-                      className="flex items-center gap-1 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-white text-black text-[11px] sm:text-xs font-bold shadow-sm"
+                      className="flex items-center gap-1 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-accent hover:bg-accent-deep text-white text-[11px] sm:text-xs font-semibold shadow-sm transition-colors"
                     >
                       <span>Checklist</span>
                       <ArrowRight className="w-3 h-3" />

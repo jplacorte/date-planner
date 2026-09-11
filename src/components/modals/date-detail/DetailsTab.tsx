@@ -1,6 +1,6 @@
 'use client';
 
-import { Compass, Edit3, ExternalLink, MapPin, Shirt, Sparkles } from 'lucide-react';
+import { Compass, Edit3, ExternalLink, MapPin, Shirt } from 'lucide-react';
 
 import type { DateDetailsEditor } from '@/hooks/use-date-details-editor';
 import type {
@@ -60,7 +60,7 @@ export default function DetailsTab({ selectedDate, editor }: DetailsTabProps) {
         <button
           type="button"
           onClick={handleToggleEditDetails}
-          className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white/[0.08] hover:bg-white text-zinc-200 hover:text-black border border-white/10 text-xs font-semibold transition-all shadow-sm"
+          className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white/[0.08] hover:bg-accent/20 text-zinc-200 hover:text-accent-soft border border-white/10 text-xs font-semibold transition-all shadow-sm"
         >
           <Edit3 className="w-3.5 h-3.5" />
           <span>{isEditingDetails ? 'Cancel Edit' : 'Edit Information'}</span>
@@ -68,7 +68,7 @@ export default function DetailsTab({ selectedDate, editor }: DetailsTabProps) {
       </div>
 
       {isEditingDetails ? (
-        <form onSubmit={handleSaveDetails} className="space-y-4 bg-black p-4 sm:p-5 rounded-2xl border border-white/15 shadow-xl">
+        <form onSubmit={handleSaveDetails} className="space-y-4 bg-white/[0.03] p-4 sm:p-5 rounded-2xl border border-white/15 shadow-xl">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="space-y-1">
               <label className="text-xs font-semibold text-zinc-300">Date Title *</label>
@@ -78,7 +78,7 @@ export default function DetailsTab({ selectedDate, editor }: DetailsTabProps) {
                 value={editedTitle}
                 onChange={(e) => setEditedTitle(e.target.value)}
                 placeholder="Date Title"
-                className="w-full bg-zinc-900 border border-white/15 rounded-xl px-3 py-2 text-xs font-serif font-bold text-white focus:outline-none focus:border-white"
+                className="w-full bg-zinc-900 border border-white/15 rounded-xl px-3 py-2 text-xs font-serif font-bold text-white focus:outline-none focus:border-accent/45"
               />
             </div>
 
@@ -89,7 +89,7 @@ export default function DetailsTab({ selectedDate, editor }: DetailsTabProps) {
                 value={editedSubtitle}
                 onChange={(e) => setEditedSubtitle(e.target.value)}
                 placeholder="Tagline / Subtitle"
-                className="w-full bg-zinc-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-white"
+                className="w-full bg-zinc-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-accent/45"
               />
             </div>
           </div>
@@ -101,7 +101,7 @@ export default function DetailsTab({ selectedDate, editor }: DetailsTabProps) {
               value={editedDescription}
               onChange={(e) => setEditedDescription(e.target.value)}
               placeholder="Detailed overview and what makes this date special..."
-              className="w-full bg-zinc-900 border border-white/10 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-white leading-relaxed"
+              className="w-full bg-zinc-900 border border-white/10 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-accent/45 leading-relaxed"
             />
           </div>
 
@@ -222,7 +222,7 @@ export default function DetailsTab({ selectedDate, editor }: DetailsTabProps) {
             </button>
             <button
               type="submit"
-              className="px-5 py-2 rounded-xl bg-white text-black text-xs font-bold hover:bg-zinc-200 transition-all shadow-md"
+              className="px-5 py-2 rounded-xl bg-accent hover:bg-accent-deep text-white text-xs font-semibold transition-all shadow-md"
             >
               Save Changes
             </button>
@@ -231,16 +231,16 @@ export default function DetailsTab({ selectedDate, editor }: DetailsTabProps) {
       ) : (
         <>
           <div>
-            <h4 className="text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-500 mb-2">
+            <h4 className="text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-500 mb-2">
               Overview
             </h4>
-            <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-light bg-black p-4 rounded-2xl border border-white/[0.08]">
+            <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-light bg-white/[0.03] p-4 rounded-2xl border border-white/[0.08]">
               {selectedDate.description}
             </p>
           </div>
 
           {/* Location Box */}
-          <div className="bg-black p-4 rounded-2xl border border-white/[0.08] space-y-3">
+          <div className="bg-white/[0.03] p-4 rounded-2xl border border-white/[0.08] space-y-3">
             <div className="flex items-center justify-between">
               <div>
                 <h4 className="text-xs sm:text-sm font-bold text-white flex items-center gap-1.5">
@@ -256,7 +256,7 @@ export default function DetailsTab({ selectedDate, editor }: DetailsTabProps) {
                 href={mapSearchUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-white text-black text-xs font-bold transition-colors"
+                className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-accent hover:bg-accent-deep text-white text-xs font-semibold transition-colors"
               >
                 <span>Directions</span>
                 <ExternalLink className="w-3 h-3" />
@@ -265,7 +265,7 @@ export default function DetailsTab({ selectedDate, editor }: DetailsTabProps) {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="bg-black p-3.5 rounded-2xl border border-white/[0.08] space-y-1">
+            <div className="bg-white/[0.03] p-3.5 rounded-2xl border border-white/[0.08] space-y-1">
               <span className="text-[11px] font-medium text-zinc-400 flex items-center gap-1.5">
                 <Shirt className="w-3.5 h-3.5 text-zinc-500" />
                 Dress Code
@@ -275,7 +275,7 @@ export default function DetailsTab({ selectedDate, editor }: DetailsTabProps) {
               </p>
             </div>
 
-            <div className="bg-black p-3.5 rounded-2xl border border-white/[0.08] space-y-1">
+            <div className="bg-white/[0.03] p-3.5 rounded-2xl border border-white/[0.08] space-y-1">
               <span className="text-[11px] font-medium text-zinc-400 flex items-center gap-1.5">
                 <Compass className="w-3.5 h-3.5 text-zinc-500" />
                 Setting
@@ -287,16 +287,12 @@ export default function DetailsTab({ selectedDate, editor }: DetailsTabProps) {
           </div>
 
           <div>
-            <h4 className="text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-500 mb-2">
+            <h4 className="text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-500 mb-2">
               Vibe Tags
             </h4>
             <div className="flex flex-wrap gap-1.5">
               {selectedDate.vibeTags?.map((tag, idx) => (
-                <span
-                  key={idx}
-                  className="px-2.5 py-1 rounded-xl bg-zinc-900 border border-white/[0.06] text-zinc-300 text-xs flex items-center gap-1"
-                >
-                  <Sparkles className="w-3 h-3 text-zinc-500" />
+                <span key={idx} className="chip">
                   {tag}
                 </span>
               ))}

@@ -1,31 +1,107 @@
 @import "tailwindcss";
 
-:root {
+/* ===========================================================================
+   WARM EDITORIAL MINIMALISM
+   ---------------------------------------------------------------------------
+   The app is written against Tailwind's `zinc` / `white` / `black` utilities.
+   Rather than rewrite every class name, the scales themselves are redefined
+   here as a warm ramp, so `bg-zinc-900` or `text-white` resolve to tactile
+   neutrals everywhere at once. Pure #000/#FFF never render.
+   =========================================================================== */
+
+@theme {
   --font-sans: var(--font-sans), system-ui, -apple-system, sans-serif;
-  --font-serif: var(--font-serif), Georgia, serif;
+  --font-serif: var(--font-serif), Georgia, "Times New Roman", serif;
+
+  /* Warm monochrome ramp — replaces Tailwind's blue-leaning zinc */
+  --color-zinc-50: #faf8f5;   /* cream    */
+  --color-zinc-100: #f3efea;  /* linen    */
+  --color-zinc-200: #e7e1d9;  /* parchment*/
+  --color-zinc-300: #d3cabf;
+  --color-zinc-400: #a9a099;  /* metadata */
+  --color-zinc-500: #8a817a;
+  --color-zinc-600: #6d645d;
+  --color-zinc-700: #4d463f;
+  --color-zinc-800: #35302b;
+  --color-zinc-900: #241f1c;  /* panel    */
+  --color-zinc-950: #17130f;  /* espresso */
+
+  /* `neutral` is used in a handful of spots; keep it on the same ramp */
+  --color-neutral-50: #faf8f5;
+  --color-neutral-100: #f3efea;
+  --color-neutral-200: #e7e1d9;
+  --color-neutral-300: #d3cabf;
+  --color-neutral-400: #a9a099;
+  --color-neutral-500: #8a817a;
+  --color-neutral-600: #6d645d;
+  --color-neutral-700: #4d463f;
+  --color-neutral-800: #35302b;
+  --color-neutral-900: #241f1c;
+  --color-neutral-950: #17130f;
+
+  /* Deep ink and warm cream stand in for pure black and white */
+  --color-white: #faf8f5;
+  --color-black: #141211;
+
+  /* Editorial semantics */
+  --color-ink: #1e1c1a;
+  --color-cream: #faf8f5;
+  --color-linen: #f3efea;
+  --color-parchment: #e7e1d9;
+  --color-stone: #78716c;
+  --color-espresso: #141211;
+  --color-charcoal: #1c1a18;
+
+  /* Single accent, used sparingly for active states and highlights */
+  --color-accent: #c86d51;        /* terracotta */
+  --color-accent-soft: #e0947c;
+  --color-accent-deep: #a3543c;
+  --color-sage: #6b7a68;          /* olive sage, secondary signal */
+  --color-champagne: #d4af37;     /* milestones only */
+
+  /* Warm rust for errors — red without the Valentine's glare */
+  --color-red-300: #e5a08c;
+  --color-red-400: #d98268;
+  --color-red-500: #c05f42;
+  --color-red-900: #4a2318;
+  --color-red-950: #2c150e;
+
+  /* Amber softened to champagne, reserved for milestones */
+  --color-amber-200: #e6cd8a;
+  --color-amber-300: #d4af37;
+  --color-amber-400: #c39f2f;
+
+  /* Rose is retired. Nothing references it, but the aliases stay so any
+     stray `rose-*` class lands on terracotta rather than hot pink. */
+  --color-rose-200: #e9b5a3;
+  --color-rose-300: #e0947c;
+  --color-rose-400: #c86d51;
+  --color-rose-500: #c86d51;
+  --color-rose-600: #a3543c;
 }
 
-/* Monochrome Ambient Atmosphere Themes */
-html[data-theme="noir"],
+/* ---------------------------------------------------------------------------
+   Ambient mood themes — warm atmospheres rather than cold gradients
+   --------------------------------------------------------------------------- */
 html[data-theme="dusk"] body {
-  background: radial-gradient(circle at 50% 0%, #17171a 0%, #0c0c0e 55%, #050506 100%);
+  background: radial-gradient(circle at 50% 0%, #221d1a 0%, #17130f 55%, #0e0b09 100%);
 }
 
-html[data-theme="obsidian"],
 html[data-theme="candlelight"] body {
-  background: radial-gradient(circle at 50% 0%, #1c1c1c 0%, #0d0d0d 55%, #040404 100%);
+  background: radial-gradient(circle at 50% 0%, #2a211a 0%, #1a1410 55%, #0d0a08 100%);
 }
 
 html[data-theme="midnight"] body {
-  background: radial-gradient(circle at 50% 0%, #12131a 0%, #090a0f 60%, #030406 100%);
+  background: radial-gradient(circle at 50% 0%, #1b1917 0%, #110f0d 60%, #080706 100%);
 }
 
-html[data-theme="graphite"],
 html[data-theme="dawn"] body {
-  background: radial-gradient(circle at 50% 0%, #202024 0%, #111114 60%, #08080a 100%);
+  background: radial-gradient(circle at 50% 0%, #2e2823 0%, #1d1916 60%, #100d0b 100%);
 }
 
-/* Base Body */
+/* ---------------------------------------------------------------------------
+   Base
+   --------------------------------------------------------------------------- */
 html {
   scroll-behavior: smooth;
   color-scheme: dark;
@@ -33,16 +109,29 @@ html {
 }
 
 body {
-  color: #f4f4f5;
+  color: var(--color-linen);
   font-family: var(--font-sans);
   min-height: 100vh;
   min-height: 100dvh;
-  background-color: #09090b;
+  background-color: var(--color-espresso);
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior-y: none;
 }
 
-/* Touch & Mobile Utilities */
+::selection {
+  background: rgba(200, 109, 81, 0.28);
+  color: var(--color-cream);
+}
+
+/* Editorial display type: high-contrast serif for titles and captions */
+.font-display {
+  font-family: var(--font-serif);
+  letter-spacing: -0.015em;
+}
+
+/* ---------------------------------------------------------------------------
+   Touch & mobile utilities
+   --------------------------------------------------------------------------- */
 .touch-scroll {
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
@@ -56,7 +145,6 @@ body {
   display: none;
 }
 
-/* Safe Area Inset Support */
 .pb-safe {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
@@ -74,44 +162,149 @@ body {
   }
 }
 
-/* Monochrome Scrollbar */
+/* ---------------------------------------------------------------------------
+   Warm scrollbar
+   --------------------------------------------------------------------------- */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #09090b;
+  background: var(--color-espresso);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: #35302b;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #52525b;
+  background: #6d645d;
 }
 
-/* Clean Hairline Utilities */
+/* ---------------------------------------------------------------------------
+   Surfaces — 1px hairlines over warm panels
+   --------------------------------------------------------------------------- */
 .hairline-border {
-  border-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(250, 248, 245, 0.08);
 }
 
 .hairline-border-hover:hover {
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(250, 248, 245, 0.2);
 }
 
-.mono-panel {
-  background: rgba(15, 15, 18, 0.7);
+.warm-panel {
+  background: rgba(29, 25, 22, 0.72);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(250, 248, 245, 0.08);
 }
 
-.mono-card {
-  background: rgba(20, 20, 24, 0.4);
+.warm-card {
+  background: rgba(36, 31, 28, 0.45);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(250, 248, 245, 0.06);
+}
+
+/* Legacy aliases from the monochrome system */
+.mono-panel {
+  background: rgba(29, 25, 22, 0.72);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(250, 248, 245, 0.08);
+}
+.mono-card {
+  background: rgba(36, 31, 28, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(250, 248, 245, 0.06);
+}
+
+/* ---------------------------------------------------------------------------
+   Chips — borderless vibe/budget/energy tags with a soft tint fill
+   --------------------------------------------------------------------------- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.16rem 0.55rem;
+  border-radius: 9999px;
+  background: rgba(231, 225, 217, 0.07);
+  color: #c5bcb2;
+  font-size: 10px;
+  line-height: 1.5;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.chip-accent {
+  background: rgba(200, 109, 81, 0.14);
+  color: var(--color-accent-soft);
+}
+
+/* Compact, icon-first action pill — never a bulky coloured CTA */
+.pill-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(250, 248, 245, 0.1);
+  background: rgba(250, 248, 245, 0.04);
+  color: #c5bcb2;
+  font-size: 10.5px;
+  font-weight: 600;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.pill-action:hover {
+  color: var(--color-cream);
+  border-color: rgba(200, 109, 81, 0.45);
+  background: rgba(200, 109, 81, 0.1);
+}
+
+/* ---------------------------------------------------------------------------
+   Itinerary timeline — a single hairline connecting time-stamped nodes
+   --------------------------------------------------------------------------- */
+.timeline-rail {
+  border-left: 1px solid rgba(250, 248, 245, 0.12);
+}
+
+/* The stop happening right now gets a quiet warm outline */
+.timeline-active {
+  border-color: rgba(200, 109, 81, 0.5) !important;
+  box-shadow: 0 0 0 1px rgba(200, 109, 81, 0.16);
+}
+
+/* Stops already behind you recede rather than disappear */
+.timeline-past {
+  opacity: 0.5;
+}
+
+/* ---------------------------------------------------------------------------
+   Keepsake interactions — a stamp, not a to-do checkbox
+   --------------------------------------------------------------------------- */
+@keyframes stamp-press {
+  0%   { transform: scale(1) rotate(0deg); }
+  35%  { transform: scale(1.28) rotate(-9deg); }
+  70%  { transform: scale(0.94) rotate(4deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+.stamp-press {
+  animation: stamp-press 0.38s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+
+/* Scrapbook tilt: photos sit slightly off-axis like pasted prints */
+.keepsake-tilt {
+  transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+.keepsake-tilt:hover {
+  transform: rotate(-1.1deg) translateY(-3px);
+}
+.keepsake-tilt:active {
+  transform: rotate(1.4deg) scale(0.985);
 }

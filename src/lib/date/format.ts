@@ -107,3 +107,39 @@ export function parseDateAndTimeToTimestamp(dateStr?: string, timeStr?: string):
 
   return new Date(year, month - 1, day, hours, minutes).getTime();
 }
+
+/**
+ * Converts a time string ("18:30", "6:30 PM") to minutes since midnight.
+ * Returns null when the string cannot be read as a time, so callers can skip
+ * it rather than treating an unparsed step as midnight.
+ */
+export function timeStringToMinutes(timeStr?: string): number | null {
+  if (!timeStr) return null;
+
+  const match = timeStr.trim().match(/^(\d{1,2}):(\d{2})\s*(am|pm)?$/i);
+  if (!match) return null;
+
+  let hours = parseInt(match[1], 10);
+  const minutes = parseInt(match[2], 10);
+  if (isNaN(hours) || isNaN(minutes)) return null;
+
+  const period = match[3]?.toLowerCase();
+  if (period === 'pm' && hours < 12) hours += 12;
+  if (period === 'am' && hours === 12) hours = 0;
+
+  return hours * 60 + minutes;
+}
+
+/** True when the given YYYY-MM-DD string falls on the viewer's current day. */
+export function isToday(dateString?: string): boolean {
+  if (!dateString) return false;
+  const parts = dateString.split('-');
+  if (parts.length !== 3) return false;
+
+  const now = new Date();
+  return (
+    parseInt(parts[0], 10) === now.getFullYear() &&
+    parseInt(parts[1], 10) === now.getMonth() + 1 &&
+    parseInt(parts[2], 10) === now.getDate()
+  );
+}

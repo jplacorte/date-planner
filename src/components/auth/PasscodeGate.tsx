@@ -96,7 +96,7 @@ export default function PasscodeGate({
             <p
               id="passcode-error"
               role="alert"
-              className="text-xs text-rose-400/90 text-center"
+              className="text-xs text-red-400 text-center"
             >
               {error}
             </p>

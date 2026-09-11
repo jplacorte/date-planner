@@ -46,7 +46,7 @@ function AppContent() {
   }, [isAnyModalOpen]);
 
   return (
-    <div className="min-h-screen flex flex-col justify-between selection:bg-rose-500/30 selection:text-rose-200">
+    <div className="min-h-screen flex flex-col justify-between selection:bg-accent/25 selection:text-cream">
       <div>
         {/* Navigation Bar */}
         <Header />

@@ -200,7 +200,9 @@ export const DateProvider = ({ children }: { children: ReactNode }) => {
       particleCount: 80,
       spread: 70,
       origin: { y: 0.6 },
-      colors: ['#F43F5E', '#FB7185', '#F59E0B', '#A855F7', '#38BDF8'],
+      // Terracotta, champagne and sage confetti — celebratory without the
+      // Valentine's glare of hot pink and electric purple.
+      colors: ['#C86D51', '#E0947C', '#D4AF37', '#6B7A68', '#E7E1D9'],
     });
   }, []);
 

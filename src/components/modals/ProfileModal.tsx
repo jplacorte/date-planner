@@ -58,8 +58,8 @@ export default function ProfileModal() {
           {/* Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 sm:gap-2.5">
-              <div className="p-1.5 sm:p-2 rounded-xl bg-white text-black shrink-0">
-                <Heart className="w-4 h-4 fill-black" />
+              <div className="p-1.5 sm:p-2 rounded-full bg-accent/12 text-accent-soft shrink-0">
+                <Heart className="w-4 h-4 fill-current" />
               </div>
               <div>
                 <h3 className="text-base sm:text-lg font-bold font-serif text-white">
@@ -90,7 +90,7 @@ export default function ProfileModal() {
                   required
                   value={partner1Name}
                   onChange={(e) => setPartner1Name(e.target.value)}
-                  className="w-full bg-black border border-white/[0.1] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-white"
+                  className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-accent/45"
                 />
               </div>
 
@@ -101,7 +101,7 @@ export default function ProfileModal() {
                   required
                   value={partner2Name}
                   onChange={(e) => setPartner2Name(e.target.value)}
-                  className="w-full bg-black border border-white/[0.1] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-white"
+                  className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-accent/45"
                 />
               </div>
             </div>
@@ -116,7 +116,7 @@ export default function ProfileModal() {
                 type="date"
                 value={anniversaryDate}
                 onChange={(e) => setAnniversaryDate(e.target.value)}
-                className="w-full bg-black border border-white/[0.1] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-white"
+                className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-accent/45"
               />
             </div>
 
@@ -130,13 +130,13 @@ export default function ProfileModal() {
                 rows={2}
                 value={relationshipMotto}
                 onChange={(e) => setRelationshipMotto(e.target.value)}
-                className="w-full bg-black border border-white/[0.1] rounded-xl p-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-white"
+                className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl p-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-accent/45"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full py-2.5 rounded-xl bg-white hover:bg-zinc-200 text-black font-bold text-xs shadow-lg transition-all"
+              className="w-full py-2.5 rounded-xl bg-accent hover:bg-accent-deep text-white font-bold text-xs shadow-lg transition-all"
             >
               Save Profile
             </button>

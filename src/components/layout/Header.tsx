@@ -52,10 +52,10 @@ export default function Header() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const moodOptions: { id: MoodTheme; label: string; sub: string }[] = [
-    { id: 'dusk', label: 'Pure Noir', sub: 'Deepest charcoal & deep black' },
-    { id: 'candlelight', label: 'Obsidian Black', sub: 'High-contrast pure monochrome' },
-    { id: 'midnight', label: 'Graphite Midnight', sub: 'Subtle slate dark ambiance' },
-    { id: 'dawn', label: 'Alabaster Dawn', sub: 'Soft silver noir ambiance' },
+    { id: 'dusk', label: 'Dusk', sub: 'Warm charcoal, last light' },
+    { id: 'candlelight', label: 'Candlelight', sub: 'Amber glow on espresso' },
+    { id: 'midnight', label: 'Midnight', sub: 'Deepest, quietest warmth' },
+    { id: 'dawn', label: 'Dawn', sub: 'Soft parchment haze' },
   ];
 
   const soundOptions: { id: AmbientSound; label: string }[] = [
@@ -85,7 +85,7 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full backdrop-blur-2xl border-b border-white/[0.08] bg-black/80 transition-colors duration-500 pt-safe">
+    <header className="sticky top-0 z-40 w-full backdrop-blur-2xl border-b border-white/[0.07] bg-zinc-950/80 transition-colors duration-500 pt-safe">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14 sm:h-20 gap-2 sm:gap-4">
           
@@ -96,38 +96,33 @@ export default function Header() {
               className="group flex items-center gap-2 sm:gap-3 text-left p-1 rounded-2xl hover:bg-white/[0.04] transition-all min-w-0"
             >
               <div className="relative shrink-0">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-white border border-white/20 p-[1px] shadow-sm flex items-center justify-center">
-                  <div className="w-full h-full rounded-[10px] bg-black flex items-center justify-center">
-                    <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white fill-white transition-transform group-hover:scale-110" />
-                  </div>
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-accent/12 border border-accent/30 flex items-center justify-center">
+                  <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent fill-accent transition-transform group-hover:scale-110" />
                 </div>
-                <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-white border-2 border-black" />
+                <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-sage border-2 border-zinc-950" />
               </div>
 
               <div className="min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-xs sm:text-base font-bold font-serif tracking-tight text-white group-hover:text-zinc-300 transition-colors truncate max-w-[120px] xs:max-w-[160px] sm:max-w-none">
+                  <span className="text-sm sm:text-lg font-display font-medium tracking-tight text-zinc-50 group-hover:text-white transition-colors truncate max-w-[120px] xs:max-w-[160px] sm:max-w-none">
                     {coupleProfile.partner1Name} & {coupleProfile.partner2Name}
                   </span>
-                  <span className="text-[8px] sm:text-[10px] uppercase font-mono px-1 sm:px-1.5 py-0.5 rounded bg-white/10 text-zinc-300 shrink-0 hidden xs:inline">
-                    Dates
-                  </span>
                 </div>
-                <p className="text-[10px] sm:text-[11px] text-zinc-400 font-medium truncate hidden sm:block max-w-[180px]">
-                  Date Checklist & Romance Archive
+                <p className="text-[10px] sm:text-[11px] text-zinc-500 truncate hidden sm:block max-w-[200px]">
+                  Plans, nights out, and what we kept
                 </p>
               </div>
             </button>
           </div>
 
           {/* Navigation Tabs (Center - Desktop) */}
-          <nav className="hidden md:flex items-center p-1 rounded-2xl bg-zinc-950/90 border border-white/[0.08] shrink-0">
+          <nav className="hidden md:flex items-center p-1 rounded-full bg-white/[0.03] border border-white/[0.07] shrink-0">
             <button
               onClick={() => setActiveTab('checklist')}
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold tracking-wide transition-all whitespace-nowrap shrink-0 ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all whitespace-nowrap shrink-0 ${
                 activeTab === 'checklist'
-                  ? 'bg-white text-black shadow-md'
-                  : 'text-zinc-400 hover:text-white hover:bg-white/[0.04]'
+                  ? 'bg-accent/15 text-accent-soft'
+                  : 'text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.04]'
               }`}
             >
               <ListChecks className="w-3.5 h-3.5 shrink-0" />
@@ -135,10 +130,10 @@ export default function Header() {
             </button>
             <button
               onClick={() => setActiveTab('map')}
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold tracking-wide transition-all whitespace-nowrap shrink-0 ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all whitespace-nowrap shrink-0 ${
                 activeTab === 'map'
-                  ? 'bg-white text-black shadow-md'
-                  : 'text-zinc-400 hover:text-white hover:bg-white/[0.04]'
+                  ? 'bg-accent/15 text-accent-soft'
+                  : 'text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.04]'
               }`}
             >
               <MapPin className="w-3.5 h-3.5 shrink-0" />
@@ -146,10 +141,10 @@ export default function Header() {
             </button>
             <button
               onClick={() => setActiveTab('scrapbook')}
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold tracking-wide transition-all whitespace-nowrap shrink-0 ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all whitespace-nowrap shrink-0 ${
                 activeTab === 'scrapbook'
-                  ? 'bg-white text-black shadow-md'
-                  : 'text-zinc-400 hover:text-white hover:bg-white/[0.04]'
+                  ? 'bg-accent/15 text-accent-soft'
+                  : 'text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.04]'
               }`}
             >
               <BookHeart className="w-3.5 h-3.5 shrink-0" />
@@ -163,7 +158,7 @@ export default function Header() {
             {/* Roulette Spark Generator (Desktop / Tablet) */}
             <button
               onClick={() => setIsRouletteModalOpen(true)}
-              className="hidden sm:flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] text-white border border-white/[0.12] text-xs font-medium transition-all group whitespace-nowrap shrink-0"
+              className="hidden sm:flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-zinc-200 border border-white/[0.09] text-xs font-medium transition-all group whitespace-nowrap shrink-0"
               title="Date Spark Roulette"
             >
               <Sparkles className="w-3.5 h-3.5 text-zinc-300 group-hover:rotate-12 transition-transform shrink-0" />
@@ -174,7 +169,7 @@ export default function Header() {
             {/* Plan Custom Date Button */}
             <button
               onClick={() => setIsCreateModalOpen(true)}
-              className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-white text-black hover:bg-zinc-200 text-xs font-bold transition-all hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap shrink-0 shadow-sm"
+              className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-full bg-accent hover:bg-accent-deep text-white text-xs font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap shrink-0 shadow-sm"
             >
               <Plus className="w-3.5 h-3.5 shrink-0 stroke-[2.5]" />
               <span className="hidden xs:inline">New Date</span>
@@ -183,7 +178,7 @@ export default function Header() {
             {/* Achievements Trophy */}
             <button
               onClick={() => setIsStatsModalOpen(true)}
-              className="p-1.5 sm:p-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-zinc-300 hover:text-white border border-white/[0.08] transition-all shrink-0"
+              className="p-1.5 sm:p-2 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-zinc-300 hover:text-accent-soft border border-white/[0.08] transition-all shrink-0"
               title="Milestone Badges & Stats"
             >
               <Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
@@ -197,7 +192,7 @@ export default function Header() {
                   setIsAudioMenuOpen(false);
                   setIsSettingsOpen(false);
                 }}
-                className="p-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-zinc-300 hover:text-white border border-white/[0.08] transition-all"
+                className="p-2 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-zinc-300 hover:text-accent-soft border border-white/[0.08] transition-all"
                 title="Atmosphere Theme"
               >
                 <CircleDot className="w-4 h-4 shrink-0" />
@@ -212,7 +207,7 @@ export default function Header() {
                     className="absolute right-0 mt-2 w-52 rounded-2xl bg-zinc-950 border border-white/15 shadow-2xl p-1.5 z-50 max-w-[calc(100vw-2rem)]"
                   >
                     <div className="px-3 py-1.5 text-[10px] font-mono uppercase tracking-wider text-zinc-500">
-                      Monochrome Theme
+                      Atmosphere
                     </div>
                     {moodOptions.map((opt) => {
                       const active = moodTheme === opt.id;
@@ -225,17 +220,17 @@ export default function Header() {
                           }}
                           className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-left text-xs transition-all ${
                             active
-                              ? 'bg-white text-black font-bold'
-                              : 'text-zinc-300 hover:bg-white/5 hover:text-white'
+                              ? 'bg-accent/15 text-accent-soft font-semibold'
+                              : 'text-zinc-300 hover:bg-white/5 hover:text-zinc-100'
                           }`}
                         >
                           <div>
                             <div className="font-semibold">{opt.label}</div>
-                            <div className={`text-[10px] ${active ? 'text-zinc-700' : 'text-zinc-500'}`}>
+                            <div className={`text-[10px] ${active ? 'text-accent-soft/70' : 'text-zinc-500'}`}>
                               {opt.sub}
                             </div>
                           </div>
-                          {active && <span className="w-1.5 h-1.5 rounded-full bg-black" />}
+                          {active && <span className="w-1.5 h-1.5 rounded-full bg-accent" />}
                         </button>
                       );
                     })}
@@ -254,7 +249,7 @@ export default function Header() {
                 }}
                 className={`p-2 rounded-xl border transition-all ${
                   ambientSound !== 'none'
-                    ? 'bg-white text-black border-white'
+                    ? 'bg-accent/15 text-accent-soft border-accent/45'
                     : 'bg-white/[0.04] hover:bg-white/[0.08] text-zinc-300 hover:text-white border-white/[0.08]'
                 }`}
                 title="Ambient Soundscapes"
@@ -289,12 +284,12 @@ export default function Header() {
                           }}
                           className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
                             active
-                              ? 'bg-white text-black font-semibold'
+                              ? 'bg-accent/15 text-accent-soft font-semibold'
                               : 'text-zinc-300 hover:bg-white/5 hover:text-white'
                           }`}
                         >
                           <span>{opt.label}</span>
-                          {active && <span className="w-1.5 h-1.5 rounded-full bg-black" />}
+                          {active && <span className="w-1.5 h-1.5 rounded-full bg-accent" />}
                         </button>
                       );
                     })}
@@ -341,7 +336,7 @@ export default function Header() {
                   setIsThemeMenuOpen(false);
                   setIsAudioMenuOpen(false);
                 }}
-                className="p-1.5 sm:p-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-zinc-300 hover:text-white border border-white/[0.08] transition-all"
+                className="p-1.5 sm:p-2 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-zinc-300 hover:text-accent-soft border border-white/[0.08] transition-all"
                 title="Settings & Data"
               >
                 <Settings className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />

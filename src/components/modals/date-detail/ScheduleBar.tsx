@@ -93,7 +93,7 @@ export default function ScheduleBar({
           onClick={() => handleStatusChange(st)}
           className={`px-2 sm:px-2.5 py-1 rounded-lg text-[10px] sm:text-xs font-semibold capitalize transition-all whitespace-nowrap ${
             selectedDate.status === st
-              ? 'bg-white text-black font-bold shadow-sm'
+              ? 'bg-accent/15 text-accent-soft font-semibold'
               : 'text-zinc-400 hover:text-white'
           }`}
         >

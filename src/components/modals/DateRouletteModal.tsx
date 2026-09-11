@@ -95,7 +95,7 @@ export default function DateRouletteModal() {
           {/* Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 sm:gap-2.5">
-              <div className="p-1.5 sm:p-2 rounded-xl bg-white text-black shrink-0">
+              <div className="p-1.5 sm:p-2 rounded-full bg-accent/12 text-accent-soft shrink-0">
                 <Sparkles className="w-4 h-4" />
               </div>
               <div>
@@ -117,7 +117,7 @@ export default function DateRouletteModal() {
           </div>
 
           {/* Quick Filters */}
-          <div className="grid grid-cols-1 xs:grid-cols-3 gap-2 sm:gap-2.5 bg-black p-3 sm:p-3.5 rounded-2xl border border-white/[0.08] text-xs">
+          <div className="grid grid-cols-1 xs:grid-cols-3 gap-2 sm:gap-2.5 bg-white/[0.03] p-3 sm:p-3.5 rounded-2xl border border-white/[0.08] text-xs">
             <div>
               <label className="text-zinc-500 font-mono text-[10px] uppercase block mb-1">Category</label>
               <select
@@ -182,7 +182,7 @@ export default function DateRouletteModal() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
                   <div className="absolute bottom-2 left-2.5 right-2.5 flex items-center justify-between text-xs">
-                    <span className="px-2 py-0.5 rounded bg-white text-black font-bold uppercase text-[9px]">
+                    <span className="px-2 py-0.5 rounded bg-accent/15 text-accent-soft font-semibold uppercase text-[9px]">
                       {displayedDate.category}
                     </span>
                     <span className="font-mono text-white font-bold bg-black/80 px-2 py-0.5 rounded border border-white/[0.1]">
@@ -200,7 +200,7 @@ export default function DateRouletteModal() {
 
                 {winnerDate && (
                   <div className="pt-1">
-                    <span className="inline-block text-[10px] font-bold uppercase tracking-wider text-black bg-white px-3 py-0.5 rounded-full">
+                    <span className="inline-block text-[10px] font-bold uppercase tracking-wider text-accent-soft bg-accent/15 px-3 py-0.5 rounded-full">
                       Match Selected
                     </span>
                   </div>
@@ -226,7 +226,7 @@ export default function DateRouletteModal() {
             <button
               onClick={spinRoulette}
               disabled={isSpinning || candidates.length === 0}
-              className="flex-1 py-3 rounded-xl bg-white hover:bg-zinc-200 disabled:opacity-50 text-black font-bold text-xs shadow-lg flex items-center justify-center gap-2 transition-all"
+              className="flex-1 py-3 rounded-xl bg-accent hover:bg-accent-deep disabled:opacity-50 text-white font-semibold text-xs shadow-lg flex items-center justify-center gap-2 transition-all"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isSpinning ? 'animate-spin' : ''}`} />
               <span>{isSpinning ? 'Selecting...' : 'Spin the Spark Wheel'}</span>

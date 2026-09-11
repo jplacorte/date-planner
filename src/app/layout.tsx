@@ -33,7 +33,7 @@ export const viewport: Viewport = {
   maximumScale: 1,
   userScalable: false,
   viewportFit: 'cover',
-  themeColor: '#09090b',
+  themeColor: '#17130f',
 };
 
 export const metadata: Metadata = {
@@ -62,7 +62,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body
-        className="min-h-screen bg-neutral-950 text-neutral-100 font-sans antialiased overflow-x-hidden transition-colors duration-700"
+        className="min-h-screen bg-zinc-950 text-zinc-100 font-sans antialiased overflow-x-hidden transition-colors duration-700"
         suppressHydrationWarning
       >
         <SmoothScroll>

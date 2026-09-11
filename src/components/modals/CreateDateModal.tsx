@@ -152,7 +152,7 @@ export default function CreateDateModal() {
           {/* Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 sm:gap-2.5">
-              <div className="p-1.5 sm:p-2 rounded-xl bg-white text-black shrink-0">
+              <div className="p-1.5 sm:p-2 rounded-full bg-accent/12 text-accent-soft shrink-0">
                 <Sparkles className="w-4 h-4" />
               </div>
               <div>
@@ -185,7 +185,7 @@ export default function CreateDateModal() {
                   placeholder="e.g. Midnight Ice Skating & Fondue"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full bg-black border border-white/[0.1] rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-white"
+                  className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-accent/45"
                 />
               </div>
 
@@ -196,7 +196,7 @@ export default function CreateDateModal() {
                   placeholder="e.g. Warm sweaters, hot cocoa & laughter"
                   value={subtitle}
                   onChange={(e) => setSubtitle(e.target.value)}
-                  className="w-full bg-black border border-white/[0.1] rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-white"
+                  className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-accent/45"
                 />
               </div>
             </div>
@@ -209,7 +209,7 @@ export default function CreateDateModal() {
                 placeholder="What makes this date special? Outline the atmosphere and highlights..."
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="w-full bg-black border border-white/[0.1] rounded-xl p-3 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-white"
+                className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl p-3 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-accent/45"
               />
             </div>
 
@@ -220,7 +220,7 @@ export default function CreateDateModal() {
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value as DateCategory)}
-                  className="w-full bg-black border border-white/[0.1] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none"
+                  className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none"
                 >
                   <option value="dining">Fine Dining</option>
                   <option value="outdoor">Outdoor Scenic</option>
@@ -236,7 +236,7 @@ export default function CreateDateModal() {
                 <select
                   value={estimatedCost}
                   onChange={(e) => setEstimatedCost(e.target.value as CostLevel)}
-                  className="w-full bg-black border border-white/[0.1] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none"
+                  className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none"
                 >
                   <option value="₱">₱ (Budget)</option>
                   <option value="₱₱">₱₱ (Moderate)</option>
@@ -250,7 +250,7 @@ export default function CreateDateModal() {
                 <select
                   value={setting}
                   onChange={(e) => setSetting(e.target.value as DateSetting)}
-                  className="w-full bg-black border border-white/[0.1] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none"
+                  className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none"
                 >
                   <option value="outdoor">Outdoor</option>
                   <option value="indoor">Indoor</option>
@@ -263,7 +263,7 @@ export default function CreateDateModal() {
                 <select
                   value={bestTimeOfDay}
                   onChange={(e) => setBestTimeOfDay(e.target.value as TimeOfDay)}
-                  className="w-full bg-black border border-white/[0.1] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none"
+                  className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none"
                 >
                   <option value="sunset">Sunset</option>
                   <option value="night">Night</option>
@@ -283,7 +283,7 @@ export default function CreateDateModal() {
                   placeholder="e.g. Skyline Observatory Deck"
                   value={locationName}
                   onChange={(e) => setLocationName(e.target.value)}
-                  className="w-full bg-black border border-white/[0.1] rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none"
+                  className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none"
                 />
               </div>
 
@@ -294,7 +294,7 @@ export default function CreateDateModal() {
                   placeholder="e.g. 500 Grand Ave, Downtown"
                   value={locationAddress}
                   onChange={(e) => setLocationAddress(e.target.value)}
-                  className="w-full bg-black border border-white/[0.1] rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none"
+                  className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none"
                 />
               </div>
             </div>
@@ -308,7 +308,7 @@ export default function CreateDateModal() {
                   placeholder="e.g. 2-3 Hours"
                   value={duration}
                   onChange={(e) => setDuration(e.target.value)}
-                  className="w-full bg-black border border-white/[0.1] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none"
+                  className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none"
                 />
               </div>
               <div className="space-y-1">
@@ -318,7 +318,7 @@ export default function CreateDateModal() {
                   placeholder="e.g. Smart Casual / Cozy"
                   value={dressCode}
                   onChange={(e) => setDressCode(e.target.value)}
-                  className="w-full bg-black border border-white/[0.1] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none"
+                  className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none"
                 />
               </div>
               <div className="space-y-1">
@@ -328,13 +328,13 @@ export default function CreateDateModal() {
                   placeholder="Comma-separated tags"
                   value={tagsInput}
                   onChange={(e) => setTagsInput(e.target.value)}
-                  className="w-full bg-black border border-white/[0.1] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none"
+                  className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none"
                 />
               </div>
             </div>
 
             {/* Cover Photo Uploader & Presets */}
-            <div className="space-y-2 bg-black p-4 rounded-2xl border border-white/[0.08]">
+            <div className="space-y-2 bg-white/[0.03] p-4 rounded-2xl border border-white/[0.08]">
               <div className="flex items-center justify-between">
                 <label className="text-xs font-semibold text-zinc-300">Cover Photo</label>
                 <button
@@ -397,7 +397,7 @@ export default function CreateDateModal() {
             </div>
 
             {/* Initial Checklist Items Builder */}
-            <div className="bg-black p-4 rounded-2xl border border-white/[0.08] space-y-2.5">
+            <div className="bg-white/[0.03] p-4 rounded-2xl border border-white/[0.08] space-y-2.5">
               <label className="text-xs font-semibold text-zinc-300 block">
                 Pre-Date Checklist Steps ({checklistItems.length})
               </label>
@@ -428,7 +428,7 @@ export default function CreateDateModal() {
                 <button
                   type="button"
                   onClick={handleAddChecklist}
-                  className="px-3.5 py-1.5 rounded-xl bg-white text-black text-xs font-bold hover:bg-zinc-200"
+                  className="px-3.5 py-1.5 rounded-xl bg-accent hover:bg-accent-deep text-white text-xs font-semibold"
                 >
                   Add Step
                 </button>
@@ -436,7 +436,7 @@ export default function CreateDateModal() {
             </div>
 
             {/* Initial Itinerary Timeline Builder */}
-            <div className="bg-black p-4 rounded-2xl border border-white/[0.08] space-y-2.5">
+            <div className="bg-white/[0.03] p-4 rounded-2xl border border-white/[0.08] space-y-2.5">
               <label className="text-xs font-semibold text-zinc-300 block flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5 text-zinc-400" />
                 Date Timeline / Itinerary ({itinerarySteps.length} Steps)
@@ -483,7 +483,7 @@ export default function CreateDateModal() {
                 <button
                   type="button"
                   onClick={handleAddItineraryStep}
-                  className="sm:col-span-3 flex items-center justify-center gap-1 py-1.5 rounded-xl bg-white text-black text-xs font-bold hover:bg-zinc-200"
+                  className="sm:col-span-3 flex items-center justify-center gap-1 py-1.5 rounded-xl bg-accent hover:bg-accent-deep text-white text-xs font-semibold"
                 >
                   <Plus className="w-3 h-3" />
                   <span>Add Step</span>
@@ -493,7 +493,7 @@ export default function CreateDateModal() {
 
             <button
               type="submit"
-              className="w-full py-3.5 rounded-xl bg-white hover:bg-zinc-200 text-black font-bold text-xs shadow-lg transition-all hover:scale-[1.01] active:scale-[0.99]"
+              className="w-full py-3.5 rounded-xl bg-accent hover:bg-accent-deep text-white font-bold text-xs shadow-lg transition-all hover:scale-[1.01] active:scale-[0.99]"
             >
               Save & Add Date Idea
             </button>

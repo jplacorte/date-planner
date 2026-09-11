@@ -147,7 +147,7 @@ export function AestheticDatePicker({
           }`}
           title="Pick Scheduled Date"
         >
-          <CalendarIcon className={`w-3.5 h-3.5 ${value ? 'text-rose-300' : 'text-zinc-400'}`} />
+          <CalendarIcon className={`w-3.5 h-3.5 ${value ? 'text-accent-soft' : 'text-zinc-400'}`} />
           <span className="whitespace-nowrap font-sans">
             {value ? formatDateString(value, { month: 'short', day: 'numeric', weekday: 'short' }) : label}
           </span>
@@ -186,7 +186,7 @@ export function AestheticDatePicker({
               <button
                 type="button"
                 onClick={prevMonth}
-                className="p-1.5 rounded-xl bg-zinc-900 hover:bg-white text-zinc-300 hover:text-black border border-white/10 transition-all"
+                className="p-1.5 rounded-xl bg-zinc-900 hover:bg-accent/20 text-zinc-300 hover:text-accent-soft border border-white/10 transition-all"
               >
                 <ChevronLeft className="w-3.5 h-3.5" />
               </button>
@@ -198,7 +198,7 @@ export function AestheticDatePicker({
               <button
                 type="button"
                 onClick={nextMonth}
-                className="p-1.5 rounded-xl bg-zinc-900 hover:bg-white text-zinc-300 hover:text-black border border-white/10 transition-all"
+                className="p-1.5 rounded-xl bg-zinc-900 hover:bg-accent/20 text-zinc-300 hover:text-accent-soft border border-white/10 transition-all"
               >
                 <ChevronRight className="w-3.5 h-3.5" />
               </button>
@@ -241,15 +241,15 @@ export function AestheticDatePicker({
                     onClick={() => handleSelectDay(dayNum)}
                     className={`h-8 rounded-xl text-[11px] font-mono font-medium flex items-center justify-center transition-all relative ${
                       isSelected
-                        ? 'bg-white text-black font-bold shadow-lg scale-105 z-10 ring-2 ring-white/50'
+                        ? 'bg-accent text-white font-semibold shadow-lg scale-105 z-10 ring-2 ring-accent/40'
                         : isToday
-                        ? 'border border-rose-400 text-rose-200 bg-rose-500/10 hover:bg-rose-500/20'
-                        : 'text-zinc-300 hover:bg-white/15 hover:text-white'
+                        ? 'border border-white/25 text-zinc-100 hover:bg-white/10'
+                        : 'text-zinc-300 hover:bg-white/10 hover:text-zinc-50'
                     }`}
                   >
                     {dayNum}
                     {isToday && !isSelected && (
-                      <span className="absolute bottom-1 w-1 h-1 rounded-full bg-rose-400" />
+                      <span className="absolute bottom-1 w-1 h-1 rounded-full bg-accent" />
                     )}
                   </button>
                 );
@@ -286,7 +286,7 @@ export function AestheticDatePicker({
                     onClear();
                     setIsOpen(false);
                   }}
-                  className="px-2 py-1 rounded-lg text-rose-400 hover:text-rose-300 text-[10px] font-medium transition-colors"
+                  className="px-2 py-1 rounded-lg text-accent hover:text-accent-soft text-[10px] font-medium transition-colors"
                 >
                   Clear
                 </button>
@@ -430,20 +430,20 @@ export function AestheticTimePicker({
                     onClick={() => handleSelectPreset(p.time)}
                     className={`p-2 rounded-xl text-left border transition-all flex items-center justify-between group ${
                       isSelected
-                        ? 'bg-white text-black border-white font-bold shadow-md'
+                        ? 'bg-accent/15 text-accent-soft border-accent/45 font-semibold'
                         : 'bg-zinc-900/70 hover:bg-zinc-900 border-white/[0.08] hover:border-white/25 text-white'
                     }`}
                   >
                     <div className="min-w-0">
                       <div className="text-[10px] font-semibold truncate flex items-center gap-1">
                         <span>{p.icon}</span>
-                        <span className={isSelected ? 'text-black' : 'text-zinc-300'}>{p.label}</span>
+                        <span className={isSelected ? 'text-accent-soft' : 'text-zinc-300'}>{p.label}</span>
                       </div>
-                      <div className={`text-xs font-mono font-bold mt-0.5 ${isSelected ? 'text-black' : 'text-white'}`}>
+                      <div className={`text-xs font-mono font-bold mt-0.5 ${isSelected ? 'text-accent-soft' : 'text-zinc-100'}`}>
                         {p.time}
                       </div>
                     </div>
-                    {isSelected && <Check className="w-3.5 h-3.5 text-black shrink-0" />}
+                    {isSelected && <Check className="w-3.5 h-3.5 text-accent-soft shrink-0" />}
                   </button>
                 );
               })}
@@ -490,7 +490,7 @@ export function AestheticTimePicker({
                     type="button"
                     onClick={() => setSelectedPeriod('AM')}
                     className={`px-2 py-1 rounded-lg text-[10px] font-bold font-mono transition-all ${
-                      selectedPeriod === 'AM' ? 'bg-white text-black shadow' : 'text-zinc-400 hover:text-white'
+                      selectedPeriod === 'AM' ? 'bg-accent/15 text-accent-soft' : 'text-zinc-400 hover:text-white'
                     }`}
                   >
                     AM
@@ -499,7 +499,7 @@ export function AestheticTimePicker({
                     type="button"
                     onClick={() => setSelectedPeriod('PM')}
                     className={`px-2 py-1 rounded-lg text-[10px] font-bold font-mono transition-all ${
-                      selectedPeriod === 'PM' ? 'bg-white text-black shadow' : 'text-zinc-400 hover:text-white'
+                      selectedPeriod === 'PM' ? 'bg-accent/15 text-accent-soft' : 'text-zinc-400 hover:text-white'
                     }`}
                   >
                     PM
@@ -509,7 +509,7 @@ export function AestheticTimePicker({
                 <button
                   type="button"
                   onClick={handleApplyCustomTime}
-                  className="px-3 py-1.5 rounded-xl bg-white text-black text-xs font-bold hover:bg-zinc-200 transition-all shadow shrink-0"
+                  className="px-3 py-1.5 rounded-xl bg-accent hover:bg-accent-deep text-white text-xs font-semibold transition-all shadow shrink-0"
                 >
                   Set
                 </button>

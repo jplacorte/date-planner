@@ -55,7 +55,7 @@ export default function StatsModal() {
           {/* Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 sm:gap-2.5">
-              <div className="p-1.5 sm:p-2 rounded-xl bg-white text-black shrink-0">
+              <div className="p-1.5 sm:p-2 rounded-full bg-accent/12 text-accent-soft shrink-0">
                 <Trophy className="w-4 h-4" />
               </div>
               <div>
@@ -78,7 +78,7 @@ export default function StatsModal() {
 
           {/* Metrics Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
-            <div className="bg-black p-3 sm:p-3.5 rounded-2xl border border-white/[0.08] text-center space-y-0.5">
+            <div className="bg-white/[0.03] p-3 sm:p-3.5 rounded-2xl border border-white/[0.08] text-center space-y-0.5">
               <div className="text-xl sm:text-2xl font-bold font-mono text-white">
                 {completedDates.length}
               </div>
@@ -87,7 +87,7 @@ export default function StatsModal() {
               </div>
             </div>
 
-            <div className="bg-black p-3.5 rounded-2xl border border-white/[0.08] text-center space-y-0.5">
+            <div className="bg-white/[0.03] p-3.5 rounded-2xl border border-white/[0.08] text-center space-y-0.5">
               <div className="text-2xl font-bold font-mono text-white">
                 {daysTogether}
               </div>
@@ -96,7 +96,7 @@ export default function StatsModal() {
               </div>
             </div>
 
-            <div className="bg-black p-3.5 rounded-2xl border border-white/[0.08] text-center space-y-0.5">
+            <div className="bg-white/[0.03] p-3.5 rounded-2xl border border-white/[0.08] text-center space-y-0.5">
               <div className="text-2xl font-bold font-mono text-white">
                 {wishlistDates.length}
               </div>
@@ -105,7 +105,7 @@ export default function StatsModal() {
               </div>
             </div>
 
-            <div className="bg-black p-3.5 rounded-2xl border border-white/[0.08] text-center space-y-0.5">
+            <div className="bg-white/[0.03] p-3.5 rounded-2xl border border-white/[0.08] text-center space-y-0.5">
               <div className="text-2xl font-bold font-mono text-white">
                 ₱{totalSpent.toLocaleString()}
               </div>
@@ -116,7 +116,7 @@ export default function StatsModal() {
           </div>
 
           {/* Category Breakdown */}
-          <div className="bg-black p-4 rounded-2xl border border-white/[0.08] space-y-2.5">
+          <div className="bg-white/[0.03] p-4 rounded-2xl border border-white/[0.08] space-y-2.5">
             <h4 className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-500">
               Completed By Category
             </h4>
@@ -172,7 +172,7 @@ export default function StatsModal() {
                       <div className="flex items-center justify-between">
                         <h5 className="text-xs font-bold text-white">{badge.title}</h5>
                         {badge.unlocked ? (
-                          <span className="text-[9px] font-mono font-bold text-black bg-white px-2 py-0.5 rounded-full">
+                          <span className="text-[9px] font-mono font-bold text-accent-soft bg-accent/15 px-2 py-0.5 rounded-full">
                             Unlocked
                           </span>
                         ) : (

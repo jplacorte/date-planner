@@ -79,9 +79,9 @@ function DateDetailModalContent({ selectedDate }: { selectedDate: DateIdea }) {
                 exit={{ opacity: 0, y: -10, scale: 0.95 }}
                 role="status"
                 aria-live="polite"
-                className="absolute top-14 left-1/2 -translate-x-1/2 z-50 px-3.5 py-1.5 rounded-full bg-white text-black text-xs font-bold shadow-2xl flex items-center gap-1.5 border border-white/40 pointer-events-none"
+                className="absolute top-14 left-1/2 -translate-x-1/2 z-50 px-3.5 py-1.5 rounded-full bg-sage text-white text-xs font-semibold shadow-2xl flex items-center gap-1.5 border border-sage/60 pointer-events-none"
               >
-                <CheckCircle2 className="w-3.5 h-3.5 text-black" />
+                <CheckCircle2 className="w-3.5 h-3.5" />
                 <span>{feedback.message}</span>
               </motion.div>
             )}
@@ -135,7 +135,7 @@ function DateDetailModalContent({ selectedDate }: { selectedDate: DateIdea }) {
             )}
           </div>
 
-          <div className="bg-black p-3.5 sm:p-4 px-4 sm:px-6 border-t border-white/[0.08] flex items-center justify-between shrink-0">
+          <div className="bg-white/[0.03] p-3.5 sm:p-4 px-4 sm:px-6 border-t border-white/[0.08] flex items-center justify-between shrink-0">
             <button
               type="button"
               onClick={handleDelete}
@@ -148,7 +148,7 @@ function DateDetailModalContent({ selectedDate }: { selectedDate: DateIdea }) {
             <button
               type="button"
               onClick={handleCloseModal}
-              className="px-5 py-2 rounded-xl bg-white text-black text-xs font-bold transition-colors hover:bg-zinc-200 shadow-md"
+              className="px-5 py-2 rounded-full bg-accent hover:bg-accent-deep text-white text-xs font-semibold transition-colors shadow-md"
             >
               Done
             </button>

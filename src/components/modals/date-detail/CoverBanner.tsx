@@ -127,7 +127,7 @@ export default function CoverBanner({
       <button
         type="button"
         onClick={() => handleOpenLightbox([selectedDate.coverImage, ...(selectedDate.memoriesPhotos || [])], 0, selectedDate.title, selectedDate.subtitle)}
-        className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-white/[0.15] text-white text-[11px] sm:text-xs font-medium hover:bg-white hover:text-black transition-all shadow-md"
+        className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-white/[0.15] text-white text-[11px] sm:text-xs font-medium hover:bg-accent/20 hover:text-accent-soft transition-all shadow-md"
         title="View Full Cover Photo"
       >
         <Eye className="w-3.5 h-3.5" />
@@ -136,7 +136,7 @@ export default function CoverBanner({
 
       <button
         onClick={() => setIsChangingCover(!isChangingCover)}
-        className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-white/[0.15] text-white text-[11px] sm:text-xs font-medium hover:bg-white hover:text-black transition-all shadow-md"
+        className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-white/[0.15] text-white text-[11px] sm:text-xs font-medium hover:bg-accent/20 hover:text-accent-soft transition-all shadow-md"
       >
         <Camera className="w-3.5 h-3.5" />
         <span>Change Photo</span>
@@ -178,7 +178,7 @@ export default function CoverBanner({
           <button
             type="button"
             onClick={() => coverFileInputRef.current?.click()}
-            className="w-full flex items-center justify-center gap-2 py-2 rounded-xl bg-white text-black text-xs font-bold shadow-md hover:bg-zinc-200 transition-all"
+            className="w-full flex items-center justify-center gap-2 py-2 rounded-xl bg-accent hover:bg-accent-deep text-white text-xs font-semibold shadow-md transition-all"
           >
             <Upload className="w-3.5 h-3.5" />
             <span>{isUploadingCover ? 'Uploading...' : 'Upload from Device'}</span>
@@ -220,12 +220,12 @@ export default function CoverBanner({
             placeholder="Paste image or Drive link..."
             value={customCoverUrl}
             onChange={(e) => setCustomCoverUrl(e.target.value)}
-            className="flex-1 bg-black border border-white/10 rounded-xl px-2.5 py-1 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-white"
+            className="flex-1 bg-white/[0.03] border border-white/[0.08] rounded-xl px-2.5 py-1 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-accent/45"
           />
           <button
             type="button"
             onClick={() => handleApplyCoverUrl(customCoverUrl)}
-            className="px-3 py-1 rounded-xl bg-white/10 hover:bg-white text-white hover:text-black text-xs font-bold transition-all border border-white/15"
+            className="px-3 py-1 rounded-xl bg-white/10 hover:bg-accent/20 text-zinc-200 hover:text-accent-soft text-xs font-bold transition-all border border-white/15"
           >
             Save
           </button>
@@ -265,7 +265,7 @@ export default function CoverBanner({
           value={editedTitle}
           onChange={(e) => setEditedTitle(e.target.value)}
           placeholder="Date Title *"
-          className="w-full bg-zinc-900 border border-white/20 rounded-xl px-3 py-1.5 text-sm font-serif font-bold text-white focus:outline-none focus:border-white"
+          className="w-full bg-zinc-900 border border-white/20 rounded-xl px-3 py-1.5 text-sm font-serif font-bold text-white focus:outline-none focus:border-accent/45"
           autoFocus
         />
         <input
@@ -273,7 +273,7 @@ export default function CoverBanner({
           value={editedSubtitle}
           onChange={(e) => setEditedSubtitle(e.target.value)}
           placeholder="Tagline / Subtitle (optional)"
-          className="w-full bg-zinc-900 border border-white/10 rounded-xl px-3 py-1 text-xs text-zinc-200 focus:outline-none focus:border-white"
+          className="w-full bg-zinc-900 border border-white/10 rounded-xl px-3 py-1 text-xs text-zinc-200 focus:outline-none focus:border-accent/45"
         />
         <div className="flex justify-end gap-2 pt-0.5">
           <button
@@ -289,7 +289,7 @@ export default function CoverBanner({
           </button>
           <button
             type="submit"
-            className="px-4 py-1 rounded-xl bg-white text-black text-xs font-bold hover:bg-zinc-200"
+            className="px-4 py-1 rounded-xl bg-accent hover:bg-accent-deep text-white text-xs font-semibold"
           >
             Save
           </button>
@@ -298,7 +298,7 @@ export default function CoverBanner({
     ) : (
       <>
         <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-          <span className="px-2 py-0.5 rounded-md bg-white text-black text-[9px] sm:text-[10px] font-bold uppercase tracking-wider">
+          <span className="px-2 py-0.5 rounded-full bg-accent text-white text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.12em]">
             {selectedDate.category}
           </span>
           <span className="px-2 py-0.5 rounded-md bg-black/80 border border-white/[0.1] text-white font-mono text-[10px] sm:text-xs font-bold">
@@ -322,7 +322,7 @@ export default function CoverBanner({
           <button
             type="button"
             onClick={handleOpenEditTitle}
-            className="p-1.5 px-2.5 rounded-xl bg-black/80 hover:bg-white text-zinc-300 hover:text-black border border-white/15 transition-all shadow-md shrink-0 flex items-center gap-1 text-[11px] font-semibold"
+            className="p-1.5 px-2.5 rounded-xl bg-black/80 hover:bg-accent/20 text-zinc-300 hover:text-accent-soft border border-white/15 transition-all shadow-md shrink-0 flex items-center gap-1 text-[11px] font-semibold"
             title="Edit Date Title"
           >
             <Edit3 className="w-3.5 h-3.5" />
