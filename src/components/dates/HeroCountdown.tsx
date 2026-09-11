@@ -235,9 +235,9 @@ export default function HeroCountdown() {
             <div className="w-12 h-12 rounded-full bg-accent/12 text-accent-soft p-2.5 mx-auto flex items-center justify-center">
               <Sparkles className="w-6 h-6" />
             </div>
-            <h2 className="text-2xl sm:text-4xl font-display font-medium text-zinc-50">
+            <h1 className="text-2xl sm:text-4xl font-display font-medium text-zinc-50">
               {coupleProfile.partner1Name} & {coupleProfile.partner2Name}’s Date Checklist
-            </h2>
+            </h1>
             <p className="text-zinc-400 text-xs max-w-lg mx-auto font-light">
               Add your first romantic date idea, curate bucket lists, and check off adventures together.
             </p>

@@ -18,13 +18,6 @@ const serifFont = Playfair_Display({
   display: 'swap',
 });
 
-/**
- * Rendered per request so `src/proxy.ts` can stamp a fresh CSP nonce into the
- * bootstrap scripts. A prerendered shell would be cached without one, and
- * 'strict-dynamic' makes browsers ignore the 'self' fallback, so every script
- * would be blocked. The page is a client-side app, so this costs only the
- * shell render.
- */
 export const dynamic = 'force-dynamic';
 
 export const viewport: Viewport = {
@@ -33,20 +26,102 @@ export const viewport: Viewport = {
   maximumScale: 1,
   userScalable: false,
   viewportFit: 'cover',
-  themeColor: '#17130f',
+  themeColor: [
+    { media: '(prefers-color-scheme: dark)', color: '#09090b' },
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+  ],
 };
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_APP_URL || 'https://date-planner.vercel.app';
+
 export const metadata: Metadata = {
-  title: "Phillip's Date Planner",
-  description:
-    'Romantic date planner, bucket list curator, and memory scrapbook.',
-  // Private app: keep it out of search indexes and link previews.
-  robots: { index: false, follow: false, nocache: true },
-  icons: {
-    icon: '/favicon.svg',
-    shortcut: '/favicon.svg',
-    apple: '/favicon.svg',
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: 'Phillip & Lyca | Romantic Date Planner & Memory Scrapbook',
+    template: '%s | Phillip & Lyca Date Planner',
   },
+  description:
+    'Curated romantic date planner, couple bucket list, and memory scrapbook. Discover date ideas, track milestones, and preserve memories together in an aesthetic monochrome journal.',
+  keywords: [
+    'date planner',
+    'couple checklist',
+    'romantic date ideas',
+    'relationship bucket list',
+    'date night planner',
+    'memory scrapbook',
+    'couple milestones',
+    'aesthetic date planner',
+  ],
+  authors: [{ name: 'Phillip & Lyca' }],
+  creator: 'Phillip & Lyca',
+  publisher: 'Phillip & Lyca',
+  applicationName: 'Date Planner',
+  category: 'Lifestyle',
+  alternates: {
+    canonical: '/',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  openGraph: {
+    title: 'Phillip & Lyca | Romantic Date Planner & Memory Scrapbook',
+    description:
+      'Curated romantic date planner, couple bucket list, and memory scrapbook. Discover date ideas, track milestones, and preserve memories together.',
+    url: '/',
+    siteName: 'Phillip & Lyca Date Planner',
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Phillip & Lyca | Romantic Date Planner & Memory Scrapbook',
+    description:
+      'Curated romantic date planner, couple bucket list, and memory scrapbook.',
+  },
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+    shortcut: '/favicon.svg',
+    apple: [{ url: '/icon.svg', type: 'image/svg+xml' }],
+  },
+  appleWebApp: {
+    capable: true,
+    title: 'Date Planner',
+    statusBarStyle: 'black-translucent',
+  },
+};
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Phillip & Lyca Date Planner',
+  applicationCategory: 'LifestyleApplication',
+  operatingSystem: 'All',
+  description:
+    'Curated romantic date planner, couple bucket list, and memory scrapbook.',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+  featureList: [
+    'Romantic Date Checklist',
+    'Interactive Date Map',
+    'Polaroid Memory Scrapbook',
+    'Date Roulette Generator',
+    'Cloud Photo Storage',
+  ],
 };
 
 export default function RootLayout({
@@ -61,6 +136,12 @@ export default function RootLayout({
       data-theme="dusk"
       suppressHydrationWarning
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body
         className="min-h-screen bg-zinc-950 text-zinc-100 font-sans antialiased overflow-x-hidden transition-colors duration-700"
         suppressHydrationWarning

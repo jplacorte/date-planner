@@ -1,41 +1,44 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#18181b"/>
-      <stop offset="100%" stop-color="#09090b"/>
+    <radialGradient id="bgGlow" cx="50%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#27272a"/>
+      <stop offset="55%" stop-color="#09090b"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </radialGradient>
+    <linearGradient id="borderGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.12"/>
     </linearGradient>
-    <linearGradient id="borderGrad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#f43f5e" stop-opacity="0.6"/>
-      <stop offset="100%" stop-color="#e11d48" stop-opacity="0.15"/>
+    <linearGradient id="silverGrad" x1="16" y1="16" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="50%" stop-color="#f4f4f5"/>
+      <stop offset="100%" stop-color="#d4d4d8"/>
     </linearGradient>
-    <linearGradient id="checkGrad" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#fb7185"/>
-      <stop offset="100%" stop-color="#f43f5e"/>
-    </linearGradient>
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
   </defs>
 
-  <!-- Base Dark Squircle -->
-  <rect width="32" height="32" rx="8" fill="url(#bg)"/>
-  <rect x="0.5" y="0.5" width="31" height="31" rx="7.5" stroke="url(#borderGrad)" stroke-width="1"/>
+  <!-- Deep Obsidian Squircle Base -->
+  <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#bgGlow)"/>
+  <rect x="1.5" y="1.5" width="61" height="61" rx="15.5" stroke="url(#borderGrad)" stroke-width="1.2"/>
 
-  <!-- Top Clipboard Header Clip -->
-  <rect x="11" y="2" width="10" height="3.5" rx="1.75" fill="#f43f5e" fill-opacity="0.3" stroke="#f43f5e" stroke-width="1"/>
+  <!-- Aesthetic Intertwined Double Heart Silhouette -->
+  <path d="M32 50C32 50 14 38 14 25.5C14 19.5 18.8 15 25 15C28.5 15 31 16.8 32 19C33 16.8 35.5 15 39 15C45.2 15 50 19.5 50 25.5C50 38 32 50 32 50Z" 
+        fill="url(#silverGrad)"/>
 
-  <!-- Row 1 (Checked Item) -->
-  <rect x="5.5" y="8" width="6.5" height="6.5" rx="2" fill="#f43f5e" fill-opacity="0.2" stroke="#f43f5e" stroke-width="1.2"/>
-  <path d="M7 11.2L8.6 12.8L10.8 9.5" stroke="#fb7185" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <rect x="14.5" y="9.75" width="12" height="3" rx="1.5" fill="#ffffff" fill-opacity="0.95"/>
+  <!-- Inner Architectural Negative Cutout -->
+  <path d="M32 42.5C32 42.5 18.5 32.5 18.5 24.5C18.5 20.8 21.4 18.2 25 18.2C27.8 18.2 30.2 19.8 31.2 22L32 23.5L32.8 22C33.8 19.8 36.2 18.2 39 18.2C42.6 18.2 45.5 20.8 45.5 24.5C45.5 32.5 32 42.5 32 42.5Z" 
+        fill="#09090b"/>
 
-  <!-- Row 2 (Checked Item) -->
-  <rect x="5.5" y="16" width="6.5" height="6.5" rx="2" fill="#f43f5e" fill-opacity="0.2" stroke="#f43f5e" stroke-width="1.2"/>
-  <path d="M7 19.2L8.6 20.8L10.8 17.5" stroke="#fb7185" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <rect x="14.5" y="17.75" width="9.5" height="3" rx="1.5" fill="#e4e4e7" fill-opacity="0.85"/>
+  <!-- Central Celestial 4-Point Sparkle -->
+  <path d="M32 20C32 25.5 29.5 28 24 28C29.5 28 32 30.5 32 36C32 30.5 34.5 28 40 28C34.5 28 32 25.5 32 20Z" 
+        fill="#ffffff" 
+        filter="url(#softGlow)"/>
 
-  <!-- Row 3 (Checked Item) -->
-  <rect x="5.5" y="24" width="6.5" height="6.5" rx="2" fill="#f43f5e" fill-opacity="0.2" stroke="#f43f5e" stroke-width="1.2"/>
-  <path d="M7 27.2L8.6 28.8L10.8 25.5" stroke="#fb7185" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <rect x="14.5" y="25.75" width="11" height="3" rx="1.5" fill="#a1a1aa" fill-opacity="0.7"/>
-
-  <!-- Aesthetic Sparkle Accent -->
-  <path d="M26.5 4.2L27 5.7L28.5 6.2L27 6.7L26.5 8.2L26 6.7L24.5 6.2L26 5.7L26.5 4.2Z" fill="#fda4af"/>
+  <!-- Micro Accent Star -->
+  <path d="M48 11C48 13.2 47 14.5 45 14.5C47 14.5 48 15.8 48 18C48 15.8 49 14.5 51 14.5C49 14.5 48 13.2 48 11Z" 
+        fill="#ffffff" 
+        opacity="0.95"/>
 </svg>

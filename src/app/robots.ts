@@ -1,11 +1,19 @@
 import type { MetadataRoute } from 'next';
 
-/**
- * This is a private planner holding personal photos and notes, so no crawler
- * should index any part of it.
- */
+export const dynamic = 'force-static';
+
 export default function robots(): MetadataRoute.Robots {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_APP_URL || 'https://date-planner.vercel.app';
+
   return {
-    rules: [{ userAgent: '*', disallow: '/' }],
+    rules: [
+      {
+        userAgent: '*',
+        allow: '/',
+        disallow: ['/api/'],
+      },
+    ],
+    sitemap: `${baseUrl}/sitemap.xml`,
   };
 }
