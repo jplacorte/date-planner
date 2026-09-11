@@ -153,11 +153,12 @@ export default function CloudPhotoPicker({
     }
   };
 
-  const cloudinaryConsoleUrl = cloudName
-    ? `https://console.cloudinary.com/console/c-${encodeURIComponent(
-        cloudName
-      )}/media_library/folders`
-    : 'https://console.cloudinary.com/console/media_library';
+  const cloudinaryConsoleUrl =
+    cloudName && cloudName !== 'dibx7ua1g'
+      ? `https://console.cloudinary.com/console/c-${encodeURIComponent(
+          cloudName
+        )}/media_library/folders`
+      : 'https://console.cloudinary.com/app/c-be39a35296904ad2f4da9493bacca0/assets/media_library/folders/d048473fba8801aa3bfff9416153a94fd6?view_mode=list';
 
   const driveFolderUrl = driveFolderId
     ? `https://drive.google.com/drive/folders/${encodeURIComponent(driveFolderId)}`
