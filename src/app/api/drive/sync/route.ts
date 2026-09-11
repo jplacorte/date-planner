@@ -1,191 +1,105 @@
-import { NextResponse } from 'next/server';
-import { google } from 'googleapis';
-import { Readable } from 'stream';
+import type { NextRequest } from 'next/server';
 
-const DATABASE_FILENAME = 'dates_database.json';
+import { isAuthenticated } from '@/lib/auth/guard';
+import { getClientKey, rateLimit } from '@/lib/auth/rate-limit';
+import {
+  isQuotaConfigurationError,
+  readDatabase,
+  writeDatabase,
+} from '@/lib/google-drive/database';
+import { apiError, apiInternalError, apiSuccess } from '@/lib/http/responses';
+import { LIMITS, parseSyncPayload } from '@/lib/validation/date-schema';
 
-function getGoogleDriveClient() {
-  const oauthClientId = process.env.GOOGLE_OAUTH_CLIENT_ID;
-  const oauthClientSecret = process.env.GOOGLE_OAUTH_CLIENT_SECRET;
-  const oauthRefreshToken = process.env.GOOGLE_OAUTH_REFRESH_TOKEN;
+const SYNC_LIMIT = 60;
+const SYNC_WINDOW_MS = 60 * 1000;
 
-  if (oauthClientId && oauthClientSecret && oauthRefreshToken) {
-    const oauth2Client = new google.auth.OAuth2(oauthClientId, oauthClientSecret);
-    oauth2Client.setCredentials({ refresh_token: oauthRefreshToken });
-    return google.drive({ version: 'v3', auth: oauth2Client });
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
+export async function GET(request: NextRequest) {
+  try {
+    if (!(await isAuthenticated())) {
+      return apiError('unauthorized', 'Sign in to load your dates.');
+    }
+
+    const limit = rateLimit(
+      `sync-read:${getClientKey(request)}`,
+      SYNC_LIMIT,
+      SYNC_WINDOW_MS
+    );
+    if (!limit.allowed) {
+      return apiError('rate_limited', 'Too many requests. Try again shortly.', {
+        'Retry-After': String(limit.retryAfter),
+      });
+    }
+
+    const result = await readDatabase();
+    if (result === null) {
+      return apiError('not_configured', 'Google Drive is not configured.');
+    }
+
+    return apiSuccess(result);
+  } catch (cause) {
+    return apiInternalError('api/drive/sync GET', cause);
   }
-
-  const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
-  let privateKey = process.env.GOOGLE_PRIVATE_KEY;
-
-  if (!clientEmail || !privateKey) {
-    return null;
-  }
-
-  privateKey = privateKey.replace(/\\n/g, '\n');
-
-  const auth = new google.auth.JWT({
-    email: clientEmail,
-    key: privateKey,
-    scopes: ['https://www.googleapis.com/auth/drive'],
-  });
-
-  return google.drive({ version: 'v3', auth });
 }
 
-export async function GET() {
+export async function POST(request: NextRequest) {
   try {
-    const drive = getGoogleDriveClient();
-    const folderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
-
-    if (!drive || !folderId) {
-      return NextResponse.json({
-        success: false,
-        error: 'Google Drive credentials not configured in .env.local',
-        exists: false,
-      });
+    if (!(await isAuthenticated())) {
+      return apiError('unauthorized', 'Sign in to save your dates.');
     }
 
-    // Find database file in Google Drive folder
-    const listRes = await drive.files.list({
-      q: `'${folderId}' in parents and name = '${DATABASE_FILENAME}' and trashed = false`,
-      fields: 'files(id, name, modifiedTime)',
-      supportsAllDrives: true,
-      includeItemsFromAllDrives: true,
-    });
-
-    const files = listRes.data.files || [];
-    if (files.length === 0) {
-      return NextResponse.json({
-        success: true,
-        exists: false,
-        message: 'No dates_database.json found in Google Drive yet.',
-      });
-    }
-
-    const fileId = files[0].id;
-    if (!fileId) {
-      return NextResponse.json({ success: true, exists: false });
-    }
-
-    // Read content of dates_database.json
-    const fileContent = await drive.files.get(
-      {
-        fileId,
-        alt: 'media',
-        supportsAllDrives: true,
-      },
-      { responseType: 'text' }
+    const limit = rateLimit(
+      `sync-write:${getClientKey(request)}`,
+      SYNC_LIMIT,
+      SYNC_WINDOW_MS
     );
+    if (!limit.allowed) {
+      return apiError('rate_limited', 'Too many requests. Try again shortly.', {
+        'Retry-After': String(limit.retryAfter),
+      });
+    }
 
-    let parsedData = null;
+    const declaredLength = Number(request.headers.get('content-length') ?? '0');
+    if (
+      Number.isFinite(declaredLength) &&
+      declaredLength > LIMITS.maxPayloadBytes
+    ) {
+      return apiError('payload_too_large', 'That is too much data to sync.');
+    }
+
+    const rawBody = await request.text();
+    if (rawBody.length > LIMITS.maxPayloadBytes) {
+      return apiError('payload_too_large', 'That is too much data to sync.');
+    }
+
+    let body: unknown;
     try {
-      parsedData = typeof fileContent.data === 'string' ? JSON.parse(fileContent.data) : fileContent.data;
+      body = JSON.parse(rawBody);
     } catch {
-      parsedData = null;
+      return apiError('bad_request', 'The request body was not valid JSON.');
     }
 
-    return NextResponse.json({
-      success: true,
-      exists: true,
-      fileId,
-      modifiedTime: files[0].modifiedTime,
-      data: parsedData,
+    // Everything written to Drive goes through the sanitiser first.
+    const stored = await writeDatabase(parseSyncPayload(body));
+    if (stored === null) {
+      return apiError('not_configured', 'Google Drive is not configured.');
+    }
+
+    return apiSuccess({
+      lastUpdated: stored.lastUpdated,
+      dateCount: stored.dates.length,
     });
-  } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : 'Failed to fetch database from Google Drive';
-    console.error('Google Drive Sync GET error:', error);
-    return NextResponse.json(
-      { success: false, error: message, exists: false },
-      { status: 500 }
-    );
-  }
-}
-
-export async function POST(req: Request) {
-  try {
-    const drive = getGoogleDriveClient();
-    const folderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
-
-    if (!drive || !folderId) {
-      return NextResponse.json(
-        { success: false, error: 'Google Drive credentials not configured in .env.local' },
-        { status: 400 }
+  } catch (cause) {
+    if (isQuotaConfigurationError(cause)) {
+      console.warn('[api/drive/sync POST] service account has no quota');
+      return apiError(
+        'not_configured',
+        'Create a blank file named "dates_database.json" in your Drive folder, ' +
+          'or connect OAuth, so this account can save your dates.'
       );
     }
-
-    const body = await req.json();
-    const payload = {
-      version: 3,
-      lastUpdated: new Date().toISOString(),
-      dates: body.dates || [],
-      coupleProfile: body.coupleProfile || null,
-    };
-
-    const jsonString = JSON.stringify(payload, null, 2);
-    const stream = new Readable();
-    stream.push(jsonString);
-    stream.push(null);
-
-    // Check if database file already exists
-    const listRes = await drive.files.list({
-      q: `'${folderId}' in parents and name = '${DATABASE_FILENAME}' and trashed = false`,
-      fields: 'files(id, name)',
-      supportsAllDrives: true,
-      includeItemsFromAllDrives: true,
-    });
-
-    const files = listRes.data.files || [];
-
-    if (files.length > 0 && files[0].id) {
-      // Update existing database file
-      const fileId = files[0].id;
-      await drive.files.update({
-        fileId,
-        media: {
-          mimeType: 'application/json',
-          body: stream,
-        },
-        supportsAllDrives: true,
-      });
-
-      return NextResponse.json({
-        success: true,
-        message: 'Google Drive database updated successfully',
-        fileId,
-        lastUpdated: payload.lastUpdated,
-      });
-    } else {
-      // Create new database file
-      const createRes = await drive.files.create({
-        requestBody: {
-          name: DATABASE_FILENAME,
-          parents: [folderId],
-        },
-        media: {
-          mimeType: 'application/json',
-          body: stream,
-        },
-        supportsAllDrives: true,
-        fields: 'id, name',
-      });
-
-      return NextResponse.json({
-        success: true,
-        message: 'Google Drive database created successfully',
-        fileId: createRes.data.id,
-        lastUpdated: payload.lastUpdated,
-      });
-    }
-  } catch (error: unknown) {
-    let message = error instanceof Error ? error.message : 'Failed to save database to Google Drive';
-    if (message.includes('storage quota') || message.includes('Service Accounts do not have storage quota')) {
-      message = 'Please create a blank file named "dates_database.json" inside your Google Drive folder (or link OAuth) so the service account can sync your dates.';
-    }
-    console.warn('Google Drive Sync POST Notice:', message);
-    return NextResponse.json(
-      { success: false, error: message },
-      { status: 500 }
-    );
+    return apiInternalError('api/drive/sync POST', cause);
   }
 }

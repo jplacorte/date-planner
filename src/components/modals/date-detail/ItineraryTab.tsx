@@ -1,0 +1,368 @@
+'use client';
+
+import React, { useState } from 'react';
+import { Check, Clock, Edit3, MapPin, Plus, Trash2 } from 'lucide-react';
+
+import { useDateContext } from '@/context/DateContext';
+import { formatTimeString } from '@/lib/date/format';
+import type { DateIdea, ItineraryStep } from '@/types/date';
+
+interface ItineraryTabProps {
+  selectedDate: DateIdea;
+  onSaved: (message: string) => void;
+}
+
+interface StepDraft {
+  time: string;
+  activity: string;
+  location: string;
+  notes: string;
+}
+
+const EMPTY_DRAFT: StepDraft = {
+  time: '',
+  activity: '',
+  location: '',
+  notes: '',
+};
+
+/** Hour-by-hour plan for the date: add, edit, reorder-free timeline steps. */
+export default function ItineraryTab({
+  selectedDate,
+  onSaved,
+}: ItineraryTabProps) {
+  const {
+    toggleItineraryStep,
+    addItineraryStep,
+    updateItineraryStep,
+    removeItineraryStep,
+  } = useDateContext();
+
+  const [newStepTime, setNewStepTime] = useState('6:00 PM');
+  const [newStepActivity, setNewStepActivity] = useState('');
+  const [newStepLocation, setNewStepLocation] = useState('');
+  const [newStepNotes, setNewStepNotes] = useState('');
+  const [editingStepId, setEditingStepId] = useState<string | null>(null);
+  const [editStepData, setEditStepData] = useState<StepDraft>(EMPTY_DRAFT);
+
+  const itineraryList = selectedDate.itinerary || [];
+  const completedItineraryCount = itineraryList.filter(
+    (step) => step.completed
+  ).length;
+
+  const handleAddItinerary = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!newStepActivity.trim()) return;
+
+    addItineraryStep(selectedDate.id, {
+      time: formatTimeString(newStepTime) || '6:00 PM',
+      activity: newStepActivity.trim(),
+      location: newStepLocation.trim() || undefined,
+      notes: newStepNotes.trim() || undefined,
+    });
+
+    setNewStepActivity('');
+    setNewStepLocation('');
+    setNewStepNotes('');
+    onSaved('Timeline step added ✓');
+  };
+
+  const startEditStep = (step: ItineraryStep) => {
+    setEditingStepId(step.id);
+    setEditStepData({
+      time: formatTimeString(step.time) || step.time,
+      activity: step.activity,
+      location: step.location || '',
+      notes: step.notes || '',
+    });
+  };
+
+  const handleSaveStepEdit = (stepId: string) => {
+    if (!editStepData.activity.trim()) return;
+
+    updateItineraryStep(selectedDate.id, stepId, {
+      time: formatTimeString(editStepData.time) || '6:00 PM',
+      activity: editStepData.activity.trim(),
+      location: editStepData.location.trim() || undefined,
+      notes: editStepData.notes.trim() || undefined,
+    });
+
+    setEditingStepId(null);
+    onSaved('Itinerary step saved ✓');
+  };
+
+  /** Seeds a typical evening so an empty timeline is not a blank page. */
+  const insertStarterTimeline = () => {
+    const defaultSteps = [
+      {
+        time: '5:30 PM',
+        activity: 'Meet up & Pick matching outfits',
+        location: 'Home / Meeting Point',
+      },
+      {
+        time: '6:30 PM',
+        activity: `Arrive at ${selectedDate.locationName}`,
+        location: selectedDate.locationName,
+      },
+      {
+        time: '7:00 PM',
+        activity: 'Main Experience & Candlelight moments',
+        notes: 'Take romantic Polaroid photos',
+      },
+      {
+        time: '9:00 PM',
+        activity: 'Sweet Dessert & Evening Stroll',
+        notes: 'Play soundtrack & talk',
+      },
+    ];
+
+    defaultSteps.forEach((step) => addItineraryStep(selectedDate.id, step));
+    onSaved('Starter timeline inserted ✓');
+  };
+
+  return (
+    <div className="space-y-5">
+      
+      {/* Header Summary */}
+      <div className="bg-black p-4 rounded-2xl border border-white/[0.08] flex items-center justify-between text-xs">
+        <div>
+          <span className="text-zinc-400 font-medium">Timeline Milestones: </span>
+          <span className="text-white font-mono font-bold">
+            {completedItineraryCount} of {itineraryList.length} Completed
+          </span>
+        </div>
+
+        {itineraryList.length === 0 && (
+          <button
+            onClick={insertStarterTimeline}
+            className="px-3 py-1 rounded-xl bg-white/10 hover:bg-white text-white hover:text-black font-semibold text-xs transition-all border border-white/15"
+          >
+            + Quick Starter Timeline
+          </button>
+        )}
+      </div>
+
+      {/* Add Itinerary Step Form */}
+      <form onSubmit={handleAddItinerary} className="bg-black p-4 rounded-2xl border border-white/[0.08] space-y-3">
+        <div className="flex items-center justify-between">
+          <label className="text-xs font-semibold text-zinc-300 flex items-center gap-1.5">
+            <Plus className="w-3.5 h-3.5 text-white" />
+            Add Itinerary Step
+          </label>
+          <div className="flex gap-1">
+            {['5:00 PM', '6:30 PM', '8:00 PM', '9:30 PM'].map((presetTime) => (
+              <button
+                key={presetTime}
+                type="button"
+                onClick={() => setNewStepTime(presetTime)}
+                className="px-2 py-0.5 rounded bg-zinc-900 hover:bg-zinc-800 text-[10px] font-mono text-zinc-400 border border-white/[0.06]"
+              >
+                {presetTime}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-2">
+          <div className="sm:col-span-4 sm:col-span-3">
+            <input
+              type="text"
+              placeholder="Time (e.g. 6:30 PM)"
+              value={newStepTime}
+              onChange={(e) => setNewStepTime(e.target.value)}
+              className="w-full bg-zinc-900 border border-white/[0.1] rounded-xl px-3 py-2 text-xs font-mono text-white focus:outline-none focus:border-white"
+            />
+          </div>
+          <div className="sm:col-span-9">
+            <input
+              type="text"
+              required
+              placeholder="Activity (e.g. Sunset Champagne Toast & Star Viewing)"
+              value={newStepActivity}
+              onChange={(e) => setNewStepActivity(e.target.value)}
+              className="w-full bg-zinc-900 border border-white/[0.1] rounded-xl px-3.5 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-white"
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <input
+            type="text"
+            placeholder="Venue / Specific Location (optional)"
+            value={newStepLocation}
+            onChange={(e) => setNewStepLocation(e.target.value)}
+            className="w-full bg-zinc-900 border border-white/[0.1] rounded-xl px-3 py-1.5 text-xs text-white placeholder-zinc-500 focus:outline-none"
+          />
+          <input
+            type="text"
+            placeholder="Special note, tip, outfit note (optional)"
+            value={newStepNotes}
+            onChange={(e) => setNewStepNotes(e.target.value)}
+            className="w-full bg-zinc-900 border border-white/[0.1] rounded-xl px-3 py-1.5 text-xs text-white placeholder-zinc-500 focus:outline-none"
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="w-full py-2 rounded-xl bg-white text-black font-bold text-xs hover:bg-zinc-200 transition-all flex items-center justify-center gap-1.5 shadow-md"
+        >
+          <Plus className="w-3.5 h-3.5" />
+          <span>Add Step to Timeline</span>
+        </button>
+      </form>
+
+      {/* Itinerary Timeline List */}
+      {itineraryList.length > 0 ? (
+        <div className="relative border-l-2 border-zinc-800 ml-4 space-y-4 py-2">
+          {itineraryList.map((step) => {
+            const isEditing = editingStepId === step.id;
+
+            return (
+              <div key={step.id} className="relative pl-6">
+                {/* Checkpoint Timeline Circle */}
+                <button
+                  onClick={() => toggleItineraryStep(selectedDate.id, step.id)}
+                  className={`absolute -left-[9px] top-3.5 w-4 h-4 rounded-full border-2 transition-all flex items-center justify-center ${
+                    step.completed
+                      ? 'bg-white border-white text-black'
+                      : 'bg-zinc-950 border-zinc-600 hover:border-white'
+                  }`}
+                  title="Toggle Completed"
+                >
+                  {step.completed && <Check className="w-2.5 h-2.5 stroke-[3]" />}
+                </button>
+
+                {/* Step Content / Inline Editor */}
+                {isEditing ? (
+                  <div className="bg-zinc-900 p-4 rounded-2xl border border-white/20 space-y-2.5 shadow-xl">
+                    <div className="flex items-center justify-between text-xs font-bold text-white border-b border-white/10 pb-2">
+                      <span>Edit Timeline Step</span>
+                      <button
+                        type="button"
+                        onClick={() => setEditingStepId(null)}
+                        className="text-zinc-400 hover:text-white"
+                      >
+                        ✕
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-12 gap-2">
+                      <input
+                        type="text"
+                        placeholder="Time (e.g. 6:30 PM)"
+                        value={editStepData.time}
+                        onChange={(e) => setEditStepData({ ...editStepData, time: e.target.value })}
+                        className="sm:col-span-3 bg-black border border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-white font-mono"
+                      />
+                      <input
+                        type="text"
+                        value={editStepData.activity}
+                        onChange={(e) => setEditStepData({ ...editStepData, activity: e.target.value })}
+                        placeholder="Activity"
+                        className="sm:col-span-9 bg-black border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <input
+                        type="text"
+                        value={editStepData.location}
+                        onChange={(e) => setEditStepData({ ...editStepData, location: e.target.value })}
+                        placeholder="Location / Venue"
+                        className="w-full bg-black border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white"
+                      />
+                      <input
+                        type="text"
+                        value={editStepData.notes}
+                        onChange={(e) => setEditStepData({ ...editStepData, notes: e.target.value })}
+                        placeholder="Notes & Tips"
+                        className="w-full bg-black border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white"
+                      />
+                    </div>
+
+                    <div className="flex justify-end gap-2 pt-1">
+                      <button
+                        type="button"
+                        onClick={() => setEditingStepId(null)}
+                        className="px-3 py-1 rounded-xl bg-white/10 text-zinc-300 text-xs font-semibold hover:bg-white/20"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleSaveStepEdit(step.id)}
+                        className="px-4 py-1 rounded-xl bg-white text-black text-xs font-bold hover:bg-zinc-200"
+                      >
+                        Save Step
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="group bg-black p-3.5 rounded-2xl border border-white/[0.08] hover:border-white/[0.2] transition-all space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-mono font-bold text-white bg-zinc-900 px-2 py-0.5 rounded border border-white/[0.06]">
+                          {formatTimeString(step.time)}
+                        </span>
+                        {step.location && (
+                          <span className="text-xs text-zinc-400 flex items-center gap-1">
+                            <MapPin className="w-3 h-3 text-zinc-500" />
+                            {step.location}
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
+                        <button
+                          onClick={() => startEditStep(step)}
+                          className="p-1 rounded-lg hover:bg-white/10 text-zinc-400 hover:text-white transition-colors"
+                          title="Edit Step"
+                        >
+                          <Edit3 className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          onClick={() => removeItineraryStep(selectedDate.id, step.id)}
+                          className="p-1 rounded-lg hover:bg-white/10 text-zinc-600 hover:text-white transition-colors"
+                          title="Delete Step"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
+
+                    <div 
+                      onClick={() => toggleItineraryStep(selectedDate.id, step.id)}
+                      className="cursor-pointer"
+                    >
+                      <h4 className={`text-xs sm:text-sm font-semibold transition-colors ${step.completed ? 'line-through text-zinc-600' : 'text-white'}`}>
+                        {step.activity}
+                      </h4>
+                      {step.notes && (
+                        <p className="text-xs text-zinc-500 font-light mt-0.5">{step.notes}</p>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="bg-black p-8 rounded-2xl border border-white/[0.08] text-center space-y-2">
+          <Clock className="w-6 h-6 text-zinc-600 mx-auto" />
+          <h4 className="text-xs font-semibold text-white">No Itinerary Steps Added</h4>
+          <p className="text-[11px] text-zinc-500 max-w-xs mx-auto">
+            Plan your time together by adding checkpoints or click below for a starter timeline.
+          </p>
+          <button
+            onClick={insertStarterTimeline}
+            className="px-4 py-1.5 rounded-xl bg-white text-black font-bold text-xs hover:bg-zinc-200 transition-all mt-2"
+          >
+            Insert Starter Timeline
+          </button>
+        </div>
+      )}
+
+    </div>
+  );
+}

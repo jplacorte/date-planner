@@ -1,19 +1,19 @@
 'use client';
 
-import React, { useEffect } from 'react';
-import Header from '../components/Header';
-import HeroCountdown from '../components/HeroCountdown';
-import ChecklistHub from '../components/ChecklistHub';
-import DateMapView from '../components/DateMapView';
-import ScrapbookView from '../components/ScrapbookView';
-import DateDetailModal from '../components/DateDetailModal';
-import DateRouletteModal from '../components/DateRouletteModal';
-import StatsModal from '../components/StatsModal';
-import CreateDateModal from '../components/CreateDateModal';
-import ProfileModal from '../components/ProfileModal';
-import Footer from '../components/Footer';
-import MobileNav from '../components/MobileNav';
-import { useDateContext } from '../context/DateContext';
+import { useEffect } from 'react';
+import Header from '@/components/layout/Header';
+import HeroCountdown from '@/components/dates/HeroCountdown';
+import ChecklistHub from '@/components/dates/ChecklistHub';
+import DateMapView from '@/components/dates/DateMapView';
+import ScrapbookView from '@/components/dates/ScrapbookView';
+import DateDetailModal from '@/components/modals/DateDetailModal';
+import DateRouletteModal from '@/components/modals/DateRouletteModal';
+import StatsModal from '@/components/modals/StatsModal';
+import CreateDateModal from '@/components/modals/CreateDateModal';
+import ProfileModal from '@/components/modals/ProfileModal';
+import Footer from '@/components/layout/Footer';
+import MobileNav from '@/components/layout/MobileNav';
+import { useDateContext } from '@/context/DateContext';
 
 function AppContent() {
   const {

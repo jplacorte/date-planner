@@ -97,20 +97,32 @@ Copy the `.env.example` template:
 cp .env.example .env.local
 ```
 
-Edit `.env.local` with your Google Drive configuration:
+Edit `.env.local`:
+
 ```env
-# Google Drive Folder ID (from https://drive.google.com/drive/folders/YOUR_FOLDER_ID)
-GOOGLE_DRIVE_FOLDER_ID="1x_0YasZi3VXMBd3baL74LA6dhyDbiC78"
+# App access. Leave blank locally to skip the passcode screen during dev.
+# REQUIRED before deploying: the production build refuses to serve the API
+# without it, which is what keeps your Drive folder from being public.
+APP_PASSCODE=""
+AUTH_SECRET=""          # openssl rand -hex 32
 
-# Google Service Account Credentials
-GOOGLE_CLIENT_EMAIL="your-service-account@your-project.iam.gserviceaccount.com"
-GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
+# Google Drive folder that holds photos and the synced database file
+GOOGLE_DRIVE_FOLDER_ID="your-folder-id"
 
-# Optional: OAuth 2.0 Credentials (for direct personal uploads)
-GOOGLE_OAUTH_CLIENT_ID="your-client-id.apps.googleusercontent.com"
-GOOGLE_OAUTH_CLIENT_SECRET="your-client-secret"
-GOOGLE_OAUTH_REFRESH_TOKEN="your-refresh-token"
+# Option A (recommended): OAuth 2.0 user credentials, filled in by `pnpm auth:drive`
+GOOGLE_OAUTH_CLIENT_ID=""
+GOOGLE_OAUTH_CLIENT_SECRET=""
+GOOGLE_OAUTH_REFRESH_TOKEN=""
+
+# Option B: service account fallback
+GOOGLE_CLIENT_EMAIL=""
+GOOGLE_PRIVATE_KEY=""
 ```
+
+> **Before you deploy:** set `APP_PASSCODE` and `AUTH_SECRET`, and serve over
+> HTTPS. Without a passcode the API routes would let anyone who finds the URL
+> read your dates, overwrite them, and upload into your Drive folder. See
+> [docs/SECURITY.md](docs/SECURITY.md).
 
 ### 3. Run Development Server
 ```bash
@@ -147,6 +159,9 @@ To upload photos directly from within the web application to your Google Drive f
 | `pnpm build` | Run TypeScript verification and build optimized production bundle |
 | `pnpm start` | Start the production Next.js server |
 | `pnpm lint` | Run ESLint across all TypeScript and React files |
+| `pnpm run lint:fix` | Apply ESLint's automatic fixes |
+| `pnpm run typecheck` | Type check without emitting (`tsc --noEmit`) |
+| `pnpm run check` | Typecheck and lint together |
 | `pnpm run auth:drive` | Link Google Drive OAuth 2.0 credentials interactively |
 
 ---
@@ -163,6 +178,20 @@ The repository includes automated GitHub Actions workflows:
   - Builds the production bundle (`next build`).
 - **Security & Code Review (`.github/workflows/code-review.yml`)**:
   - Scans for dependency vulnerabilities on pull requests and weekly schedules.
+
+---
+
+## 🔒 Security
+
+Access is gated by a shared passcode exchanged for a signed, `HttpOnly` session
+cookie. Every API route authenticates, rate limits and validates before it
+touches Google Drive. Uploads are checked by magic bytes rather than the
+declared content type, and a nonce-based Content-Security-Policy is applied per
+request.
+
+Full detail, including the limits of each control, is in
+[docs/SECURITY.md](docs/SECURITY.md). Folder layout and coding conventions are
+in [docs/STRUCTURE.md](docs/STRUCTURE.md).
 
 ---
 

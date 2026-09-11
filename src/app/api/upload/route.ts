@@ -1,48 +1,93 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { uploadFileToGoogleDrive } from '../../../utils/googleDrive';
+import type { NextRequest } from 'next/server';
+
+import { isAuthenticated } from '@/lib/auth/guard';
+import { getClientKey, rateLimit } from '@/lib/auth/rate-limit';
+import { uploadPhoto } from '@/lib/google-drive/photos';
+import { apiError, apiInternalError, apiSuccess } from '@/lib/http/responses';
+import {
+  ALLOWED_IMAGE_MIME_TYPES,
+  MAX_UPLOAD_BYTES,
+  sanitizeFileName,
+  sniffImageMimeType,
+} from '@/lib/validation/upload-schema';
+
+/** 30 uploads per IP per 5 minutes. */
+const UPLOAD_LIMIT = 30;
+const UPLOAD_WINDOW_MS = 5 * 60 * 1000;
+
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
   try {
+    if (!(await isAuthenticated())) {
+      return apiError('unauthorized', 'Sign in to upload photos.');
+    }
+
+    const limit = rateLimit(
+      `upload:${getClientKey(request)}`,
+      UPLOAD_LIMIT,
+      UPLOAD_WINDOW_MS
+    );
+    if (!limit.allowed) {
+      return apiError('rate_limited', 'Too many uploads. Try again shortly.', {
+        'Retry-After': String(limit.retryAfter),
+      });
+    }
+
+    // Reject oversized bodies from the declared length before buffering them.
+    const declaredLength = Number(request.headers.get('content-length') ?? '0');
+    if (Number.isFinite(declaredLength) && declaredLength > MAX_UPLOAD_BYTES) {
+      return apiError('payload_too_large', 'That image is larger than 10 MB.');
+    }
+
     const formData = await request.formData();
-    const file = formData.get('file') as File | null;
+    const file = formData.get('file');
 
-    if (!file) {
-      return NextResponse.json(
-        { success: false, error: 'No file provided in form data' },
-        { status: 400 }
+    if (!(file instanceof File)) {
+      return apiError('bad_request', 'No image was provided.');
+    }
+
+    if (file.size > MAX_UPLOAD_BYTES) {
+      return apiError('payload_too_large', 'That image is larger than 10 MB.');
+    }
+
+    if (
+      file.type &&
+      !(ALLOWED_IMAGE_MIME_TYPES as readonly string[]).includes(file.type)
+    ) {
+      return apiError(
+        'unsupported_media_type',
+        'Only JPEG, PNG, WebP, GIF and AVIF images are supported.'
       );
     }
 
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    const buffer = Buffer.from(await file.arrayBuffer());
 
-    const result = await uploadFileToGoogleDrive(
+    // The declared type is attacker-controlled; the leading bytes decide.
+    const sniffedType = sniffImageMimeType(buffer);
+    if (!sniffedType) {
+      return apiError(
+        'unsupported_media_type',
+        'That file is not a recognised image.'
+      );
+    }
+
+    const uploaded = await uploadPhoto(
       buffer,
-      file.name || 'photo.jpg',
-      file.type || 'image/jpeg'
+      sanitizeFileName(file.name, sniffedType),
+      sniffedType
     );
 
-    if (!result.success) {
-      return NextResponse.json(
-        { 
-          success: false, 
-          error: result.error,
-          isConfigured: Boolean(process.env.GOOGLE_CLIENT_EMAIL && process.env.GOOGLE_PRIVATE_KEY) 
-        },
-        { status: result.error?.includes('not configured') ? 200 : 500 }
+    if (!uploaded) {
+      return apiError(
+        'not_configured',
+        'Google Drive is not configured, so the photo was kept on this device.'
       );
     }
 
-    return NextResponse.json({
-      success: true,
-      url: result.url,
-      fileId: result.fileId,
-    });
-  } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : 'Upload failed';
-    return NextResponse.json(
-      { success: false, error: message },
-      { status: 500 }
-    );
+    return apiSuccess(uploaded);
+  } catch (cause) {
+    return apiInternalError('api/upload', cause);
   }
 }

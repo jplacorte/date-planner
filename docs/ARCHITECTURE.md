@@ -2,6 +2,10 @@
 
 This document provides an overview of the frontend architecture, state management patterns, and cloud integrations in the **Date Planner** application.
 
+> **See also:** [STRUCTURE.md](./STRUCTURE.md) for folder layout and coding
+> conventions, and [SECURITY.md](./SECURITY.md) for the authentication,
+> validation and CSP model.
+
 ---
 
 ## 🏛️ System Overview
@@ -12,7 +16,7 @@ graph TD
   
   subgraph "Next.js 16 App Router (Client & Server)"
     Page[app/page.tsx]
-    StateStore[dateStore.ts (useSyncExternalStore)]
+    StateStore[lib/storage/date-store.ts]
     Context[DateContext.tsx]
     Components[UI Components / Modals]
     AudioEngine[Audio & Soundscape Engine]
@@ -45,7 +49,7 @@ graph TD
 
 ---
 
-## 💾 State Management & Persistence (`dateStore.ts`)
+## 💾 State Management & Persistence (`src/lib/storage/date-store.ts`)
 
 The application uses React 19's **`useSyncExternalStore`** pattern to synchronize browser `localStorage` state with React's component tree:
 
@@ -57,19 +61,19 @@ The application uses React 19's **`useSyncExternalStore`** pattern to synchroniz
 
 ## 🖼️ Google Drive Photo Pipeline
 
-1. **Photo Normalization (`src/utils/image.ts`)**:
+1. **Photo Normalization (`src/lib/media/image.ts`)**:
    - `normalizeGoogleDriveImageUrl(url)` detects Google Drive sharing URLs (`/file/d/FILE_ID/view`) and translates them to Google's official public image CDN endpoint:
      $$\text{https://lh3.googleusercontent.com/d/FILE\_ID}$$
 2. **Drive Folder Indexing (`src/app/api/drive/photos/route.ts`)**:
    - Authenticates via Service Account JWT or OAuth2 Refresh Token.
    - Queries `drive.files.list` filtering for `mimeType contains 'image/'` inside the configured `GOOGLE_DRIVE_FOLDER_ID`.
-3. **Client Picker Component (`src/components/GoogleDrivePicker.tsx`)**:
+3. **Client Picker Component (`src/components/ui/GoogleDrivePicker.tsx`)**:
    - Displays live thumbnail grid of Drive photos.
    - Provides refresh button and direct folder link.
 
 ---
 
-## 🎵 Interactive Audio Engine (`src/utils/audio.ts`)
+## 🎵 Interactive Audio Engine (`src/lib/audio/sound-engine.ts`)
 
 Built using the Web Audio API without external audio file dependencies:
 - **Synthesized UI Feedback**: Pop sounds, checkmark chimes, celebration arpeggios, and roulette tick clicks generated in real-time with Web Audio oscillators and gain envelopes.

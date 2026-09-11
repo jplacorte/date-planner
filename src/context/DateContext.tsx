@@ -11,17 +11,17 @@ import {
   AmbientSound,
   AchievementBadge,
   ItineraryStep
-} from '../types/date';
-import { initialAchievementBadges } from '../data/initialDates';
-import { soundEngine } from '../utils/audio';
-import { dateStore } from '../utils/dateStore';
-import { formatTimeString } from '../utils/date';
+} from '@/types/date';
+import { initialAchievementBadges } from '@/data/initial-dates';
+import { soundEngine } from '@/lib/audio/sound-engine';
+import { dateStore } from '@/lib/storage/date-store';
+import { formatTimeString } from '@/lib/date/format';
 import { 
   SyncStatus, 
   subscribeToSyncStatus, 
   pullFromGoogleDrive, 
   pushToGoogleDrive 
-} from '../utils/driveSyncClient';
+} from '@/lib/sync/drive-sync-client';
 
 interface DateContextType {
   dates: DateIdea[];
