@@ -81,7 +81,20 @@ export async function POST(request: NextRequest) {
 
     // Prefer Cloudinary if configured; fall back to Google Drive
     if (isCloudinaryConfigured()) {
-      const cloudinaryResult = await uploadToCloudinary(buffer, sanitizedName);
+      const requestedFolder = formData.get('folder');
+      const dateTitle = formData.get('dateTitle');
+      const targetFolder =
+        typeof requestedFolder === 'string' && requestedFolder.trim()
+          ? requestedFolder.trim()
+          : typeof dateTitle === 'string' && dateTitle.trim()
+          ? dateTitle.trim()
+          : undefined;
+
+      const cloudinaryResult = await uploadToCloudinary(
+        buffer,
+        sanitizedName,
+        targetFolder
+      );
       return apiSuccess(cloudinaryResult);
     }
 

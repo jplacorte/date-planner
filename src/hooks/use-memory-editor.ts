@@ -142,7 +142,11 @@ export function useMemoryEditor(
 
       setIsUploadingMemoryPhoto(true);
       try {
-        const uploaded = await uploadImageFile(file);
+        const folder = selectedDate.cloudinaryFolder || selectedDate.title;
+        const uploaded = await uploadImageFile(file, {
+          folder,
+          dateTitle: selectedDate.title,
+        });
         persist(
           [...(selectedDate.memoriesPhotos || []), uploaded.url],
           'Photo uploaded to scrapbook ✓'
@@ -156,7 +160,13 @@ export function useMemoryEditor(
         e.target.value = '';
       }
     },
-    [selectedDate.memoriesPhotos, persist, onSaved]
+    [
+      selectedDate.memoriesPhotos,
+      selectedDate.cloudinaryFolder,
+      selectedDate.title,
+      persist,
+      onSaved,
+    ]
   );
 
   /** Adds an already-hosted photo URL, e.g. picked from Drive. */

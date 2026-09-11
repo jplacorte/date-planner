@@ -55,7 +55,10 @@ export default function CreateDateModal() {
     if (!file) return;
     try {
       setIsUploading(true);
-      const res = await uploadImageFile(file);
+      const res = await uploadImageFile(file, {
+        folder: title.trim() || 'General',
+        dateTitle: title.trim() || undefined,
+      });
       setCoverImage(res.url);
     } catch (err) {
       console.error('Photo upload failed:', err);

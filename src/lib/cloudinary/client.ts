@@ -8,6 +8,8 @@ export interface UploadedMedia {
   fileId: string;
 }
 
+export const ROOT_CLOUDINARY_FOLDER = 'Date-planner';
+
 let isConfigured = false;
 
 function configureCloudinary() {
@@ -33,18 +35,89 @@ export function isCloudinaryConfigured(): boolean {
 }
 
 /**
+ * Sanitizes a date title or user input to be a safe Cloudinary folder name.
+ */
+export function sanitizeCloudinaryFolderName(name: string): string {
+  if (!name || typeof name !== 'string') return 'General';
+  const cleaned = name
+    .trim()
+    .replace(/[/\\?%*:|"<>#&]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return cleaned ? cleaned.slice(0, 100) : 'General';
+}
+
+/**
+ * Resolves a date's Cloudinary folder path, always rooted under `Date-planner`.
+ * E.g. 'Candlelight Dinner' -> 'Date-planner/Candlelight Dinner'
+ */
+export function resolveDateCloudinaryFolder(
+  dateTitleOrFolder?: string,
+  customFolder?: string
+): string {
+  const target = customFolder?.trim() || dateTitleOrFolder?.trim();
+  if (!target) return ROOT_CLOUDINARY_FOLDER;
+
+  // Strip leading 'Date-planner/' or slashes if passed
+  const stripped = target
+    .replace(new RegExp(`^${ROOT_CLOUDINARY_FOLDER}\\/?`, 'i'), '')
+    .replace(/^\/+/, '');
+
+  if (!stripped) return ROOT_CLOUDINARY_FOLDER;
+
+  const sanitized = sanitizeCloudinaryFolderName(stripped);
+  return `${ROOT_CLOUDINARY_FOLDER}/${sanitized}`;
+}
+
+/**
+ * Creates a folder in Cloudinary (e.g. 'Date-planner/Sunset Picnic').
+ * If the folder already exists, Cloudinary considers it successful.
+ */
+export async function createCloudinaryFolder(
+  folderPath: string
+): Promise<{ success: boolean; path: string }> {
+  const client = configureCloudinary();
+  if (!client) {
+    throw new Error('Cloudinary credentials are not configured.');
+  }
+
+  const normalizedPath = folderPath.startsWith(ROOT_CLOUDINARY_FOLDER)
+    ? folderPath
+    : resolveDateCloudinaryFolder(folderPath);
+
+  try {
+    const result = await client.api.create_folder(normalizedPath);
+    return { success: true, path: result?.path || normalizedPath };
+  } catch (error: unknown) {
+    const err = error as {
+      error?: { message?: string; http_code?: number };
+      message?: string;
+    };
+    const message = err?.error?.message || err?.message || '';
+    if (/already exists/i.test(message)) {
+      return { success: true, path: normalizedPath };
+    }
+    throw new Error(message || 'Failed to create Cloudinary folder.');
+  }
+}
+
+/**
  * Uploads an image buffer to Cloudinary and returns its secure CDN URL and public ID.
- * Automatically applies auto-format (WebP/AVIF) and quality optimization.
+ * Automatically organizes under Date-planner/<folder> and applies quality optimization.
  */
 export async function uploadToCloudinary(
   buffer: Buffer,
   fileName: string,
-  folder = 'date-checklist'
+  folder?: string
 ): Promise<UploadedMedia> {
   const client = configureCloudinary();
   if (!client) {
     throw new Error('Cloudinary credentials are not configured.');
   }
+
+  const targetFolder = folder
+    ? resolveDateCloudinaryFolder(folder)
+    : ROOT_CLOUDINARY_FOLDER;
 
   const baseName = fileName
     .replace(/\.[^/.]+$/, '')
@@ -54,7 +127,7 @@ export async function uploadToCloudinary(
   return new Promise((resolve, reject) => {
     const stream = client.uploader.upload_stream(
       {
-        folder,
+        folder: targetFolder,
         public_id: publicId,
         resource_type: 'image',
         transformation: [{ quality: 'auto', fetch_format: 'auto' }],

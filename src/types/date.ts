@@ -74,6 +74,7 @@ export interface DateIdea {
   bestTimeOfDay: TimeOfDay;
   setting: DateSetting;
   dressCode?: string;
+  cloudinaryFolder?: string;
 }
 
 export interface CoupleProfile {

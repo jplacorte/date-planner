@@ -70,7 +70,11 @@ export default function CoverBanner({
 
     setIsUploadingCover(true);
     try {
-      const uploaded = await uploadImageFile(file);
+      const folder = selectedDate.cloudinaryFolder || selectedDate.title;
+      const uploaded = await uploadImageFile(file, {
+        folder,
+        dateTitle: selectedDate.title,
+      });
       updateDateCoverImage(selectedDate.id, uploaded.url);
       setIsChangingCover(false);
       onSaved('Cover photo updated ✓');

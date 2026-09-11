@@ -1,13 +1,19 @@
 'use client';
 
+import { useState } from 'react';
 import {
   BookHeart,
   Camera,
   ChevronLeft,
   ChevronRight,
   Eye,
+  Folder,
+  FolderCheck,
+  FolderPlus,
   GripVertical,
+  Loader2,
   Music,
+  Pencil,
   Smile,
   Star,
   Trash2,
@@ -16,6 +22,7 @@ import {
 } from 'lucide-react';
 
 import { useDateContext } from '@/context/DateContext';
+import { createCloudinaryDateFolder } from '@/lib/media/upload-client';
 import GoogleDrivePicker from '@/components/ui/GoogleDrivePicker';
 import type { MemoryEditor } from '@/hooks/use-memory-editor';
 import type { DateIdea } from '@/types/date';
@@ -39,7 +46,49 @@ export default function MemoryTab({
   onSaved,
   onOpenLightbox,
 }: MemoryTabProps) {
-  const { updateDateCoverImage } = useDateContext();
+  const { updateDateCoverImage, updateDate } = useDateContext();
+
+  const [isCreatingFolder, setIsCreatingFolder] = useState(false);
+  const [folderSuccess, setFolderSuccess] = useState(false);
+  const [isEditingFolder, setIsEditingFolder] = useState(false);
+  const [customFolderName, setCustomFolderName] = useState(
+    selectedDate.cloudinaryFolder || selectedDate.title || ''
+  );
+
+  const activeFolderName =
+    selectedDate.cloudinaryFolder || selectedDate.title || 'General';
+
+  const handleCreateFolder = async () => {
+    setIsCreatingFolder(true);
+    try {
+      const res = await createCloudinaryDateFolder(
+        activeFolderName,
+        selectedDate.title
+      );
+      setFolderSuccess(true);
+      showSavedFeedback(`Folder "${res.folder}" verified in Cloudinary ✓`);
+    } catch (error) {
+      const msg =
+        error instanceof Error
+          ? error.message
+          : 'Could not create Cloudinary folder.';
+      showSavedFeedback(msg);
+    } finally {
+      setIsCreatingFolder(false);
+    }
+  };
+
+  const handleSaveCustomFolder = () => {
+    const trimmed = customFolderName.trim();
+    if (trimmed) {
+      updateDate({
+        ...selectedDate,
+        cloudinaryFolder: trimmed,
+      });
+      setIsEditingFolder(false);
+      showSavedFeedback(`Date album folder set to "${trimmed}" ✓`);
+    }
+  };
 
   const {
     memoryNotes,
@@ -186,6 +235,98 @@ export default function MemoryTab({
               onChange={handleMemoryFileUpload}
               className="hidden"
             />
+          </div>
+        </div>
+
+        {/* Cloudinary Organized Album Folder Bar */}
+        <div className="p-3 rounded-xl bg-black/60 border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+          <div className="flex items-start sm:items-center gap-2.5 min-w-0">
+            <div className="p-2 rounded-lg bg-white/5 border border-white/10 text-zinc-300 shrink-0">
+              {folderSuccess ? (
+                <FolderCheck className="w-4 h-4 text-white" />
+              ) : (
+                <Folder className="w-4 h-4 text-zinc-400" />
+              )}
+            </div>
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <span className="text-[11px] font-semibold text-zinc-300">Cloudinary Album:</span>
+                {!isEditingFolder ? (
+                  <div className="flex items-center gap-1">
+                    <code className="px-1.5 py-0.5 rounded bg-white/5 font-mono text-[11px] text-white border border-white/10 truncate max-w-[200px] sm:max-w-[260px]">
+                      Date-planner/{activeFolderName}
+                    </code>
+                    <button
+                      type="button"
+                      onClick={() => setIsEditingFolder(true)}
+                      className="p-1 text-zinc-500 hover:text-zinc-200 transition-colors"
+                      title="Rename folder for this date"
+                    >
+                      <Pencil className="w-3 h-3" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-1 mt-1 sm:mt-0">
+                    <span className="font-mono text-[11px] text-zinc-500">Date-planner/</span>
+                    <input
+                      type="text"
+                      value={customFolderName}
+                      onChange={(e) => setCustomFolderName(e.target.value)}
+                      className="px-2 py-0.5 rounded bg-zinc-900 border border-white/20 text-white font-mono text-[11px] focus:outline-none focus:border-white"
+                      placeholder="folder-name"
+                      autoFocus
+                    />
+                    <button
+                      type="button"
+                      onClick={handleSaveCustomFolder}
+                      className="px-2 py-0.5 rounded bg-white text-zinc-950 font-semibold text-[10px] hover:bg-zinc-200"
+                    >
+                      Save
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setIsEditingFolder(false)}
+                      className="px-1.5 py-0.5 rounded bg-transparent text-zinc-400 text-[10px] hover:text-white"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                )}
+              </div>
+              <p className="text-[10px] text-zinc-500 mt-0.5">
+                Photos for this date are organized into this Cloudinary subfolder automatically.
+              </p>
+            </div>
+          </div>
+
+          <div className="shrink-0 flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handleCreateFolder}
+              disabled={isCreatingFolder}
+              className={`w-full sm:w-auto px-3 py-1.5 rounded-lg font-medium text-[11px] border transition-all flex items-center justify-center gap-1.5 shadow-sm ${
+                folderSuccess
+                  ? 'bg-white/15 text-white border-white/30 cursor-default'
+                  : 'bg-white/5 hover:bg-white/10 text-zinc-200 border-white/10 active:scale-95'
+              }`}
+            >
+              {isCreatingFolder ? (
+                <>
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  <span>Creating...</span>
+                </>
+              ) : folderSuccess ? (
+                <>
+                  <FolderCheck className="w-3.5 h-3.5 text-white" />
+                  <span>Folder Verified</span>
+                </>
+              ) : (
+                <>
+                  <FolderPlus className="w-3.5 h-3.5 text-zinc-400" />
+                  <span>Create Cloudinary Folder</span>
+                </>
+              )}
+            </button>
           </div>
         </div>
 
