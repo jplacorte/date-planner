@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Plus_Jakarta_Sans, Playfair_Display } from 'next/font/google';
+import { Plus_Jakarta_Sans, Playfair_Display, JetBrains_Mono } from 'next/font/google';
 
 import './globals.css';
 import { DateProvider } from '@/context/DateContext';
@@ -14,6 +14,13 @@ const sansFont = Plus_Jakarta_Sans({
 
 const serifFont = Playfair_Display({
   variable: '--font-serif',
+  subsets: ['latin'],
+  display: 'swap',
+  style: ['normal', 'italic'],
+});
+
+const monoFont = JetBrains_Mono({
+  variable: '--font-mono',
   subsets: ['latin'],
   display: 'swap',
 });
@@ -124,6 +131,19 @@ const jsonLd = {
   ],
 };
 
+function FilmGrain() {
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none fixed inset-0 z-50 opacity-[0.032] mix-blend-overlay select-none"
+      style={{
+        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+        backgroundRepeat: 'repeat',
+      }}
+    />
+  );
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -132,7 +152,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${sansFont.variable} ${serifFont.variable} dark`}
+      className={`${sansFont.variable} ${serifFont.variable} ${monoFont.variable} dark`}
       data-theme="dusk"
       suppressHydrationWarning
     >
@@ -143,9 +163,10 @@ export default function RootLayout({
         />
       </head>
       <body
-        className="min-h-screen bg-zinc-950 text-zinc-100 font-sans antialiased overflow-x-hidden transition-colors duration-700"
+        className="min-h-screen bg-black text-[#faf8f5] font-sans antialiased overflow-x-hidden transition-colors duration-700"
         suppressHydrationWarning
       >
+        <FilmGrain />
         <SmoothScroll>
           <PasscodeGate>
             <DateProvider>{children}</DateProvider>

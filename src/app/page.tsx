@@ -54,8 +54,8 @@ function AppContent() {
         {/* Hero Countdown & Next Scheduled Date */}
         <HeroCountdown />
 
-        {/* Main Tab Area */}
-        <main className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2 sm:py-4 pb-24 md:pb-6">
+        {/* Main Tab Area — Generous Editorial Spacing */}
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 pb-28 md:pb-12 space-y-10">
           {activeTab === 'checklist' && <ChecklistHub />}
           {activeTab === 'map' && <DateMapView />}
           {activeTab === 'scrapbook' && <ScrapbookView />}

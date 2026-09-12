@@ -59,45 +59,48 @@ export default function PasscodeGate({
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-5">
+    <div className="min-h-screen flex items-center justify-center px-5 bg-black">
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
         className="w-full max-w-sm"
       >
-        <div className="flex flex-col items-center text-center mb-7">
-          <div className="w-12 h-12 rounded-2xl bg-white/[0.06] border border-white/[0.1] flex items-center justify-center mb-4">
-            <Lock className="w-5 h-5 text-white/70" />
+        <div className="flex flex-col items-center text-center mb-8 space-y-3">
+          <div className="w-12 h-12 rounded-full bg-white/[0.05] border border-white/15 flex items-center justify-center mb-2">
+            <Lock className="w-4 h-4 text-white" />
           </div>
-          <h1 className="font-serif text-2xl text-neutral-100">
-            A private little place
+          <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-neutral-400">
+            PRIVATE MONOGRAPH // RESTRICTED
+          </span>
+          <h1 className="font-serif text-3xl sm:text-4xl text-white font-normal tracking-tight">
+            A Private Anthology
           </h1>
-          <p className="text-sm text-neutral-500 mt-1.5">
-            Enter the passcode to open your date planner.
+          <p className="text-xs sm:text-sm text-neutral-400 font-serif italic max-w-xs leading-relaxed">
+            &ldquo;Inscribe the secret cipher to unlock your shared archive of dates, memories, and dreams.&rdquo;
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-3">
+        <form onSubmit={handleSubmit} className="space-y-3.5">
           <input
             type="password"
             value={passcode}
             onChange={(event) => setPasscode(event.target.value)}
-            placeholder="Passcode"
+            placeholder="CIPHER"
             autoFocus
             autoComplete="current-password"
             maxLength={256}
             aria-label="Passcode"
             aria-invalid={error !== null}
             aria-describedby={error ? 'passcode-error' : undefined}
-            className="w-full px-4 py-3.5 rounded-2xl bg-white/[0.04] border border-white/[0.1] text-neutral-100 placeholder:text-neutral-600 outline-none focus:border-white/25 transition-colors text-center tracking-[0.3em]"
+            className="w-full px-4 py-3.5 rounded-2xl bg-neutral-950 border border-white/15 text-white placeholder:text-neutral-600 outline-none focus:border-white transition-colors text-center font-mono tracking-[0.4em] text-sm uppercase"
           />
 
           {error && (
             <p
               id="passcode-error"
               role="alert"
-              className="text-xs text-red-400 text-center"
+              className="text-xs font-mono text-red-400 text-center tracking-wide"
             >
               {error}
             </p>
@@ -106,14 +109,14 @@ export default function PasscodeGate({
           <button
             type="submit"
             disabled={isSubmitting || passcode.length === 0}
-            className="w-full px-4 py-3.5 rounded-2xl bg-white text-neutral-950 font-medium text-sm flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
+            className="w-full px-4 py-3.5 rounded-2xl bg-white hover:bg-neutral-200 text-black font-mono font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-lg"
           >
             {isSubmitting ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
-              <Heart className="w-4 h-4" />
+              <Heart className="w-3.5 h-3.5 fill-black text-black" />
             )}
-            {isSubmitting ? 'Checking' : 'Open'}
+            {isSubmitting ? 'VERIFYING...' : 'ENTER ANTHOLOGY'}
           </button>
         </form>
       </motion.div>

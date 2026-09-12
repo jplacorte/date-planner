@@ -36,45 +36,45 @@ export default function ScrapbookView() {
   return (
     <div className="space-y-4 sm:space-y-6">
       
-      {/* Scrapbook Header Banner */}
-      <div className="relative rounded-2xl sm:rounded-3xl p-4 sm:p-8 border border-white/[0.08] bg-zinc-950/70 backdrop-blur-2xl shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6">
-        <div className="space-y-1.5 sm:space-y-2 text-center sm:text-left">
-          <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-accent/12 text-accent-soft text-[10px] uppercase tracking-[0.16em] font-semibold">
+      {/* Scrapbook Header Banner — Editorial Exhibition Plate */}
+      <div className="relative rounded-2xl sm:rounded-3xl p-5 sm:p-10 border border-white/[0.1] bg-black/80 backdrop-blur-2xl shadow-xl flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="space-y-2 text-center sm:text-left">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] border border-white/15 text-white font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em]">
             <BookHeart className="w-3.5 h-3.5" />
-            <span>Memory Vault</span>
+            <span>ARCHIVE // CONTACT SHEETS</span>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-display font-medium text-zinc-50 tracking-tight">
-            {coupleProfile.partner1Name} & {coupleProfile.partner2Name}’s Archive
+          <h2 className="text-3xl sm:text-5xl font-serif font-normal text-white tracking-tight">
+            {coupleProfile.partner1Name} <span className="italic font-light opacity-80">&</span> {coupleProfile.partner2Name}
           </h2>
-          <p className="text-sm text-zinc-400 max-w-xl font-display italic">
+          <p className="text-sm text-neutral-300 max-w-xl font-serif italic">
             &ldquo;{coupleProfile.relationshipMotto}&rdquo;
           </p>
         </div>
 
-        <div className="flex items-center gap-4 bg-white/[0.03] px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl border border-white/[0.07] backdrop-blur-md shrink-0">
+        <div className="flex items-center gap-4 bg-neutral-950/90 px-5 py-3 rounded-2xl border border-white/[0.12] backdrop-blur-md shrink-0 font-mono">
           <div className="text-center">
-            <div className="text-2xl sm:text-3xl font-display text-zinc-50">
+            <div className="text-2xl sm:text-3xl font-serif text-white">
               {completedDates.length}
             </div>
-            <div className="text-[9px] sm:text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">
-              Completed
+            <div className="text-[9px] uppercase tracking-[0.2em] text-neutral-400 mt-0.5">
+              Lived
             </div>
           </div>
-          <div className="h-5 sm:h-6 w-px bg-white/10" />
+          <div className="h-6 w-px bg-white/15" />
           <div className="text-center">
-            <div className="text-2xl sm:text-3xl font-display text-zinc-50">
+            <div className="text-2xl sm:text-3xl font-serif text-white">
               {completedDates.reduce((acc, d) => acc + (d.memoriesPhotos?.length || 1), 0)}
             </div>
-            <div className="text-[9px] sm:text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">
-              Photos Saved
+            <div className="text-[9px] uppercase tracking-[0.2em] text-neutral-400 mt-0.5">
+              Prints
             </div>
           </div>
         </div>
       </div>
 
-      {/* Polaroid Gallery Grid */}
+      {/* Art Monograph Photo Plates Grid */}
       {completedDates.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 pt-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 pt-4">
           {completedDates.map((date, idx) => {
             const rotations = ['rotate-1', '-rotate-1', 'rotate-0'];
             const rot = rotations[idx % rotations.length];
@@ -89,12 +89,12 @@ export default function ScrapbookView() {
                 onClick={() => setSelectedDate(date)}
                 className={`cursor-pointer transition-all duration-300 ${rot}`}
               >
-                {/* Polaroid Frame — a cream print pasted onto the dark page */}
-                <div className="bg-linen p-3 sm:p-3.5 pb-4 sm:pb-5 rounded-xl shadow-[0_10px_30px_-8px_rgba(0,0,0,0.65)] space-y-3 group">
+                {/* Monograph Plate Mount — Bright Ivory print plate set on deep dark ground */}
+                <div className="bg-[#faf8f5] text-[#08080a] p-4 sm:p-5 pb-6 sm:pb-7 rounded-2xl shadow-[0_16px_40px_-12px_rgba(0,0,0,0.85)] border border-white/10 space-y-3.5 group">
                   
                   {/* Photo Container */}
                   <div 
-                    className="relative aspect-[4/3] rounded-md overflow-hidden bg-zinc-800 group/photo cursor-pointer"
+                    className="relative aspect-[4/3] rounded-lg overflow-hidden bg-neutral-900 border border-black/10 group/photo cursor-pointer"
                     onClick={(e) => {
                       e.stopPropagation();
                       const allPhotos = date.memoriesPhotos && date.memoriesPhotos.length > 0 ? date.memoriesPhotos : [date.coverImage];
@@ -108,24 +108,24 @@ export default function ScrapbookView() {
                     />
                     
                     {/* Top Badges */}
-                    <div className="absolute top-2 left-2 right-2 flex items-center justify-between pointer-events-none">
+                    <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none">
                       {date.memoriesPhotos && date.memoriesPhotos.length > 1 ? (
-                        <div className="px-2 py-0.5 rounded-full bg-black/70 backdrop-blur-md text-[10px] font-mono text-zinc-100 flex items-center gap-1 border border-white/10 shadow">
-                          <Camera className="w-2.5 h-2.5" />
-                          <span>{date.memoriesPhotos.length} photos</span>
+                        <div className="px-2.5 py-1 rounded-full bg-black/80 backdrop-blur-md text-[9px] font-mono uppercase tracking-wider text-white flex items-center gap-1.5 border border-white/15 shadow">
+                          <Camera className="w-3 h-3" />
+                          <span>{date.memoriesPhotos.length} prints</span>
                         </div>
                       ) : (
                         <span />
                       )}
 
-                      <div className="p-1.5 rounded-full bg-black/70 backdrop-blur-md shadow">
-                        <Heart className="w-3.5 h-3.5 text-accent fill-accent" />
+                      <div className="p-1.5 rounded-full bg-black/80 backdrop-blur-md shadow">
+                        <Heart className="w-3.5 h-3.5 text-white fill-white" />
                       </div>
                     </div>
 
                     {/* Date Stamp */}
                     {date.scheduledDate && (
-                      <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/70 backdrop-blur-md text-[10px] font-mono text-zinc-300">
+                      <div className="absolute bottom-2.5 left-2.5 px-2.5 py-1 rounded bg-black/80 backdrop-blur-md text-[9px] font-mono uppercase tracking-wider text-neutral-200">
                         {formatDateString(date.scheduledDate, {
                           month: 'short',
                           day: 'numeric',
@@ -137,7 +137,7 @@ export default function ScrapbookView() {
 
                   {/* Multi-Photo Preview Strip */}
                   {date.memoriesPhotos && date.memoriesPhotos.length > 1 && (
-                    <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pt-0.5">
+                    <div className="flex items-center gap-2 overflow-x-auto scrollbar-none pt-0.5">
                       {date.memoriesPhotos.map((p, pIdx) => (
                         <button
                           key={pIdx}
@@ -146,62 +146,59 @@ export default function ScrapbookView() {
                             e.stopPropagation();
                             handleOpenPhotoLightbox(date.memoriesPhotos || [date.coverImage], pIdx, date.title, date.bestMoments?.photoCaption);
                           }}
-                          className={`relative w-8 h-8 rounded-lg overflow-hidden shrink-0 border transition-all ${
-                            pIdx === 0 ? 'border-accent ring-1 ring-accent/40' : 'border-ink/15 opacity-70 hover:opacity-100 hover:scale-105'
+                          className={`relative w-9 h-9 rounded-md overflow-hidden shrink-0 border transition-all ${
+                            pIdx === 0 ? 'border-black ring-1 ring-black/40' : 'border-black/15 opacity-70 hover:opacity-100 hover:scale-105'
                           }`}
                         >
                           <img src={p} alt={`Thumb ${pIdx + 1}`} className="w-full h-full object-cover" />
-                          {pIdx === 0 && (
-                            <div className="absolute inset-0 bg-accent/10" />
-                          )}
                         </button>
                       ))}
                     </div>
                   )}
 
-                  {/* Caption Area */}
-                  <div className="space-y-1.5 px-0.5">
+                  {/* Caption & Monograph Metadata */}
+                  <div className="space-y-2 px-0.5">
                     <div className="flex items-start justify-between gap-2">
-                      <h3 className="text-[15px] font-display font-medium text-ink leading-snug">
+                      <h3 className="text-base sm:text-lg font-serif font-semibold text-[#08080a] leading-tight">
                         {date.title}
                       </h3>
                       {date.actualCost && (
-                        <span className="text-xs font-mono text-stone shrink-0">
+                        <span className="text-xs font-mono text-neutral-600 shrink-0 font-medium">
                           ₱{date.actualCost.toLocaleString()}
                         </span>
                       )}
                     </div>
 
                     {date.bestMoments?.photoCaption ? (
-                      <p className="text-[13px] italic text-ink/70 font-display leading-relaxed">
+                      <p className="text-xs sm:text-[13px] italic text-neutral-800 font-serif leading-relaxed">
                         &ldquo;{date.bestMoments.photoCaption}&rdquo;
                       </p>
                     ) : (
-                      <p className="text-xs text-stone font-light line-clamp-2">
+                      <p className="text-xs text-neutral-600 font-sans line-clamp-2 leading-relaxed">
                         {date.memoryNotes || date.subtitle}
                       </p>
                     )}
 
                     {/* Highlights Row */}
-                    <div className="flex items-center gap-2 flex-wrap pt-1">
+                    <div className="flex items-center gap-1.5 flex-wrap pt-1 font-mono text-[9px] uppercase tracking-wider">
                       {date.bestMoments?.favoriteDish && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-ink/[0.06] text-stone text-[10px]">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-black/[0.06] text-neutral-800">
                           <Utensils className="w-2.5 h-2.5" />
-                          <span className="max-w-[110px] truncate">{date.bestMoments.favoriteDish}</span>
+                          <span className="max-w-[120px] truncate">{date.bestMoments.favoriteDish}</span>
                         </span>
                       )}
 
                       {date.bestMoments?.funniestMoment && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-ink/[0.06] text-stone text-[10px]">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-black/[0.06] text-neutral-800">
                           <Smile className="w-2.5 h-2.5" />
-                          <span className="max-w-[110px] truncate">{date.bestMoments.funniestMoment}</span>
+                          <span className="max-w-[120px] truncate">{date.bestMoments.funniestMoment}</span>
                         </span>
                       )}
 
                       {date.bestMoments?.favoriteSong && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-ink/[0.06] text-stone text-[10px]">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-black/[0.06] text-neutral-800">
                           <Music className="w-2.5 h-2.5" />
-                          <span className="max-w-[110px] truncate">{date.bestMoments.favoriteSong}</span>
+                          <span className="max-w-[120px] truncate">{date.bestMoments.favoriteSong}</span>
                         </span>
                       )}
                     </div>
@@ -215,15 +212,15 @@ export default function ScrapbookView() {
         </div>
       ) : (
         /* Empty State */
-        <div className="rounded-3xl p-8 sm:p-10 text-center border border-white/[0.08] bg-zinc-950/40 backdrop-blur-xl space-y-3">
-          <div className="w-12 h-12 rounded-full bg-white/[0.05] border border-white/[0.1] flex items-center justify-center mx-auto text-zinc-400">
-            <Camera className="w-6 h-6" />
+        <div className="rounded-3xl p-10 sm:p-16 text-center border border-white/[0.1] bg-black/80 backdrop-blur-xl space-y-4">
+          <div className="w-12 h-12 rounded-full bg-white/[0.05] border border-white/[0.12] flex items-center justify-center mx-auto text-neutral-400">
+            <Camera className="w-6 h-6 text-white" />
           </div>
-          <h3 className="text-lg sm:text-xl font-display text-zinc-50">
-            Nothing pasted in yet
+          <h3 className="text-xl sm:text-2xl font-serif text-white">
+            Archive Blank // No Prints Inscribed
           </h3>
-          <p className="text-xs text-zinc-500 max-w-md mx-auto leading-relaxed">
-            Once a date is marked as lived, it lands here with its photos, notes and the small things worth keeping.
+          <p className="text-xs sm:text-sm text-neutral-400 max-w-md mx-auto leading-relaxed font-serif italic">
+            &ldquo;Once a rendezvous is marked as lived, it will be mounted here as a physical gallery contact plate with its prints, memories, and moments.&rdquo;
           </p>
         </div>
       )}

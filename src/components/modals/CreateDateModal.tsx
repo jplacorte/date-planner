@@ -144,7 +144,7 @@ export default function CreateDateModal() {
           initial={{ opacity: 0, scale: 0.96, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.96, y: 20 }}
-          className="relative w-full max-w-2xl rounded-t-[28px] sm:rounded-3xl overflow-hidden bg-zinc-950 border border-white/[0.1] shadow-2xl p-4 sm:p-7 space-y-4 sm:space-y-5 max-h-[92vh] sm:max-h-[88vh] overflow-y-auto overscroll-contain touch-scroll my-0 sm:my-auto"
+          className="relative w-full max-w-2xl rounded-t-[28px] sm:rounded-3xl overflow-hidden bg-black/95 border border-white/[0.12] shadow-2xl p-5 sm:p-8 space-y-5 max-h-[92vh] sm:max-h-[88vh] overflow-y-auto overscroll-contain touch-scroll my-0 sm:my-auto"
           data-lenis-prevent
         >
           {/* Mobile Sheet Drag Indicator Bar */}
@@ -154,23 +154,23 @@ export default function CreateDateModal() {
 
           {/* Header */}
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 sm:gap-2.5">
-              <div className="p-1.5 sm:p-2 rounded-full bg-accent/12 text-accent-soft shrink-0">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-full bg-white/[0.06] border border-white/15 text-white shrink-0">
                 <Sparkles className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="text-base sm:text-lg font-bold font-serif text-white">
-                  Add Custom Date Experience
+                <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-neutral-400 block">
+                  NEW DOSSIER // BESPOKE ENTRY
+                </span>
+                <h3 className="text-xl sm:text-2xl font-serif font-normal text-white">
+                  Inscribe Rendezvous
                 </h3>
-                <p className="text-[11px] sm:text-xs text-zinc-400">
-                  Create a personalized date with custom cover, checklist, and itinerary.
-                </p>
               </div>
             </div>
 
             <button
               onClick={() => setIsCreateModalOpen(false)}
-              className="p-1.5 rounded-full bg-white/[0.05] hover:bg-white/[0.1] text-zinc-400 hover:text-white shrink-0"
+              className="p-2 rounded-full bg-white/[0.05] hover:bg-white/[0.1] text-neutral-400 hover:text-white shrink-0 transition-colors"
             >
               <X className="w-4 h-4" />
             </button>

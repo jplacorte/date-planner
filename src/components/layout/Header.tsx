@@ -5,9 +5,6 @@ import { motion, AnimatePresence } from 'motion/react';
 import { 
   Heart, 
   Sparkles, 
-  MapPin, 
-  BookHeart, 
-  ListChecks, 
   Volume2, 
   VolumeX, 
   Plus, 
@@ -87,80 +84,80 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full backdrop-blur-2xl border-b border-white/[0.07] bg-zinc-950/80 transition-colors duration-500 pt-safe">
+    <header className="sticky top-0 z-40 w-full backdrop-blur-2xl border-b border-white/[0.08] bg-black/85 transition-colors duration-500 pt-safe">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14 sm:h-20 gap-2 sm:gap-4">
           
-          {/* Brand & Couple Profile */}
+          {/* Editorial Masthead & Couple Profile */}
           <div className="flex items-center gap-2 sm:gap-3 shrink-0 min-w-0">
             <button
               onClick={() => setIsProfileModalOpen(true)}
-              className="group flex items-center gap-2 sm:gap-3 text-left p-1 rounded-2xl hover:bg-white/[0.04] transition-all min-w-0"
+              className="group flex items-center gap-2.5 sm:gap-3.5 text-left p-1 rounded-2xl hover:bg-white/[0.04] transition-all min-w-0"
             >
               <div className="relative shrink-0">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/[0.08] border border-white/20 flex items-center justify-center">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/[0.06] border border-white/20 flex items-center justify-center">
                   <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white fill-white transition-transform group-hover:scale-110" />
                 </div>
-                <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-white border-2 border-zinc-950" />
+                <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-white border-2 border-black" />
               </div>
 
               <div className="min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-sm sm:text-lg font-display font-medium tracking-tight text-white group-hover:text-zinc-200 transition-colors truncate max-w-[120px] xs:max-w-[160px] sm:max-w-none">
-                    {coupleProfile.partner1Name} & {coupleProfile.partner2Name}
+                  <span className="text-sm sm:text-lg font-serif font-medium tracking-tight text-white group-hover:text-zinc-200 transition-colors truncate max-w-[130px] xs:max-w-[170px] sm:max-w-none">
+                    {coupleProfile.partner1Name} <span className="italic font-light opacity-80">&</span> {coupleProfile.partner2Name}
                   </span>
                 </div>
-                <p className="text-[10px] sm:text-[11px] text-zinc-500 truncate hidden sm:block max-w-[200px]">
-                  Plans, nights out, and what we kept
+                <p className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-neutral-400 truncate hidden sm:block max-w-[240px]">
+                  EDITION MMXXVI // PRIVATE ARCHIVE
                 </p>
               </div>
             </button>
           </div>
 
-          {/* Navigation Tabs (Center - Desktop) */}
-          <nav className="hidden md:flex items-center p-1 rounded-full bg-white/[0.03] border border-white/[0.07] shrink-0">
+          {/* Navigation Tabs (Center - Desktop) — Utilitarian Monospace Index */}
+          <nav className="hidden md:flex items-center gap-1 p-1 rounded-full bg-neutral-950/80 border border-white/[0.1] shrink-0">
             <button
               onClick={() => setActiveTab('checklist')}
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all whitespace-nowrap shrink-0 ${
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs transition-all whitespace-nowrap shrink-0 font-mono tracking-wider ${
                 activeTab === 'checklist'
-                  ? 'bg-white/15 text-white'
-                  : 'text-zinc-400 hover:text-white hover:bg-white/[0.04]'
+                  ? 'bg-white text-black font-semibold shadow-sm'
+                  : 'text-neutral-400 hover:text-white hover:bg-white/[0.05]'
               }`}
             >
-              <ListChecks className="w-3.5 h-3.5 shrink-0" />
-              <span>Checklist</span>
+              <span className="text-[10px] opacity-70">01</span>
+              <span>CHECKLIST</span>
             </button>
             <button
               onClick={() => setActiveTab('map')}
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all whitespace-nowrap shrink-0 ${
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs transition-all whitespace-nowrap shrink-0 font-mono tracking-wider ${
                 activeTab === 'map'
-                  ? 'bg-white/15 text-white'
-                  : 'text-zinc-400 hover:text-white hover:bg-white/[0.04]'
+                  ? 'bg-white text-black font-semibold shadow-sm'
+                  : 'text-neutral-400 hover:text-white hover:bg-white/[0.05]'
               }`}
             >
-              <MapPin className="w-3.5 h-3.5 shrink-0" />
-              <span>Date Map</span>
+              <span className="text-[10px] opacity-70">02</span>
+              <span>MAP</span>
             </button>
             <button
               onClick={() => setActiveTab('scrapbook')}
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all whitespace-nowrap shrink-0 ${
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs transition-all whitespace-nowrap shrink-0 font-mono tracking-wider ${
                 activeTab === 'scrapbook'
-                  ? 'bg-white/15 text-white'
-                  : 'text-zinc-400 hover:text-white hover:bg-white/[0.04]'
+                  ? 'bg-white text-black font-semibold shadow-sm'
+                  : 'text-neutral-400 hover:text-white hover:bg-white/[0.05]'
               }`}
             >
-              <BookHeart className="w-3.5 h-3.5 shrink-0" />
-              <span>Scrapbook</span>
+              <span className="text-[10px] opacity-70">03</span>
+              <span>ARCHIVE</span>
             </button>
           </nav>
 
           {/* Right Action Tools */}
-          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             
-            {/* Roulette Spark Generator (Desktop / Tablet) */}
+            {/* Roulette Spark Generator */}
             <button
               onClick={() => setIsRouletteModalOpen(true)}
-              className="hidden sm:flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-zinc-200 border border-white/[0.09] text-xs font-medium transition-all group whitespace-nowrap shrink-0"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 sm:py-2 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-zinc-200 border border-white/[0.1] font-mono text-[11px] uppercase tracking-wider transition-all group whitespace-nowrap shrink-0"
               title="Date Spark Roulette"
             >
               <Sparkles className="w-3.5 h-3.5 text-zinc-300 group-hover:rotate-12 transition-transform shrink-0" />
@@ -171,16 +168,16 @@ export default function Header() {
             {/* Plan Custom Date Button */}
             <button
               onClick={() => setIsCreateModalOpen(true)}
-              className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-full bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap shrink-0 shadow-sm"
+              className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white hover:bg-zinc-200 text-black font-mono text-[11px] font-semibold tracking-wider uppercase transition-all hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap shrink-0 shadow-sm"
             >
               <Plus className="w-3.5 h-3.5 shrink-0 stroke-[2.5]" />
-              <span className="hidden xs:inline">New Date</span>
+              <span className="hidden xs:inline">New Entry</span>
             </button>
 
             {/* Achievements Trophy */}
             <button
               onClick={() => setIsStatsModalOpen(true)}
-              className="p-1.5 sm:p-2 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-zinc-300 hover:text-accent-soft border border-white/[0.08] transition-all shrink-0"
+              className="p-1.5 sm:p-2 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-zinc-300 hover:text-white border border-white/[0.1] transition-all shrink-0"
               title="Milestone Badges & Stats"
             >
               <Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />

@@ -21,25 +21,25 @@ export default function MobileNav() {
   return (
     <nav className="fixed bottom-3 inset-x-3 z-40 md:hidden pointer-events-none pb-safe">
       <div className="max-w-md mx-auto pointer-events-auto">
-        <div className="flex items-center justify-around p-1.5 rounded-2xl bg-zinc-950/90 backdrop-blur-2xl border border-white/15 shadow-[0_8px_32px_rgba(0,0,0,0.8)]">
+        <div className="flex items-center justify-around p-1.5 rounded-2xl bg-black/90 backdrop-blur-2xl border border-white/15 shadow-[0_12px_36px_rgba(0,0,0,0.9)]">
           
           {/* Checklist Tab */}
           <button
             onClick={() => setActiveTab('checklist')}
             className={`relative flex flex-col items-center justify-center flex-1 py-1.5 px-1 rounded-xl transition-all ${
-              activeTab === 'checklist' ? 'text-white' : 'text-zinc-400 hover:text-zinc-200'
+              activeTab === 'checklist' ? 'text-white font-semibold' : 'text-neutral-400 hover:text-white'
             }`}
           >
             {activeTab === 'checklist' && (
               <motion.div
                 layoutId="mobileNavActiveTab"
-                className="absolute inset-0 bg-white/15 rounded-xl border border-white/10"
+                className="absolute inset-0 bg-white/15 rounded-xl border border-white/20"
                 transition={{ type: 'spring', stiffness: 380, damping: 30 }}
               />
             )}
             <ListChecks className="w-4 h-4 relative z-10" />
-            <span className="text-[10px] font-semibold tracking-tight mt-0.5 relative z-10">
-              Checklist
+            <span className="font-mono text-[9px] uppercase tracking-wider mt-0.5 relative z-10">
+              List
             </span>
           </button>
 
@@ -47,18 +47,18 @@ export default function MobileNav() {
           <button
             onClick={() => setActiveTab('map')}
             className={`relative flex flex-col items-center justify-center flex-1 py-1.5 px-1 rounded-xl transition-all ${
-              activeTab === 'map' ? 'text-white' : 'text-zinc-400 hover:text-zinc-200'
+              activeTab === 'map' ? 'text-white font-semibold' : 'text-neutral-400 hover:text-white'
             }`}
           >
             {activeTab === 'map' && (
               <motion.div
                 layoutId="mobileNavActiveTab"
-                className="absolute inset-0 bg-white/15 rounded-xl border border-white/10"
+                className="absolute inset-0 bg-white/15 rounded-xl border border-white/20"
                 transition={{ type: 'spring', stiffness: 380, damping: 30 }}
               />
             )}
             <MapPin className="w-4 h-4 relative z-10" />
-            <span className="text-[10px] font-semibold tracking-tight mt-0.5 relative z-10">
+            <span className="font-mono text-[9px] uppercase tracking-wider mt-0.5 relative z-10">
               Map
             </span>
           </button>
@@ -67,7 +67,7 @@ export default function MobileNav() {
           <div className="flex items-center justify-center px-1">
             <button
               onClick={() => setIsCreateModalOpen(true)}
-              className="flex items-center justify-center w-10 h-10 rounded-xl bg-white text-zinc-950 font-semibold shadow-lg hover:bg-zinc-200 hover:scale-105 active:scale-95 transition-all"
+              className="flex items-center justify-center w-10 h-10 rounded-xl bg-white text-black font-semibold shadow-lg hover:bg-neutral-200 hover:scale-105 active:scale-95 transition-all"
               title="Add New Date"
             >
               <Plus className="w-5 h-5 stroke-[2.5]" />
@@ -77,10 +77,10 @@ export default function MobileNav() {
           {/* Spark Roulette Quick Button */}
           <button
             onClick={() => setIsRouletteModalOpen(true)}
-            className="flex flex-col items-center justify-center flex-1 py-1.5 px-1 rounded-xl text-zinc-400 hover:text-zinc-200 transition-all"
+            className="flex flex-col items-center justify-center flex-1 py-1.5 px-1 rounded-xl text-neutral-400 hover:text-white transition-all"
           >
             <Sparkles className="w-4 h-4" />
-            <span className="text-[10px] font-semibold tracking-tight mt-0.5">
+            <span className="font-mono text-[9px] uppercase tracking-wider mt-0.5">
               Roulette
             </span>
           </button>
@@ -89,19 +89,19 @@ export default function MobileNav() {
           <button
             onClick={() => setActiveTab('scrapbook')}
             className={`relative flex flex-col items-center justify-center flex-1 py-1.5 px-1 rounded-xl transition-all ${
-              activeTab === 'scrapbook' ? 'text-white' : 'text-zinc-400 hover:text-zinc-200'
+              activeTab === 'scrapbook' ? 'text-white font-semibold' : 'text-neutral-400 hover:text-white'
             }`}
           >
             {activeTab === 'scrapbook' && (
               <motion.div
                 layoutId="mobileNavActiveTab"
-                className="absolute inset-0 bg-white/15 rounded-xl border border-white/10"
+                className="absolute inset-0 bg-white/15 rounded-xl border border-white/20"
                 transition={{ type: 'spring', stiffness: 380, damping: 30 }}
               />
             )}
             <BookHeart className="w-4 h-4 relative z-10" />
-            <span className="text-[10px] font-semibold tracking-tight mt-0.5 relative z-10">
-              Scrapbook
+            <span className="font-mono text-[9px] uppercase tracking-wider mt-0.5 relative z-10">
+              Archive
             </span>
           </button>
 

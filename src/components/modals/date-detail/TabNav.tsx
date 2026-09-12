@@ -30,7 +30,7 @@ export default function TabNav({ activeTab, onChange, counts }: TabNavProps) {
     <div
       role="tablist"
       aria-label="Date details"
-      className="flex items-center overflow-x-auto scrollbar-none touch-scroll border-b border-white/[0.08] bg-zinc-950 px-3 sm:px-6 shrink-0"
+      className="flex items-center overflow-x-auto scrollbar-none touch-scroll border-b border-white/[0.08] bg-black px-3 sm:px-6 shrink-0 font-mono text-xs uppercase tracking-wider"
     >
       {TABS.map(({ id, icon: Icon, label }) => {
         const isActive = activeTab === id;
@@ -43,16 +43,16 @@ export default function TabNav({ activeTab, onChange, counts }: TabNavProps) {
             role="tab"
             aria-selected={isActive}
             onClick={() => onChange(id)}
-            className={`py-2.5 sm:py-3 px-3 sm:px-4 font-semibold text-xs sm:text-sm border-b-2 transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
+            className={`py-3 px-3 sm:px-4 text-xs border-b-2 transition-all flex items-center gap-2 whitespace-nowrap shrink-0 ${
               isActive
-                ? 'border-white text-white'
-                : 'border-transparent text-zinc-500 hover:text-zinc-300'
+                ? 'border-white text-white font-semibold'
+                : 'border-transparent text-neutral-400 hover:text-white'
             }`}
           >
-            <Icon className="w-4 h-4" />
+            <Icon className="w-3.5 h-3.5" />
             <span>
               {label}
-              {count ? ` (${count})` : ''}
+              {count ? ` [${count}]` : ''}
             </span>
           </button>
         );

@@ -44,7 +44,7 @@ export default function StatsModal() {
           initial={{ opacity: 0, scale: 0.96, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.96, y: 20 }}
-          className="relative w-full max-w-2xl rounded-t-[28px] sm:rounded-3xl overflow-hidden bg-zinc-950 border border-white/[0.1] shadow-2xl p-4 sm:p-7 space-y-4 sm:space-y-5 max-h-[92vh] sm:max-h-[88vh] overflow-y-auto overscroll-contain touch-scroll my-0 sm:my-auto"
+          className="relative w-full max-w-2xl rounded-t-[28px] sm:rounded-3xl overflow-hidden bg-black/95 border border-white/[0.12] shadow-2xl p-5 sm:p-8 space-y-6 max-h-[92vh] sm:max-h-[88vh] overflow-y-auto overscroll-contain touch-scroll my-0 sm:my-auto"
           data-lenis-prevent
         >
           {/* Mobile Sheet Drag Indicator Bar */}
@@ -54,63 +54,63 @@ export default function StatsModal() {
 
           {/* Header */}
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 sm:gap-2.5">
-              <div className="p-1.5 sm:p-2 rounded-full bg-accent/12 text-accent-soft shrink-0">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-full bg-white/[0.06] border border-white/15 text-white shrink-0">
                 <Trophy className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="text-base sm:text-lg font-bold font-serif text-white">
-                  Couple Milestones & Stats
+                <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-neutral-400 block">
+                  CHRONICLE // METRICS & MILESTONES
+                </span>
+                <h3 className="text-xl sm:text-2xl font-serif font-normal text-white">
+                  Journey in Numbers
                 </h3>
-                <p className="text-[11px] sm:text-xs text-zinc-400">
-                  {coupleProfile.partner1Name} & {coupleProfile.partner2Name}’s journey in numbers.
-                </p>
               </div>
             </div>
 
             <button
               onClick={() => setIsStatsModalOpen(false)}
-              className="p-1.5 rounded-full bg-white/[0.05] hover:bg-white/[0.1] text-zinc-400 hover:text-white shrink-0"
+              className="p-2 rounded-full bg-white/[0.05] hover:bg-white/[0.1] text-neutral-400 hover:text-white shrink-0 transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
 
           {/* Metrics Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
-            <div className="bg-white/[0.03] p-3 sm:p-3.5 rounded-2xl border border-white/[0.08] text-center space-y-0.5">
-              <div className="text-xl sm:text-2xl font-bold font-mono text-white">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div className="bg-white/[0.03] p-4 rounded-2xl border border-white/[0.08] text-center space-y-1">
+              <div className="text-2xl sm:text-3xl font-serif text-white">
                 {completedDates.length}
               </div>
-              <div className="text-[9px] sm:text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">
-                Completed
+              <div className="text-[9px] uppercase tracking-[0.2em] font-mono text-neutral-400">
+                Lived
               </div>
             </div>
 
-            <div className="bg-white/[0.03] p-3.5 rounded-2xl border border-white/[0.08] text-center space-y-0.5">
-              <div className="text-2xl font-bold font-mono text-white">
+            <div className="bg-white/[0.03] p-4 rounded-2xl border border-white/[0.08] text-center space-y-1">
+              <div className="text-2xl sm:text-3xl font-serif text-white">
                 {daysTogether}
               </div>
-              <div className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">
+              <div className="text-[9px] uppercase tracking-[0.2em] font-mono text-neutral-400">
                 Days Together
               </div>
             </div>
 
-            <div className="bg-white/[0.03] p-3.5 rounded-2xl border border-white/[0.08] text-center space-y-0.5">
-              <div className="text-2xl font-bold font-mono text-white">
+            <div className="bg-white/[0.03] p-4 rounded-2xl border border-white/[0.08] text-center space-y-1">
+              <div className="text-2xl sm:text-3xl font-serif text-white">
                 {wishlistDates.length}
               </div>
-              <div className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">
-                Wishlist
+              <div className="text-[9px] uppercase tracking-[0.2em] font-mono text-neutral-400">
+                In Wishlist
               </div>
             </div>
 
-            <div className="bg-white/[0.03] p-3.5 rounded-2xl border border-white/[0.08] text-center space-y-0.5">
-              <div className="text-2xl font-bold font-mono text-white">
+            <div className="bg-white/[0.03] p-4 rounded-2xl border border-white/[0.08] text-center space-y-1">
+              <div className="text-2xl sm:text-3xl font-serif text-white">
                 ₱{totalSpent.toLocaleString()}
               </div>
-              <div className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">
-                Invested (PHP)
+              <div className="text-[9px] uppercase tracking-[0.2em] font-mono text-neutral-400">
+                Invested
               </div>
             </div>
           </div>

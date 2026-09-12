@@ -78,56 +78,56 @@ export default function ChecklistHub() {
   return (
     <div className="space-y-6">
       
-      {/* Search & Filter Control Bar */}
-      <div className="space-y-3.5 sm:space-y-4 bg-zinc-950/70 p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl border border-white/[0.08] backdrop-blur-2xl shadow-xl">
+      {/* Search & Filter Control Bar — Editorial Catalog Directory */}
+      <div className="space-y-4 sm:space-y-5 bg-black/80 p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-white/[0.1] backdrop-blur-2xl shadow-xl">
         
         {/* Top Search Input Row */}
-        <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
-            <Search className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-neutral-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Search dates, vibes, spots, or tasks..."
+              placeholder="Search catalogue by title, vibe, location, or prep task..."
               value={filterState.searchQuery}
               onChange={(e) => setFilterState((prev) => ({ ...prev, searchQuery: e.target.value }))}
-              className="w-full bg-black/70 border border-white/[0.1] rounded-xl sm:rounded-2xl pl-10 pr-9 py-2 sm:py-2.5 text-xs sm:text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-accent/45 transition-colors"
+              className="w-full bg-neutral-950/90 border border-white/[0.12] rounded-xl sm:rounded-2xl pl-10 pr-9 py-2.5 sm:py-3 font-mono text-xs sm:text-[13px] text-white placeholder-neutral-500 focus:outline-none focus:border-white transition-colors"
             />
             {filterState.searchQuery && (
               <button
                 onClick={() => setFilterState((prev) => ({ ...prev, searchQuery: '' }))}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
             )}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider">
             {/* Favorites Toggle */}
             <button
               onClick={() => setFilterState((prev) => ({ ...prev, favoritesOnly: !prev.favoritesOnly }))}
-              className={`flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl border text-xs font-semibold transition-all ${
+              className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl border text-xs font-semibold transition-all ${
                 filterState.favoritesOnly
-                  ? 'bg-accent/15 text-accent-soft border-accent/45'
-                  : 'bg-white/[0.04] text-zinc-400 border-white/[0.08] hover:text-white hover:bg-white/[0.08]'
+                  ? 'bg-white text-black border-white shadow-sm'
+                  : 'bg-white/[0.04] text-neutral-300 border-white/[0.1] hover:text-white hover:bg-white/[0.08]'
               }`}
             >
-              <Heart className={`w-3.5 h-3.5 ${filterState.favoritesOnly ? 'fill-white text-white' : ''}`} />
+              <Heart className={`w-3.5 h-3.5 ${filterState.favoritesOnly ? 'fill-black text-black' : ''}`} />
               <span>Favorites</span>
             </button>
 
             {/* Plan Date CTA */}
             <button
               onClick={() => setIsCreateModalOpen(true)}
-              className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-bold transition-all shrink-0"
+              className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl bg-white hover:bg-neutral-200 text-black text-xs font-bold transition-all shrink-0 shadow-sm"
             >
-              <Plus className="w-3.5 h-3.5" />
-              <span>Add Idea</span>
+              <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+              <span>Add Entry</span>
             </button>
           </div>
         </div>
 
-        {/* Category Filter Chips */}
+        {/* Category Filter Chips — Monograph Series Index */}
         <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 scrollbar-none touch-scroll -mx-1 px-1">
           {categories.map((cat) => {
             const Icon = cat.icon;
@@ -136,13 +136,13 @@ export default function ChecklistHub() {
               <button
                 key={cat.id}
                 onClick={() => setFilterState((prev) => ({ ...prev, category: cat.id }))}
-                className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all shrink-0 ${
+                className={`flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-xl font-mono text-[11px] uppercase tracking-wider whitespace-nowrap transition-all shrink-0 ${
                   active
-                    ? 'bg-accent/15 text-accent-soft font-semibold'
-                    : 'bg-zinc-900/80 text-zinc-400 border border-white/[0.06] hover:bg-zinc-800 hover:text-white'
+                    ? 'bg-white text-black font-semibold shadow-sm'
+                    : 'bg-white/[0.03] text-neutral-400 border border-white/[0.08] hover:bg-white/[0.06] hover:text-white'
                 }`}
               >
-                <Icon className={`w-3 h-3 ${active ? 'text-accent-soft' : 'text-zinc-400'}`} />
+                <Icon className={`w-3 h-3 ${active ? 'text-black' : 'text-neutral-400'}`} />
                 <span>{cat.label}</span>
               </button>
             );
@@ -150,8 +150,8 @@ export default function ChecklistHub() {
         </div>
 
         {/* Status Tab Filter Row */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 sm:gap-3 pt-3 border-t border-white/[0.06]">
-          <div className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none touch-scroll">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-3 border-t border-white/[0.08]">
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none touch-scroll font-mono">
             {statuses.map((st) => {
               const active = filterState.status === st.id;
               const count = getStatusCount(st.id);
@@ -159,14 +159,14 @@ export default function ChecklistHub() {
                 <button
                   key={st.id}
                   onClick={() => setFilterState((prev) => ({ ...prev, status: st.id }))}
-                  className={`px-2.5 sm:px-3 py-1 rounded-xl text-xs font-medium transition-all flex items-center gap-1 sm:gap-1.5 whitespace-nowrap shrink-0 ${
+                  className={`px-3 py-1.5 rounded-xl text-xs uppercase tracking-wider transition-all flex items-center gap-2 whitespace-nowrap shrink-0 ${
                     active
-                      ? 'bg-accent/15 text-accent-soft font-semibold'
-                      : 'text-zinc-400 hover:text-white hover:bg-white/[0.04]'
+                      ? 'bg-white text-black font-semibold'
+                      : 'text-neutral-400 hover:text-white hover:bg-white/[0.04]'
                   }`}
                 >
                   <span>{st.label}</span>
-                  <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full ${active ? 'bg-accent/20 text-accent-soft' : 'bg-white/[0.06] text-zinc-500'}`}>
+                  <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded-full ${active ? 'bg-black/15 text-black' : 'bg-white/[0.08] text-neutral-400'}`}>
                     {count}
                   </span>
                 </button>
@@ -175,13 +175,13 @@ export default function ChecklistHub() {
           </div>
 
           {/* Secondary Filters */}
-          <div className="grid grid-cols-2 sm:flex items-center gap-2">
+          <div className="grid grid-cols-2 sm:flex items-center gap-2 font-mono text-xs">
             <select
               value={filterState.cost}
               onChange={(e) => setFilterState((prev) => ({ ...prev, cost: e.target.value as CostLevel | 'all' }))}
-              className="bg-black/80 border border-white/[0.08] rounded-xl px-2.5 py-1.5 text-xs text-zinc-300 focus:outline-none w-full sm:w-auto"
+              className="bg-neutral-950 border border-white/[0.1] rounded-xl px-3 py-1.5 text-xs text-neutral-200 focus:outline-none w-full sm:w-auto uppercase tracking-wider"
             >
-              <option value="all">Budget: All</option>
+              <option value="all">Cost: All</option>
               <option value="₱">₱ Budget</option>
               <option value="₱₱">₱₱ Moderate</option>
               <option value="₱₱₱">₱₱₱ Upscale</option>
@@ -191,7 +191,7 @@ export default function ChecklistHub() {
             <select
               value={filterState.setting}
               onChange={(e) => setFilterState((prev) => ({ ...prev, setting: e.target.value as DateSetting | 'all' }))}
-              className="bg-black/80 border border-white/[0.08] rounded-xl px-2.5 py-1.5 text-xs text-zinc-300 focus:outline-none w-full sm:w-auto"
+              className="bg-neutral-950 border border-white/[0.1] rounded-xl px-3 py-1.5 text-xs text-neutral-200 focus:outline-none w-full sm:w-auto uppercase tracking-wider"
             >
               <option value="all">Setting: All</option>
               <option value="indoor">Indoor</option>
@@ -204,9 +204,9 @@ export default function ChecklistHub() {
       </div>
 
       {/* Results Header Count */}
-      <div className="flex items-center justify-between px-2 text-xs">
-        <span className="font-mono uppercase text-zinc-500 tracking-wider text-[11px] sm:text-xs">
-          Showing {filteredDates.length} of {dates.length} Dates
+      <div className="flex items-center justify-between px-2 pt-2 text-xs">
+        <span className="font-mono uppercase text-neutral-400 tracking-[0.2em] text-[10px] sm:text-[11px]">
+          INDEX // {filteredDates.length} OF {dates.length} DOSSIERS
         </span>
 
         {filteredDates.length === 0 && (
@@ -221,16 +221,16 @@ export default function ChecklistHub() {
                 favoritesOnly: false,
               })
             }
-            className="text-white hover:underline font-semibold text-[11px] sm:text-xs"
+            className="text-white hover:underline font-mono uppercase tracking-wider text-[10px] sm:text-[11px]"
           >
-            Reset All Filters
+            Reset Filters
           </button>
         )}
       </div>
 
       {/* Dates Cards Grid */}
       {filteredDates.length > 0 ? (
-        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 pt-2">
           <AnimatePresence>
             {filteredDates.map((date) => (
               <DateCard key={date.id} date={date} />
@@ -239,29 +239,29 @@ export default function ChecklistHub() {
         </motion.div>
       ) : (
         /* Empty State */
-        <div className="rounded-3xl p-12 text-center border border-white/[0.08] bg-zinc-950/40 backdrop-blur-xl space-y-3">
-          <div className="w-12 h-12 rounded-full bg-white/[0.05] border border-white/[0.1] flex items-center justify-center mx-auto text-zinc-400">
-            {dates.length === 0 ? <Sparkles className="w-6 h-6" /> : <Search className="w-6 h-6" />}
+        <div className="rounded-3xl p-12 sm:p-16 text-center border border-white/[0.1] bg-black/80 backdrop-blur-xl space-y-4">
+          <div className="w-12 h-12 rounded-full bg-white/[0.05] border border-white/[0.12] flex items-center justify-center mx-auto text-neutral-400">
+            {dates.length === 0 ? <Sparkles className="w-6 h-6 text-white" /> : <Search className="w-6 h-6 text-white" />}
           </div>
-          <h3 className="text-lg font-bold font-serif text-white">
-            {dates.length === 0 ? 'Your Date Checklist is Empty' : 'No matching dates found'}
+          <h3 className="text-xl sm:text-2xl font-serif text-white">
+            {dates.length === 0 ? 'The Catalogue is Unwritten' : 'No Matching Dossiers Found'}
           </h3>
-          <p className="text-xs text-zinc-500 max-w-sm mx-auto">
+          <p className="text-xs sm:text-sm text-neutral-400 max-w-sm mx-auto font-serif italic leading-relaxed">
             {dates.length === 0
-              ? 'Start building your personal date checklist. Add fine dining spots, cozy nights, and romantic adventures.'
-              : 'Try adjusting your search query or active category filters.'}
+              ? 'Begin compiling your curated romantic monograph. Inscribe dining establishments, scenic escapes, and quiet evenings.'
+              : 'Adjust search criteria or reset category filters to view archived dates.'}
           </p>
-          <div className="flex justify-center gap-3 pt-2">
+          <div className="flex justify-center gap-3 pt-3 font-mono text-xs uppercase tracking-wider">
             <button
               onClick={() => setIsCreateModalOpen(true)}
-              className="px-4 py-2 rounded-xl bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-semibold shadow-md transition-all"
+              className="px-5 py-2.5 rounded-full bg-white hover:bg-neutral-200 text-black font-semibold shadow-md transition-all"
             >
-              + Plan New Date
+              + Add First Date
             </button>
             {dates.length > 0 && (
               <button
                 onClick={() => setIsRouletteModalOpen(true)}
-                className="px-4 py-2 rounded-xl bg-white/[0.05] text-white border border-white/[0.1] text-xs font-semibold hover:bg-white/[0.1] transition-all"
+                className="px-5 py-2.5 rounded-full bg-white/[0.04] text-white border border-white/[0.12] hover:bg-white/[0.08] transition-all"
               >
                 Spin Roulette
               </button>
